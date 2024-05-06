@@ -2,3 +2,11 @@ html {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-size: 20px;
 }
+
+button {
+    cursor: pointer;
+}
+
+input[type="submit"] {
+    cursor: pointer;
+}

@@ -25,6 +25,13 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
     }
 
     @Override
+    public List<Plato> get() {
+        String hql = "FROM plato";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        return query.getResultList();
+    }
+
+    @Override
     public Plato buscar(Long id) {
 
         String hql = "FROM plato WHERE id = :id";

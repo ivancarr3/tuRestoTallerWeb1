@@ -25,22 +25,39 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
     }
 
     @Override
+    public List<Restaurante> get() {
+        return repositorioRestaurante.get();
+    }
+
+    @Override
     public Restaurante consultar(Long id) {
         return repositorioRestaurante.buscar(id);
     }
 
     @Override
-    public List<Restaurante> consultarRestaurantePorNombre(String nombre) {
+    public List<Restaurante> consultarRestaurantePorNombre(String nombre) throws RestauranteNoEncontrado {
+        List<Restaurante> restaurantes = repositorioRestaurante.buscarPorNombre(nombre);
+        if(restaurantes.size() == 0){
+            throw new RestauranteNoEncontrado();
+        }
         return repositorioRestaurante.buscarPorNombre(nombre);
     }
 
     @Override
-    public List<Restaurante> consultarRestaurantePorEstrellas(Integer estrellas) {
+    public List<Restaurante> consultarRestaurantePorEstrellas(Integer estrellas) throws RestauranteNoEncontrado {
+        List<Restaurante> restaurantes = repositorioRestaurante.buscarPorEstrellas(estrellas);
+        if(restaurantes.size() == 0){
+            throw new RestauranteNoEncontrado();
+        }
         return repositorioRestaurante.buscarPorEstrellas(estrellas);
     }
 
     @Override
-    public List<Restaurante> consultarRestaurantePorDireccion(String direccion) {
+    public List<Restaurante> consultarRestaurantePorDireccion(String direccion) throws RestauranteNoEncontrado {
+        List<Restaurante> restaurantes = repositorioRestaurante.buscarPorDireccion(direccion);
+        if(restaurantes.size() == 0){
+            throw new RestauranteNoEncontrado();
+        }
         return repositorioRestaurante.buscarPorDireccion(direccion);
     }
 

@@ -23,6 +23,14 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
     }
 
     @Override
+    public List<Restaurante> get() {
+
+        String hql = "FROM restaurante";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        return query.getResultList();
+    }
+
+    @Override
     public Restaurante buscar(Long id) {
 
         String hql = "FROM restaurante WHERE id = :id";

@@ -18,6 +18,13 @@ public class Plato {
     @Column(nullable = false)
     private String descripcion;
 
+    public Plato (Long id, String nombre, Integer precio, String descripcion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+    }
+
     public Long getId() {return id;}
     public String getNombre() {return nombre;}
     public void setNombre(String nombre) {this.nombre = nombre;}
