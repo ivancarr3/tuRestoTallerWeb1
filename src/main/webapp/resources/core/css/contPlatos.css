@@ -1,0 +1,37 @@
+.contPlatos {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: row;
+  gap: 12px;
+  padding: 15px;
+}
+
+.contPlato {
+  flex-basis: 200px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 10px;
+  position: relative;
+  flex-grow: 1;
+}
+
+.contPlato-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.contPlato-txt {
+  color: white;
+  font-size: 1.3em;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.164);
+}
