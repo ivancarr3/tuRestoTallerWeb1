@@ -1,35 +1,261 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
-  <title>Taller Web I</title>
+    <title>Taller Web I</title>
 
-  <!-- Boostrap core css -->
-  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+    <!-- custom style -->
+    <link rel="stylesheet" th:href="@{/css/reset.css}" />
+    <link rel="stylesheet" th:href="@{/css/index.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/contPlatos.css}" />
+    <link rel="stylesheet" th:href="@{/css/contRestaurants.css}" />
+    <link rel="stylesheet" th:href="@{/css/buscador.css}" />
+    <link rel="stylesheet" th:href="@{/css/login.css}" />
+  </head>
 
-  <!-- custom style -->
-  <link rel="stylesheet" th:href="@{/css/main.css}"/>
+  <body>
+    <header>
+      <h2 class="header-titulo">TuResto</h2>
+      <button class="header-ingresar">Ingresar</button>
+    </header>
+    <main>
+      <div class="contPlatos">
+        <div class="contPlato">
+          <img
+            class="contPlato-img"
+            th:src="@{/img/platos/pizza.jpeg}"
+            alt="pizza"
+          />
+          <h2 class="contPlato-txt">Pizzas</h2>
+        </div>
+        <div class="contPlato">
+          <img
+            class="contPlato-img"
+            th:src="@{/img/platos/empanadas.webp}"
+            alt="empanadas"
+          />
+          <h2 class="contPlato-txt">Empanadas</h2>
+        </div>
+        <div class="contPlato">
+          <img
+            class="contPlato-img"
+            th:src="@{/img/platos/pastas.jpeg}"
+            alt="pastas"
+          />
+          <h2 class="contPlato-txt">Pastas</h2>
+        </div>
+        <div class="contPlato">
+          <img
+            class="contPlato-img"
+            th:src="@{/img/platos/ensaladas.jpg}"
+            alt="ensaladas"
+          />
+          <h2 class="contPlato-txt">Ensaladas</h2>
+        </div>
+        <div class="contPlato">
+          <img
+            class="contPlato-img"
+            th:src="@{/img/platos/helados.jpg}"
+            alt="helados"
+          />
+          <h2 class="contPlato-txt">Helados</h2>
+        </div>
+      </div>
+      <div class="buscador">
+        <form action="#" class="buscador-formBusqueda">
+          <input
+            type="text"
+            class="buscador-barraBusqueda"
+            name="busqueda"
+            id="busqueda"
+            placeholder="Restaurant, plato"
+          />
+          <input class="buscador-btnBusqueda" type="submit" value="Buscar" />
+        </form>
+      </div>
+      <div class="contRestaurants">
+        <div class="contRestaurant">
+          <img
+            th:src="@{/img/restaurant/restaurant.jpg}"
+            alt=""
+            class="contRestaurant-img"
+          />
+          <div class="contRestaurant-info">
+            <h2 class="contRestaurant-nombre">La Terraza del Mar</h2>
+            <p class="contRestaurant-descripcion">
+              Un restaurante costero especializado en mariscos frescos y cocina
+              mediterránea.
+            </p>
+            <div class="contRestaurant-contEstrellaYBtn">
+              <p class="contRestaurant-estrellas">5⭐</p>
+              <button class="contRestaurant-btnReservar">Reservar</button>
+            </div>
+          </div>
+        </div>
 
-</head>
+        <div class="contRestaurant">
+          <img
+            th:src="@{/img/restaurant/restaurant1.jpg}"
+            alt=""
+            class="contRestaurant-img"
+          />
+          <div class="contRestaurant-info">
+            <h2 class="contRestaurant-nombre">El Jardín Secreto</h2>
+            <p class="contRestaurant-descripcion">
+              Un restaurante boutique escondido en un exuberante jardín, famoso
+              por su cocina de autor y ambiente encantador.
+            </p>
+            <div class="contRestaurant-contEstrellaYBtn">
+              <p class="contRestaurant-estrellas">4.5⭐</p>
+              <button class="contRestaurant-btnReservar">Reservar</button>
+            </div>
+          </div>
+        </div>
 
-<body>
+        <div class="contRestaurant">
+          <img
+            th:src="@{/img/restaurant/restaurant2.jpg}"
+            alt=""
+            class="contRestaurant-img"
+          />
+          <div class="contRestaurant-info">
+            <h2 class="contRestaurant-nombre">La Cava del Vino</h2>
+            <p class="contRestaurant-descripcion">
+              Un acogedor restaurante de estilo bistró conocido por su extensa
+              selección de vinos y su cocina de temporada con influencia
+              francesa.
+            </p>
+            <div class="contRestaurant-contEstrellaYBtn">
+              <p class="contRestaurant-estrellas">4.8⭐</p>
+              <button class="contRestaurant-btnReservar">Reservar</button>
+            </div>
+          </div>
+        </div>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" href="#">UNLAM</a>
-</nav>
+        <div class="contRestaurant">
+          <img
+            th:src="@{/img/restaurant/restaurant3.jpg}"
+            alt=""
+            class="contRestaurant-img"
+          />
+          <div class="contRestaurant-info">
+            <h2 class="contRestaurant-nombre">Sabor Tradicional</h2>
+            <p class="contRestaurant-descripcion">
+              Un auténtico restaurante familiar que sirve platos caseros de la
+              cocina regional, donde cada bocado evoca recuerdos de hogar.
+            </p>
+            <div class="contRestaurant-contEstrellaYBtn">
+              <p class="contRestaurant-estrellas">4.7⭐</p>
+              <button class="contRestaurant-btnReservar">Reservar</button>
+            </div>
+          </div>
+        </div>
 
-<main role="main" class="container">
-  <div class = "container">
-    <h1>Bienvenidos a Taller Web 1</h1>
+        <div class="contRestaurant">
+          <img
+            th:src="@{/img/restaurant/restaurant4.jpg}"
+            alt=""
+            class="contRestaurant-img"
+          />
+          <div class="contRestaurant-info">
+            <h2 class="contRestaurant-nombre">Rincón Oriental</h2>
+            <p class="contRestaurant-descripcion">
+              Un lugar acogedor que ofrece auténticos sabores de Asia, desde
+              sushi fresco hasta platos de curry fragantes, en un ambiente
+              moderno y elegante.
+            </p>
+            <div class="contRestaurant-contEstrellaYBtn">
+              <p class="contRestaurant-estrellas">4.6⭐</p>
+              <button class="contRestaurant-btnReservar">Reservar</button>
+            </div>
+          </div>
+        </div>
 
-    <a href="login.html" class="btn btn-lg btn-primary btn-block">Volver</a>
-  </div>
-</main>
-<!-- /.container -->
+        <div class="contRestaurant">
+          <img
+            th:src="@{/img/restaurant/restaurant5.jpg}"
+            alt=""
+            class="contRestaurant-img"
+          />
+          <div class="contRestaurant-info">
+            <h2 class="contRestaurant-nombre">Brasa y Sazón</h2>
+            <p class="contRestaurant-descripcion">
+              Un asador rústico que combina la técnica de la parrilla con
+              sabores latinoamericanos audaces, creando platos llenos de sabor y
+              carácter.
+            </p>
+            <div class="contRestaurant-contEstrellaYBtn">
+              <p class="contRestaurant-estrellas">4.9⭐</p>
+              <button class="contRestaurant-btnReservar">Reservar</button>
+            </div>
+          </div>
+        </div>
 
-<!-- Boostrap core js -->
-<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
-</body>
+        <div class="contRestaurant">
+          <img
+            th:src="@{/img/restaurant/restaurant6.jpg}"
+            alt=""
+            class="contRestaurant-img"
+          />
+          <div class="contRestaurant-info">
+            <h2 class="contRestaurant-nombre">Gastronomía del Mundo</h2>
+            <p class="contRestaurant-descripcion">
+              Un buffet internacional que ofrece una amplia gama de platos de
+              todo el mundo, desde la cocina italiana hasta la tailandesa, todo
+              en un solo lugar.
+            </p>
+            <div class="contRestaurant-contEstrellaYBtn">
+              <p class="contRestaurant-estrellas">4.8⭐</p>
+              <button class="contRestaurant-btnReservar">Reservar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="contRestaurant">
+          <img
+            th:src="@{/img/restaurant/restaurant7.jpg}"
+            alt=""
+            class="contRestaurant-img"
+          />
+          <div class="contRestaurant-info">
+            <h2 class="contRestaurant-nombre">La Taberna del Viejo Mundo</h2>
+            <p class="contRestaurant-descripcion">
+              Un encantador restaurante que evoca la atmósfera de una taberna
+              europea tradicional, sirviendo platos clásicos y cervezas
+              artesanales en un ambiente acogedor y animado.
+            </p>
+            <div class="contRestaurant-contEstrellaYBtn">
+              <p class="contRestaurant-estrellas">4.7⭐</p>
+              <button class="contRestaurant-btnReservar">Reservar</button>
+            </div>
+          </div>
+        </div>
+        <div class="contRestaurant">
+          <img
+            th:src="@{/img/restaurant/restaurant8.jpg}"
+            alt=""
+            class="contRestaurant-img"
+          />
+          <div class="contRestaurant-info">
+            <h2 class="contRestaurant-nombre">Sabores del Mediterráneo</h2>
+            <p class="contRestaurant-descripcion">
+              Un encantador restaurante que ofrece una fusión de sabores
+              mediterráneos, con platos frescos y deliciosos inspirados en la
+              costa y el campo.
+            </p>
+            <div class="contRestaurant-contEstrellaYBtn">
+              <p class="contRestaurant-estrellas">4.6⭐</p>
+              <button class="contRestaurant-btnReservar">Reservar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
 </html>

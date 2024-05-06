@@ -1,0 +1,59 @@
+.contRestaurants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.contRestaurant {
+  display: flex;
+  overflow: hidden;
+  border-radius: 12px;
+  gap: 20px;
+  flex-basis: 400px;
+  border: 1px solid rgb(175, 172, 172);
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+.contRestaurant-img {
+  width: 150px;
+  height: auto;
+  object-fit: cover;
+}
+
+.contRestaurant-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+  padding: 10px;
+  gap: 7px;
+}
+
+.contRestaurant-contEstrellaYBtn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.contRestaurant-nombre {
+  font-size: 1em;
+  font-weight: 600;
+}
+.contRestaurant-descripcion {
+  font-size: 0.8em;
+  flex-grow: 1;
+}
+
+.contRestaurant-btnReservar {
+  background-color: rgb(52, 52, 161);
+  color: white;
+  border-radius: 12px;
+  border: none;
+  padding: 10px;
+}
