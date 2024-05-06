@@ -1,6 +1,3 @@
 package com.tallerwebi.dominio.excepcion;
 
-public class UsuarioExistente extends Exception {
-
-}
-
+public class UsuarioExistente extends Exception { }
