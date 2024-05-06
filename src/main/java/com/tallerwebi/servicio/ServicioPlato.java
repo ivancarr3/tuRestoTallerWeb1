@@ -1,5 +1,6 @@
-package com.tallerwebi.dominio;
+package com.tallerwebi.servicio;
 
+import com.tallerwebi.dominio.Plato;
 import com.tallerwebi.dominio.excepcion.PlatoExistente;
 import com.tallerwebi.dominio.excepcion.PlatoNoEncontrado;
 

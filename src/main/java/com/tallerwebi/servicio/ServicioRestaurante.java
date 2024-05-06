@@ -1,5 +1,6 @@
-package com.tallerwebi.dominio;
+package com.tallerwebi.servicio;
 
+import com.tallerwebi.dominio.Restaurante;
 import com.tallerwebi.dominio.excepcion.RestauranteExistente;
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 
