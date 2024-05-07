@@ -63,7 +63,7 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
     @Override
     public List<Restaurante> buscarPorNombre(String nombre) {
 
-        String hql = "FROM restaurante WHERE nombre = :nombre";
+        String hql = "FROM Restaurante WHERE nombre = :nombre";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("nombre", nombre);
 
