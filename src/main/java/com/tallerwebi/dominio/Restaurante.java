@@ -18,6 +18,7 @@ public class Restaurante {
     @Column(nullable = false)
     private String direccion;
 
+    public Restaurante() {}
     public Restaurante (Long id, String nombre, Double estrellas, String direccion) {
         this.id = id;
         this.nombre = nombre;
@@ -26,6 +27,7 @@ public class Restaurante {
     }
 
     public Long getId() {return id;}
+    public void setId(Long id) {this.id = id;}
     public String getNombre() {return nombre;}
     public void setNombre(String nombre) {this.nombre = nombre;}
     public Double getEstrellas() {return estrellas;}

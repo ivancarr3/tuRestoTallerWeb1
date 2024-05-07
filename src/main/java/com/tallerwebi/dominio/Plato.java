@@ -18,6 +18,7 @@ public class Plato {
     @Column(nullable = false)
     private String descripcion;
 
+    public Plato() {}
     public Plato (Long id, String nombre, Integer precio, String descripcion) {
         this.id = id;
         this.nombre = nombre;
