@@ -44,7 +44,7 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
     }
 
     @Override
-    public List<Restaurante> consultarRestaurantePorEstrellas(Integer estrellas) throws RestauranteNoEncontrado {
+    public List<Restaurante> consultarRestaurantePorEstrellas(Double estrellas) throws RestauranteNoEncontrado {
         List<Restaurante> restaurantes = repositorioRestaurante.buscarPorEstrellas(estrellas);
         if(restaurantes.size() == 0){
             throw new RestauranteNoEncontrado();

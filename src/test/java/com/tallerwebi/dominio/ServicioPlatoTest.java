@@ -1,7 +1,6 @@
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.excepcion.PlatoNoEncontrado;
-import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 import com.tallerwebi.infraestructura.ServicioPlatoImpl;
 import com.tallerwebi.servicio.ServicioPlato;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,80 +18,74 @@ public class ServicioPlatoTest {
 
     private ServicioPlato servicioPlato;
     private RepositorioPlato repositorioPlato;
+    private List<Plato> platosMock;
 
     @BeforeEach
     public void init(){
         this.repositorioPlato = mock(RepositorioPlato.class);
         this.servicioPlato = new ServicioPlatoImpl(this.repositorioPlato);
+        this.platosMock = new ArrayList<>();
+        this.platosMock.add(new Plato(1L, "milanesa", 20000, "napolitana"));
     }
 
     @Test
     public void queSePuedanObtenerTodosLosPlatos(){
         // preparacion
-        List<Plato> platosMock = new ArrayList<>();
-        platosMock.add(new Plato(1L, "nombre1", 200, "desc"));
-        platosMock.add(new Plato(2L, "nombre2", 300, "desc2"));
-        platosMock.add(new Plato(3L, "nombre3", 400, "desc3"));
-        when(this.repositorioPlato.get()).thenReturn(platosMock);
+        this.platosMock.add(new Plato(2L, "fideos", 20050, "con salsa"));
+        this.platosMock.add(new Plato(3L, "pizza", 20010, "jamon y morron"));
+        when(this.repositorioPlato.get()).thenReturn(this.platosMock);
 
         // ejecucion
         List<Plato> platos = this.servicioPlato.get();
 
         // verificacion
-        assertThat(platos.size(), equalTo(3)); // Existan 3 elementos
+        assertThat(platos.size(), equalTo(3));
     }
 
     @Test
     public void queAlBuscarPlatosPorNombreDevuelvaLosCorrespondientes() throws PlatoNoEncontrado {
         // preparacion
-        List<Plato> platosMock = new ArrayList<>();
-        platosMock.add(new Plato(1L, "nombre1", 2, "direccion1"));
-        when(this.repositorioPlato.buscarPlatoPorNombre("nombre1")).thenReturn(platosMock);
+        this.platosMock.add(new Plato(2L, "milanesa", 20000, "de pollo"));
+        when(this.repositorioPlato.buscarPlatoPorNombre("milanesa")).thenReturn(this.platosMock);
 
         // ejecucion
-        List<Plato> platos = this.servicioPlato.consultarPlatoPorNombre("nombre1");
+        List<Plato> platos = this.servicioPlato.consultarPlatoPorNombre("milanesa");
 
         // verificacion
-        assertThat(platos.size(), equalTo(1)); // Existan 1 elementos
+        assertThat(platos.size(), equalTo(2));
     }
 
     @Test
     public void queAlNoEncontrarPlatosPorNombreLanceExcepcion() throws PlatoNoEncontrado {
         // preparacion
-        List<Plato> platosMock = new ArrayList<>();
-        platosMock.add(new Plato(1L, "nombre1", 2, "direccion1"));
-        when(this.repositorioPlato.buscarPlatoPorNombre("nombre1")).thenReturn(platosMock);
+        when(this.repositorioPlato.buscarPlatoPorNombre("milanesa")).thenReturn(this.platosMock);
 
         // ejecucion y verificacion de la excepcion
         assertThrows(PlatoNoEncontrado.class, () -> {
-            this.servicioPlato.consultarPlatoPorNombre("nombre2");
+            this.servicioPlato.consultarPlatoPorNombre("asado");
         });
     }
 
     @Test
     public void queAlBuscarPlatosPorPrecioDevuelvaLosCorrespondientes() throws PlatoNoEncontrado {
         // preparacion
-        List<Plato> platosMock = new ArrayList<>();
-        platosMock.add(new Plato(1L, "nombre1", 200, "direccion1"));
-        when(this.repositorioPlato.buscarPlatoPorPrecio(200)).thenReturn(platosMock);
+        when(this.repositorioPlato.buscarPlatoPorPrecio(20000)).thenReturn(this.platosMock);
 
         // ejecucion
-        List<Plato> platos = this.servicioPlato.consultarPlatoPorPrecio(200);
+        List<Plato> platos = this.servicioPlato.consultarPlatoPorPrecio(20000);
 
         // verificacion
-        assertThat(platos.size(), equalTo(1)); // Existan 1 elementos
+        assertThat(platos.size(), equalTo(1));
     }
 
     @Test
     public void queAlNoEncontrarPlatosPorPrecioLanceExcepcion() throws PlatoNoEncontrado {
         // preparacion
-        List<Plato> platosMock = new ArrayList<>();
-        platosMock.add(new Plato(1L, "nombre1", 200, "direccion1"));
-        when(this.repositorioPlato.buscarPlatoPorPrecio(200)).thenReturn(platosMock);
+        when(this.repositorioPlato.buscarPlatoPorPrecio(20000)).thenReturn(this.platosMock);
 
         // ejecucion y verificacion de la excepcion
         assertThrows(PlatoNoEncontrado.class, () -> {
-            this.servicioPlato.consultarPlatoPorPrecio(566);
+            this.servicioPlato.consultarPlatoPorPrecio(15000);
         });
     }
 }

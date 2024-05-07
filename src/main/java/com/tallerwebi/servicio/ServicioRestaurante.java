@@ -10,7 +10,7 @@ public interface ServicioRestaurante {
 
     Restaurante consultar(Long id) throws RestauranteNoEncontrado;
     List<Restaurante> consultarRestaurantePorNombre(String nombre) throws RestauranteNoEncontrado;
-    List<Restaurante> consultarRestaurantePorEstrellas(Integer estrellas) throws RestauranteNoEncontrado;
+    List<Restaurante> consultarRestaurantePorEstrellas(Double estrellas) throws RestauranteNoEncontrado;
     List<Restaurante> consultarRestaurantePorDireccion(String direccion) throws RestauranteNoEncontrado;
     List<Restaurante> get();
     void crearRestaurante(Restaurante restaurante) throws RestauranteExistente;

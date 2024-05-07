@@ -18,107 +18,96 @@ public class ServicioRestauranteTest {
 
     private ServicioRestaurante servicioRestaurante;
     private RepositorioRestaurante repositorioRestaurante;
+    private List<Restaurante> restaurantesMock;
 
     @BeforeEach
     public void init(){
         this.repositorioRestaurante = mock(RepositorioRestaurante.class);
         this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante);
+        this.restaurantesMock = new ArrayList<>();
+        this.restaurantesMock.add(new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000"));
     }
 
     @Test
     public void queSePuedanObtenerTodosLosRestaurantes(){
         // preparacion
-        List<Restaurante> restaurantesMock = new ArrayList<>();
-        restaurantesMock.add(new Restaurante(1L, "nombre1", 2, "direc1"));
-        restaurantesMock.add(new Restaurante(2L, "nombre2", 3, "direc12"));
-        restaurantesMock.add(new Restaurante(3L, "nombre3", 4, "direc13"));
-        when(this.repositorioRestaurante.get()).thenReturn(restaurantesMock);
+        this.restaurantesMock.add(new Restaurante(2L, "La Farola", 4.0, "Almafuerte 3344"));
+        this.restaurantesMock.add(new Restaurante(3L, "Benjamin", 4.5, "Arieta 3344"));
+        when(this.repositorioRestaurante.get()).thenReturn(this.restaurantesMock);
 
         // ejecucion
         List<Restaurante> restaurantes = this.servicioRestaurante.get();
 
         // verificacion
-        assertThat(restaurantes.size(), equalTo(3)); // Existan 3 elementos
+        assertThat(restaurantes.size(), equalTo(3));
     }
 
     @Test
     public void queAlBuscarRestaurantesPorNombreDevuelvaLosCorrespondientes() throws RestauranteNoEncontrado {
         // preparacion
-        List<Restaurante> restaurantesMock = new ArrayList<>();
-        restaurantesMock.add(new Restaurante(1L, "nombre1", 2, "direccion1"));
-        when(this.repositorioRestaurante.buscarPorNombre("nombre1")).thenReturn(restaurantesMock);
+        when(this.repositorioRestaurante.buscarPorNombre("El Club de la milanesa")).thenReturn(this.restaurantesMock);
 
         // ejecucion
-        List<Restaurante> restaurantes = this.servicioRestaurante.consultarRestaurantePorNombre("nombre1");
+        List<Restaurante> restaurantes = this.servicioRestaurante.consultarRestaurantePorNombre("El Club de la milanesa");
 
         // verificacion
-        assertThat(restaurantes.size(), equalTo(1)); // Existan 1 elementos
+        assertThat(restaurantes.size(), equalTo(1));
     }
 
     @Test
     public void queAlNoEncontrarRestaurantePorNombreLanceExcepcion() throws RestauranteNoEncontrado {
         // preparacion
-        List<Restaurante> restaurantesMock = new ArrayList<>();
-        restaurantesMock.add(new Restaurante(1L, "nombre1", 2, "direccion1"));
-        when(this.repositorioRestaurante.buscarPorNombre("nombre1")).thenReturn(restaurantesMock);
+        when(this.repositorioRestaurante.buscarPorNombre("El Club de la milanesa")).thenReturn(this.restaurantesMock);
 
         // ejecucion y verificacion de la excepcion
         assertThrows(RestauranteNoEncontrado.class, () -> {
-            this.servicioRestaurante.consultarRestaurantePorNombre("nombre2");
+            this.servicioRestaurante.consultarRestaurantePorNombre("La Quintana");
         });
     }
 
     @Test
     public void queAlBuscarRestaurantesPorDireccionDevuelvaLosCorrespondientes() throws RestauranteNoEncontrado {
         // preparacion
-        List<Restaurante> restaurantesMock = new ArrayList<>();
-        restaurantesMock.add(new Restaurante(1L, "nombre1", 2, "direccion1"));
-        when(this.repositorioRestaurante.buscarPorDireccion("direccion1")).thenReturn(restaurantesMock);
+        when(this.repositorioRestaurante.buscarPorDireccion("Almafuerte 3344")).thenReturn(this.restaurantesMock);
 
         // ejecucion
-        List<Restaurante> restaurantes = this.servicioRestaurante.consultarRestaurantePorDireccion("direccion1");
+        List<Restaurante> restaurantes = this.servicioRestaurante.consultarRestaurantePorDireccion("Almafuerte 3344");
 
         // verificacion
-        assertThat(restaurantes.size(), equalTo(1)); // Existan 1 elementos
+        assertThat(restaurantes.size(), equalTo(1));
     }
 
     @Test
     public void queAlNoEncontrarRestaurantePorDireccionLanceExcepcion() throws RestauranteNoEncontrado {
         // preparacion
-        List<Restaurante> restaurantesMock = new ArrayList<>();
-        restaurantesMock.add(new Restaurante(1L, "nombre1", 2, "direccion1"));
-        when(this.repositorioRestaurante.buscarPorDireccion("nombre1")).thenReturn(restaurantesMock);
+        when(this.repositorioRestaurante.buscarPorDireccion("Arieta 5000")).thenReturn(this.restaurantesMock);
 
         // ejecucion y verificacion de la excepcion
         assertThrows(RestauranteNoEncontrado.class, () -> {
-            this.servicioRestaurante.consultarRestaurantePorDireccion("direccion2");
+            this.servicioRestaurante.consultarRestaurantePorDireccion("otra direccion");
         });
     }
 
     @Test
     public void queAlBuscarRestaurantesPorEstrellasDevuelvaLosCorrespondientes() throws RestauranteNoEncontrado {
         // preparacion
-        List<Restaurante> restaurantesMock = new ArrayList<>();
-        restaurantesMock.add(new Restaurante(1L, "nombre1", 2, "direccion1"));
-        when(this.repositorioRestaurante.buscarPorEstrellas(2)).thenReturn(restaurantesMock);
+        when(this.repositorioRestaurante.buscarPorEstrellas(4.5)).thenReturn(this.restaurantesMock);
 
         // ejecucion
-        List<Restaurante> restaurantes = this.servicioRestaurante.consultarRestaurantePorEstrellas(2);
+        List<Restaurante> restaurantes = this.servicioRestaurante.consultarRestaurantePorEstrellas(4.5);
 
         // verificacion
-        assertThat(restaurantes.size(), equalTo(1)); // Existan 1 elementos
+        assertThat(restaurantes.size(), equalTo(1));
     }
 
     @Test
     public void queAlNoEncontrarRestaurantePorEstrellasLanceExcepcion() throws RestauranteNoEncontrado {
         // preparacion
-        List<Restaurante> restaurantesMock = new ArrayList<>();
-        restaurantesMock.add(new Restaurante(1L, "nombre1", 2, "direccion1"));
-        when(this.repositorioRestaurante.buscarPorEstrellas(2)).thenReturn(restaurantesMock);
+        when(this.repositorioRestaurante.buscarPorEstrellas(4.0)).thenReturn(this.restaurantesMock);
 
         // ejecucion y verificacion de la excepcion
         assertThrows(RestauranteNoEncontrado.class, () -> {
-            this.servicioRestaurante.consultarRestaurantePorEstrellas(4);
+            this.servicioRestaurante.consultarRestaurantePorEstrellas(5.0);
         });
     }
 }

@@ -41,7 +41,7 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
     }
 
     @Override
-    public List<Restaurante> buscarPorEstrellas(Integer estrellas) {
+    public List<Restaurante> buscarPorEstrellas(Double estrellas) {
 
         String hql = "FROM restaurante WHERE estrellas = :estrellas";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
