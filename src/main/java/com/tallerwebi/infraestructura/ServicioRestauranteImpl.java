@@ -17,7 +17,7 @@ import com.tallerwebi.servicio.ServicioRestaurante;
 @Transactional
 public class ServicioRestauranteImpl implements ServicioRestaurante {
 
-    private RepositorioRestaurante repositorioRestaurante;
+    private final RepositorioRestaurante repositorioRestaurante;
 
     @Autowired
     public ServicioRestauranteImpl(RepositorioRestaurante repositorioRestaurante){
@@ -37,7 +37,7 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
     @Override
     public List<Restaurante> consultarRestaurantePorNombre(String nombre) throws RestauranteNoEncontrado {
         List<Restaurante> restaurantes = repositorioRestaurante.buscarPorNombre(nombre);
-        if(restaurantes.size() == 0){
+        if(restaurantes.isEmpty()){
             throw new RestauranteNoEncontrado();
         }
         return repositorioRestaurante.buscarPorNombre(nombre);
@@ -46,7 +46,7 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
     @Override
     public List<Restaurante> consultarRestaurantePorEstrellas(Double estrellas) throws RestauranteNoEncontrado {
         List<Restaurante> restaurantes = repositorioRestaurante.buscarPorEstrellas(estrellas);
-        if(restaurantes.size() == 0){
+        if(restaurantes.isEmpty()){
             throw new RestauranteNoEncontrado();
         }
         return repositorioRestaurante.buscarPorEstrellas(estrellas);
@@ -55,7 +55,7 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
     @Override
     public List<Restaurante> consultarRestaurantePorDireccion(String direccion) throws RestauranteNoEncontrado {
         List<Restaurante> restaurantes = repositorioRestaurante.buscarPorDireccion(direccion);
-        if(restaurantes.size() == 0){
+        if(restaurantes.isEmpty()){
             throw new RestauranteNoEncontrado();
         }
         return repositorioRestaurante.buscarPorDireccion(direccion);

@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.tallerwebi.dominio.Restaurante;
-import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +17,7 @@ import com.tallerwebi.servicio.ServicioPlato;
 @Transactional
 public class ServicioPlatoImpl implements ServicioPlato {
 
-    private RepositorioPlato repositorioPlato;
+    private final RepositorioPlato repositorioPlato;
 
     @Autowired
     public ServicioPlatoImpl(RepositorioPlato repositorioPlato){
@@ -39,7 +37,7 @@ public class ServicioPlatoImpl implements ServicioPlato {
     @Override
     public List<Plato> consultarPlatoPorNombre(String nombre) throws PlatoNoEncontrado {
         List<Plato> platos = repositorioPlato.buscarPlatoPorNombre(nombre);
-        if(platos.size() == 0){
+        if(platos.isEmpty()){
             throw new PlatoNoEncontrado();
         }
         return repositorioPlato.buscarPlatoPorNombre(nombre);
@@ -48,7 +46,7 @@ public class ServicioPlatoImpl implements ServicioPlato {
     @Override
     public List<Plato> consultarPlatoPorPrecio(Integer precio) throws PlatoNoEncontrado {
         List<Plato> platos = repositorioPlato.buscarPlatoPorPrecio(precio);
-        if(platos.size() == 0){
+        if(platos.isEmpty()){
             throw new PlatoNoEncontrado();
         }
         return repositorioPlato.buscarPlatoPorPrecio(precio);

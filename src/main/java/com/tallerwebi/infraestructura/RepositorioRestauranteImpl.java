@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public class RepositorioRestauranteImpl implements RepositorioRestaurante {
 
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     public RepositorioRestauranteImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -25,7 +25,7 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
     @Override
     public List<Restaurante> get() {
 
-        String hql = "FROM restaurante";
+        String hql = "FROM Restaurante";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         return query.getResultList();
     }
@@ -33,7 +33,7 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
     @Override
     public Restaurante buscar(Long id) {
 
-        String hql = "FROM restaurante WHERE id = :id";
+        String hql = "FROM Restaurante WHERE id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("id", id);
 
@@ -43,7 +43,7 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
     @Override
     public List<Restaurante> buscarPorEstrellas(Double estrellas) {
 
-        String hql = "FROM restaurante WHERE estrellas = :estrellas";
+        String hql = "FROM Restaurante WHERE estrellas = :estrellas";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("estrellas", estrellas);
 
@@ -53,7 +53,7 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
     @Override
     public List<Restaurante> buscarPorDireccion(String direccion) {
 
-        String hql = "FROM restaurante WHERE direccion = :direccion";
+        String hql = "FROM Restaurante WHERE direccion = :direccion";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("direccion", direccion);
 
@@ -72,7 +72,7 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
 
     @Override
     public void actualizar(Restaurante restaurante) {
-        String hql = "UPDATE restaurante SET nombre = :nombre, estrellas = :estrellas, direccion = :direccion WHERE id = :id";
+        String hql = "UPDATE Restaurante SET nombre = :nombre, estrellas = :estrellas, direccion = :direccion WHERE id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("nombre", restaurante.getNombre());
         query.setParameter("estrellas", restaurante.getEstrellas());
@@ -83,7 +83,7 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
 
     @Override
     public void eliminar(Restaurante restaurante) {
-        String hql = "DELETE FROM restaurante WHERE id = :id";
+        String hql = "DELETE FROM Restaurante WHERE id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("id", restaurante.getId());
         query.executeUpdate();

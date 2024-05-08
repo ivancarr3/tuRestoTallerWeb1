@@ -2,8 +2,7 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.Plato;
 import com.tallerwebi.dominio.RepositorioPlato;
-import com.tallerwebi.dominio.RepositorioRestaurante;
-import com.tallerwebi.dominio.Restaurante;
+
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +12,7 @@ import java.util.List;
 @Repository
 public class RepositorioPlatoImpl implements RepositorioPlato {
 
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     public RepositorioPlatoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -26,7 +25,7 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
 
     @Override
     public List<Plato> get() {
-        String hql = "FROM plato";
+        String hql = "FROM Plato";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         return query.getResultList();
     }
@@ -34,7 +33,7 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
     @Override
     public Plato buscar(Long id) {
 
-        String hql = "FROM plato WHERE id = :id";
+        String hql = "FROM Plato WHERE id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("id", id);
 
@@ -44,7 +43,7 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
     @Override
     public List<Plato> buscarPlatoPorPrecio(Integer precio) {
 
-        String hql = "FROM plato WHERE precio = :precio";
+        String hql = "FROM Plato WHERE precio = :precio";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("precio", precio);
 
@@ -54,7 +53,7 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
     @Override
     public List<Plato> buscarPlatoPorNombre(String nombre) {
 
-        String hql = "FROM plato WHERE nombre = :nombre";
+        String hql = "FROM Plato WHERE nombre = :nombre";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("nombre", nombre);
 
@@ -63,7 +62,7 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
 
     @Override
     public void modificarPlato(Plato plato) {
-        String hql = "UPDATE plato SET nombre = :nombre, precio = :precio WHERE id = :id";
+        String hql = "UPDATE Plato SET nombre = :nombre, precio = :precio WHERE id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("nombre", plato.getNombre());
         query.setParameter("precio", plato.getPrecio());
@@ -73,7 +72,7 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
 
     @Override
     public void eliminarPlato(Plato plato) {
-        String hql = "DELETE FROM plato WHERE id = :id";
+        String hql = "DELETE FROM Plato WHERE id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("id", plato.getId());
         query.executeUpdate();

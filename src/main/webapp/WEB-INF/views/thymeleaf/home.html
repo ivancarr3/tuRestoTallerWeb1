@@ -73,198 +73,36 @@
     </div>
   </div>
   <div class="container">
-    <form action="#" class="buscador-formBusqueda w-100 mb-4" style="padding: 0 45px">
+    <form action="#" class="buscador-formBusqueda w-100 mb-4 d-flex" style="padding: 0 45px; flex-direction: column; gap: 1em;" th:action="@{/home}" method="POST">
       <div class="input-group" style="flex-wrap: nowrap;">
         <input
                 type="text"
                 class="form-control w-100"
                 name="busqueda"
                 id="busqueda"
-                placeholder="La Farola, Benjamín, etc..."
+                placeholder="La Farola, La Quintana, etc..."
                 autocomplete="off"
         />
         <button type="submit" class="btn btn-primary">Buscar</button>
       </div>
+      <p th:if="${error != null}" class="alert alert-danger" th:text="${error}"></p>
     </form>
   </div>
-  <div class="container d-flex align-items-center justify-content-center flex-wrap" style="gap: 3em;">
-    <div class="card" style="width: 18rem;">
-      <img
-              th:src="@{/img/restaurant/restaurant.jpg}"
-              alt="Restaurante"
-              title="Restaurante"
-              class="card-image-top"
-      />
-      <div class="card-body">
-        <h2 style="font-size: 1.5em;">La Terraza del Mar</h2>
-        <p class="fw-light">
-          Un restaurante costero especializado en mariscos frescos, variedad de pescados y la mejor cocina
-          mediterránea.
-        </p>
-        <div class="d-flex align-items-center justify-content-between">
-          <p class="contRestaurant-estrellas mb-0">5 <i class="fas fa-star" style="color: #ffc107;"></i></p>
-          <button class="contRestaurant-btnReservar">Reservar</button>
+    <div class="container d-flex align-items-center justify-content-center flex-wrap" style="gap: 3em;">
+      <div th:each="restaurante : ${restaurantes}" class="card" style="width: 18rem;">
+        <img th:src="@{/img/restaurant/restaurant.jpg}" alt="Restaurante" title="Restaurante" class="card-image-top"/>
+        <div class="card-body">
+          <h2 style="font-size: 1.5em;" th:text="${restaurante.nombre}"></h2>
+          <p class="fw-light" th:text="${restaurante.direccion}"></p>
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center" style="gap: .5em;">
+              <p class="contRestaurant-estrellas mb-0" th:text="${restaurante.estrellas}"></p>
+              <i class="fas fa-star" style="color: #ffc107;"></i>
+            </div>
+            <button class="contRestaurant-btnReservar">Reservar</button>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="card" style="width: 18rem;">
-      <img
-              th:src="@{/img/restaurant/restaurant1.jpg}"
-              alt="Restaurante"
-              title="Restaurante"
-              class="card-img-top"
-      />
-      <div class="card-body">
-        <h2 style="font-size: 1.5em;">El Jardín Secreto</h2>
-        <p class="fw-light">
-          Un restaurante boutique escondido en un exuberante jardín, famoso
-          por su cocina de autor y ambiente encantador.
-        </p>
-        <div class="d-flex align-items-center justify-content-between">
-          <p class="contRestaurant-estrellas mb-0">4.5 <i class="fas fa-star" style="color: #ffc107;"></i></p>
-          <button class="contRestaurant-btnReservar">Reservar</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" style="width: 18rem;">
-      <img
-              th:src="@{/img/restaurant/restaurant2.jpg}"
-              alt=""
-              class="card-img-top"
-      />
-      <div class="card-body">
-        <h2 style="font-size: 1.5em;">La Cava del Vino</h2>
-        <p class="fw-light">
-          Un acogedor restaurante de estilo bistró conocido por su extensa
-          selección de vinos y su cocina de temporada con influencia
-          francesa.
-        </p>
-        <div class="d-flex align-items-center justify-content-between">
-          <p class="contRestaurant-estrellas mb-0">4.8 <i class="fas fa-star" style="color: #ffc107;"></i></p>
-          <button class="contRestaurant-btnReservar">Reservar</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" style="width: 18rem;">
-      <img
-              th:src="@{/img/restaurant/restaurant3.jpg}"
-              alt=""
-              class="card-img-top"
-      />
-      <div class="card-body">
-        <h2 style="font-size: 1.5em;">Sabor Tradicional</h2>
-        <p class="fw-light">
-          Un auténtico y lujoso restaurante familiar que sirve platos caseros de la
-          cocina regional, donde cada bocado evoca y remueve los recuerdos del hogar.
-        </p>
-        <div class="d-flex align-items-center justify-content-between">
-          <p class="contRestaurant-estrellas mb-0">4.7 <i class="fas fa-star" style="color: #ffc107;"></i></p>
-          <button class="contRestaurant-btnReservar">Reservar</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" style="width: 18rem;">
-      <img
-              th:src="@{/img/restaurant/restaurant4.jpg}"
-              alt=""
-              class="card-img-top"
-      />
-      <div class="card-body">
-        <h2 style="font-size: 1.5em;">El Rincón Oriental</h2>
-        <p class="fw-light">
-          Un lugar acogedor que ofrece auténticos sabores de Asia, desde
-          sushi fresco hasta platos de curry fragantes, en un ambiente
-          moderno y elegante.
-        </p>
-        <div class="d-flex align-items-center justify-content-between">
-          <p class="contRestaurant-estrellas mb-0">4.6 <i class="fas fa-star" style="color: #ffc107;"></i></p>
-          <button class="contRestaurant-btnReservar">Reservar</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" style="width: 18rem;">
-      <img
-              th:src="@{/img/restaurant/restaurant5.jpg}"
-              alt=""
-              class="card-img-top"
-      />
-      <div class="card-body">
-        <h2 style="font-size: 1.5em;">Brasa y Sazón</h2>
-        <p class="fw-light">
-          Un asador rústico que combina la técnica de la parrilla con
-          sabores latinoamericanos audaces, creando platos llenos de sabor, recuerdos y
-          carácter.
-        </p>
-        <div class="d-flex align-items-center justify-content-between">
-          <p class="contRestaurant-estrellas mb-0">4.9 <i class="fas fa-star" style="color: #ffc107;"></i></p>
-          <button class="contRestaurant-btnReservar">Reservar</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" style="width: 18rem;">
-      <img
-              th:src="@{/img/restaurant/restaurant6.jpg}"
-              alt=""
-              class="card-img-top"
-      />
-      <div class="card-body">
-        <h2 style="font-size: 1.5em;">Gastronomía del Mundo</h2>
-        <p class="fw-light">
-          Un buffet internacional que ofrece una amplia gama de platos de
-          todo el mundo, desde la cocina italiana hasta la tailandesa, todo
-          en un solo lugar.
-        </p>
-        <div class="d-flex align-items-center justify-content-between">
-          <p class="contRestaurant-estrellas mb-0">4.8 <i class="fas fa-star" style="color: #ffc107;"></i></p>
-          <button class="contRestaurant-btnReservar">Reservar</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" style="width: 18rem;">
-      <img
-              th:src="@{/img/restaurant/restaurant7.jpg}"
-              alt=""
-              class="card-img-top"
-      />
-      <div class="card-body">
-        <h2 style="font-size: 1.5em;">La Taberna del Viejo Mundo</h2>
-        <p class="fw-light">
-          Un encantador restaurante que evoca la atmósfera de una taberna
-          europea tradicional, sirviendo platos clásicos y cervezas
-          artesanales en un ambiente acogedor y animado.
-        </p>
-        <div class="d-flex align-items-center justify-content-between">
-          <p class="contRestaurant-estrellas mb-0">4.7 <i class="fas fa-star" style="color: #ffc107;"></i></p>
-          <button class="contRestaurant-btnReservar">Reservar</button>
-        </div>
-      </div>
-    </div>
-    <div class="card" style="width: 18rem;">
-      <img
-              th:src="@{/img/restaurant/restaurant8.jpg}"
-              alt=""
-              class="card-img-top"
-      />
-      <div class="card-body">
-        <h2 style="font-size: 1.5em;">Sabores del Mediterráneo</h2>
-        <p class="fw-light">
-          Un encantador restaurante que ofrece una fusión de sabores
-          mediterráneos, con platos frescos y deliciosos inspirados en la
-          costa y el campo.
-        </p>
-        <div class="d-flex align-items-center justify-content-between">
-          <p class="contRestaurant-estrellas mb-0">4.6 <i class="fas fa-star" style="color: #ffc107;"></i></p>
-          <button class="contRestaurant-btnReservar">Reservar</button>
-        </div>
-      </div>
-    </div>
   </div>
   <footer class="p-3 mt-5 d-flex align-items-center justify-content-between bg-dark text-white">
     <p class="mb-0">Genesis</p>
