@@ -1,4 +1,4 @@
-package com.tallerwebi.integracion.config;
+package com.tallerwebi.controlador.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,7 @@ public class HibernateTestConfig {
         dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
         dataSource.setUrl("jdbc:hsqldb:mem:db_");
         dataSource.setUsername("root");
-        dataSource.setPassword("fedeymateo123");
+        dataSource.setPassword("");
         return dataSource;
     }
 

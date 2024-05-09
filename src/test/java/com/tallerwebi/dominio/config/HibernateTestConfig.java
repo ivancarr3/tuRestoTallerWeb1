@@ -1,4 +1,4 @@
-package com.tallerwebi.integracion.config;
+package com.tallerwebi.dominio.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,15 +12,17 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-public class HibernateTestConfig {
+public class HibernateTestConfig{
 
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
-        dataSource.setUrl("jdbc:hsqldb:mem:db_");
+        //dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        //dataSource.setUrl("jdbc:hsqldb:mem:db_");
+        dataSource.setUrl("jdbc:mysql://localhost:3305/turesto");
         dataSource.setUsername("root");
-        dataSource.setPassword("fedeymateo123");
+        dataSource.setPassword("");
         return dataSource;
     }
 
@@ -40,10 +42,12 @@ public class HibernateTestConfig {
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
+//        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
         properties.setProperty("hibernate.show_sql", "true");
         properties.setProperty("hibernate.format_sql", "true");
         properties.setProperty("hibernate.hbm2ddl.auto", "create");
+//        properties.setProperty("hibernate.hbm2ddl.auto", "update");
         return properties;
     }
 }

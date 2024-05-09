@@ -11,6 +11,7 @@ public interface ServicioPlato {
     Plato consultar(Long id) throws PlatoNoEncontrado;
     List<Plato> consultarPlatoPorNombre(String nombre) throws PlatoNoEncontrado;
     List<Plato> consultarPlatoPorPrecio(Integer precio) throws PlatoNoEncontrado;
+    List<Plato> get();
     void crearPlato(Plato plato) throws PlatoExistente;
     void actualizarPlato(Plato plato) throws PlatoNoEncontrado;
     void eliminarPlato(Plato plato) throws PlatoNoEncontrado;

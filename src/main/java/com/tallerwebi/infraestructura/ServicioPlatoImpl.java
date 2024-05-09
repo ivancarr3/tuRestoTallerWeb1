@@ -17,11 +17,16 @@ import com.tallerwebi.servicio.ServicioPlato;
 @Transactional
 public class ServicioPlatoImpl implements ServicioPlato {
 
-    private RepositorioPlato repositorioPlato;
+    private final RepositorioPlato repositorioPlato;
 
     @Autowired
     public ServicioPlatoImpl(RepositorioPlato repositorioPlato){
         this.repositorioPlato = repositorioPlato;
+    }
+
+    @Override
+    public List<Plato> get() {
+        return repositorioPlato.get();
     }
 
     @Override
@@ -30,12 +35,20 @@ public class ServicioPlatoImpl implements ServicioPlato {
     }
 
     @Override
-    public List<Plato> consultarPlatoPorNombre(String nombre) {
+    public List<Plato> consultarPlatoPorNombre(String nombre) throws PlatoNoEncontrado {
+        List<Plato> platos = repositorioPlato.buscarPlatoPorNombre(nombre);
+        if(platos.isEmpty()){
+            throw new PlatoNoEncontrado();
+        }
         return repositorioPlato.buscarPlatoPorNombre(nombre);
     }
 
     @Override
-    public List<Plato> consultarPlatoPorPrecio(Integer precio) {
+    public List<Plato> consultarPlatoPorPrecio(Integer precio) throws PlatoNoEncontrado {
+        List<Plato> platos = repositorioPlato.buscarPlatoPorPrecio(precio);
+        if(platos.isEmpty()){
+            throw new PlatoNoEncontrado();
+        }
         return repositorioPlato.buscarPlatoPorPrecio(precio);
     }
 

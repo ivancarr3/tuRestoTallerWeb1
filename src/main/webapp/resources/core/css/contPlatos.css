@@ -9,11 +9,17 @@
 
 .contPlato {
   flex-basis: 200px;
-  height: 100px;
+  height: 150px;
   overflow: hidden;
   border-radius: 10px;
   position: relative;
   flex-grow: 1;
+  cursor: pointer;
+  transition: all 300ms;
+}
+
+.contPlato:hover {
+    transform: scale(1.02);
 }
 
 .contPlato-img {
