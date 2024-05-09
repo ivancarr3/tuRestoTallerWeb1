@@ -62,6 +62,15 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
     }
 
     @Override
+    public List<Restaurante> consultarOrdenPorEstrellas(String tipoDeOrden) throws RestauranteNoEncontrado {
+        List<Restaurante> restaurantes = repositorioRestaurante.ordenarPorEstrellas(tipoDeOrden);
+        if(restaurantes.isEmpty()){
+            throw new RestauranteNoEncontrado();
+        }
+        return restaurantes;
+    }
+
+    @Override
     public void crearRestaurante(Restaurante restaurante) throws RestauranteExistente {
         Restaurante restauranteEncontrado = repositorioRestaurante.buscar(restaurante.getId());
         if(restauranteEncontrado != null){

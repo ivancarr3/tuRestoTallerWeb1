@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio;
 
 import javax.persistence.*;
+import java.nio.file.Paths;
 
 @Entity
 public class Restaurante {
@@ -18,12 +19,17 @@ public class Restaurante {
     @Column(nullable = false)
     private String direccion;
 
+    @Column(nullable = false)
+    private String imagen;
+
     public Restaurante() {}
-    public Restaurante (Long id, String nombre, Double estrellas, String direccion) {
+    public Restaurante (Long id, String nombre, Double estrellas, String direccion, String imagen) {
         this.id = id;
         this.nombre = nombre;
         this.estrellas = estrellas;
         this.direccion = direccion;
+
+        this.imagen = imagen; //!= null ? "/img/restaurant/".concat(imagen) : "/img/restaurant/restaurant.jpg";
     }
 
     public Long getId() {return id;}
@@ -34,4 +40,6 @@ public class Restaurante {
     public void setEstrellas(Double estrellas) {this.estrellas = estrellas;}
     public String getDireccion() {return direccion;}
     public void setDireccion(String direccion) {this.direccion = direccion;}
+    public String getImagen() {return imagen;}
+    public void setImagen(String imagen) {this.imagen = imagen;}
 }
