@@ -1,261 +1,164 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+<head>
+  <meta charset="utf-8" />
+  <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+  <title>Taller Web I</title>
+  <link rel="stylesheet" th:href="@{/css/reset.css}" />
+  <link rel="stylesheet" th:href="@{/css/index.css}" />
+  <link rel="stylesheet" th:href="@{/css/header.css}" />
+  <link rel="stylesheet" th:href="@{/css/contPlatos.css}" />
+  <link rel="stylesheet" th:href="@{/css/contRestaurants.css}" />
+  <link rel="stylesheet" th:href="@{/css/buscador.css}" />
+  <link rel="stylesheet" th:href="@{/css/login.css}" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    .card img {
+      width: 358px !important;
+      height: 300px !important;
+    }
+  </style>
+</head>
 
-    <title>Taller Web I</title>
+<body>
+<header>
+  <h2 class="header-titulo mb-0">TuResto</h2>
+  <button class="btn btn-dark" style="font-size: 16px; font-weight: 600;">Ingresar</button>
+</header>
+<main>
+  <div class="contPlatos">
+    <div class="contPlato">
+      <img
+              class="contPlato-img"
+              th:src="@{/img/platos/pizza.jpeg}"
+              alt="pizza"
+      />
+      <h2 class="contPlato-txt mb-0">Pizzas</h2>
+    </div>
+    <div class="contPlato">
+      <img
+              class="contPlato-img"
+              th:src="@{/img/platos/empanadas.webp}"
+              alt="empanadas"
+      />
+      <h2 class="contPlato-txt mb-0">Empanadas</h2>
+    </div>
+    <div class="contPlato">
+      <img
+              class="contPlato-img"
+              th:src="@{/img/platos/pastas.jpeg}"
+              alt="pastas"
+      />
+      <h2 class="contPlato-txt mb-0">Pastas</h2>
+    </div>
+    <div class="contPlato">
+      <img
+              class="contPlato-img"
+              th:src="@{/img/platos/ensaladas.jpg}"
+              alt="ensaladas"
+      />
+      <h2 class="contPlato-txt mb-0">Ensaladas</h2>
+    </div>
+    <div class="contPlato">
+      <img
+              class="contPlato-img"
+              th:src="@{/img/platos/helados.jpg}"
+              alt="helados"
+      />
+      <h2 class="contPlato-txt mb-0">Helados</h2>
+    </div>
+  </div>
+  <div class="container">
+    <form action="#" th:action="@{/home}" method="POST" class="buscador-formBusqueda w-100 mb-4 d-flex"
+          style="padding: 0 45px; flex-direction: column; gap: 1em;">
+      <div class="input-group" style="flex-wrap: nowrap;">
+        <input
+                type="text"
+                class="form-control w-100"
+                name="busqueda"
+                id="busqueda"
+                placeholder="La Farola, La Quintana, etc..."
+                autocomplete="off"
+        />
+        <button type="submit" class="btn btn-primary">Buscar</button>
+      </div>
+    </form>
 
-    <!-- custom style -->
-    <link rel="stylesheet" th:href="@{/css/reset.css}" />
-    <link rel="stylesheet" th:href="@{/css/index.css}" />
-    <link rel="stylesheet" th:href="@{/css/header.css}" />
-    <link rel="stylesheet" th:href="@{/css/contPlatos.css}" />
-    <link rel="stylesheet" th:href="@{/css/contRestaurants.css}" />
-    <link rel="stylesheet" th:href="@{/css/buscador.css}" />
-    <link rel="stylesheet" th:href="@{/css/login.css}" />
-  </head>
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          <span>Filtrar<i class="fa-solid fa-igloo"></i></span>
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <form action="#" th:action="@{/filtrar}" method="POST">
 
-  <body>
-    <header>
-      <h2 class="header-titulo">TuResto</h2>
-      <button class="header-ingresar">Ingresar</button>
-    </header>
-    <main>
-      <div class="contPlatos">
-        <div class="contPlato">
-          <img
-            class="contPlato-img"
-            th:src="@{/img/platos/pizza.jpeg}"
-            alt="pizza"
-          />
-          <h2 class="contPlato-txt">Pizzas</h2>
-        </div>
-        <div class="contPlato">
-          <img
-            class="contPlato-img"
-            th:src="@{/img/platos/empanadas.webp}"
-            alt="empanadas"
-          />
-          <h2 class="contPlato-txt">Empanadas</h2>
-        </div>
-        <div class="contPlato">
-          <img
-            class="contPlato-img"
-            th:src="@{/img/platos/pastas.jpeg}"
-            alt="pastas"
-          />
-          <h2 class="contPlato-txt">Pastas</h2>
-        </div>
-        <div class="contPlato">
-          <img
-            class="contPlato-img"
-            th:src="@{/img/platos/ensaladas.jpg}"
-            alt="ensaladas"
-          />
-          <h2 class="contPlato-txt">Ensaladas</h2>
-        </div>
-        <div class="contPlato">
-          <img
-            class="contPlato-img"
-            th:src="@{/img/platos/helados.jpg}"
-            alt="helados"
-          />
-          <h2 class="contPlato-txt">Helados</h2>
+            <input type="radio" id="1-star-rating" th:value="1.0" name="filtrado">
+            <label for="1-star-rating" class="star-rating star">
+            <i class="fas fa-star d-inline-block"></i>
+
+            <input type="radio" id="2-star-rating" th:value="2.0" name="filtrado">
+            <label for="2-star-rating" class="star-rating star">
+            <i class="fas fa-star d-inline-block"></i>
+
+            <input type="radio" id="3-star-rating" th:value="3.0" name="filtrado">
+            <label for="3-star-rating" class="star-rating star">
+            <i class="fas fa-star d-inline-block"></i>
+
+            <input type="radio" id="4-star-rating" th:value="4.0" name="filtrado">
+            <label for="4-star-rating" class="star-rating star">
+            <i class="fas fa-star d-inline-block"></i>
+
+            <input type="radio" id="5-star-rating" th:value="5.0" name="filtrado">
+            <label for="5-star-rating" class="star-rating star">
+            <i class="fas fa-star d-inline-block"></i>
+
+            <i class="fa-solid fa-arrow-up-wide-short"></i>
+            <input type="radio" name="filtro_orden" th:value="DESC">
+            <i class="fa-solid fa-arrow-up-short-wide"></i>
+
+            <input type="radio" name="filtro_orden" th:value="ASC">
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+          </form>
         </div>
       </div>
-      <div class="buscador">
-        <form action="#" class="buscador-formBusqueda">
-          <input
-            type="text"
-            class="buscador-barraBusqueda"
-            name="busqueda"
-            id="busqueda"
-            placeholder="Restaurant, plato"
-          />
-          <input class="buscador-btnBusqueda" type="submit" value="Buscar" />
-        </form>
-      </div>
-      <div class="contRestaurants">
-        <div class="contRestaurant">
-          <img
-            th:src="@{/img/restaurant/restaurant.jpg}"
-            alt=""
-            class="contRestaurant-img"
-          />
-          <div class="contRestaurant-info">
-            <h2 class="contRestaurant-nombre">La Terraza del Mar</h2>
-            <p class="contRestaurant-descripcion">
-              Un restaurante costero especializado en mariscos frescos y cocina
-              mediterránea.
-            </p>
-            <div class="contRestaurant-contEstrellaYBtn">
-              <p class="contRestaurant-estrellas">5⭐</p>
-              <button class="contRestaurant-btnReservar">Reservar</button>
-            </div>
-          </div>
-        </div>
+    </div>
 
-        <div class="contRestaurant">
-          <img
-            th:src="@{/img/restaurant/restaurant1.jpg}"
-            alt=""
-            class="contRestaurant-img"
-          />
-          <div class="contRestaurant-info">
-            <h2 class="contRestaurant-nombre">El Jardín Secreto</h2>
-            <p class="contRestaurant-descripcion">
-              Un restaurante boutique escondido en un exuberante jardín, famoso
-              por su cocina de autor y ambiente encantador.
-            </p>
-            <div class="contRestaurant-contEstrellaYBtn">
-              <p class="contRestaurant-estrellas">4.5⭐</p>
-              <button class="contRestaurant-btnReservar">Reservar</button>
-            </div>
-          </div>
-        </div>
 
-        <div class="contRestaurant">
-          <img
-            th:src="@{/img/restaurant/restaurant2.jpg}"
-            alt=""
-            class="contRestaurant-img"
-          />
-          <div class="contRestaurant-info">
-            <h2 class="contRestaurant-nombre">La Cava del Vino</h2>
-            <p class="contRestaurant-descripcion">
-              Un acogedor restaurante de estilo bistró conocido por su extensa
-              selección de vinos y su cocina de temporada con influencia
-              francesa.
-            </p>
-            <div class="contRestaurant-contEstrellaYBtn">
-              <p class="contRestaurant-estrellas">4.8⭐</p>
-              <button class="contRestaurant-btnReservar">Reservar</button>
-            </div>
-          </div>
-        </div>
+    <p th:if="${errorFiltro != null}" class="alert alert-danger" th:text="${errorFiltro}"></p>
+    <p th:if="${error != null}" class="alert alert-danger" th:text="${error}"></p>
+  </div>
 
-        <div class="contRestaurant">
-          <img
-            th:src="@{/img/restaurant/restaurant3.jpg}"
-            alt=""
-            class="contRestaurant-img"
-          />
-          <div class="contRestaurant-info">
-            <h2 class="contRestaurant-nombre">Sabor Tradicional</h2>
-            <p class="contRestaurant-descripcion">
-              Un auténtico restaurante familiar que sirve platos caseros de la
-              cocina regional, donde cada bocado evoca recuerdos de hogar.
-            </p>
-            <div class="contRestaurant-contEstrellaYBtn">
-              <p class="contRestaurant-estrellas">4.7⭐</p>
-              <button class="contRestaurant-btnReservar">Reservar</button>
-            </div>
+  <div class="container d-flex align-items-center justify-content-center flex-wrap" style="gap: 3em;">
+    <div th:each="restaurante : ${restaurantes}" class="card" style="width: 18rem;">
+      <img th:src="@{/img/restaurant/restaurant.jpg}" alt="Restaurante" title="Restaurante" class="card-image-top"/>
+      <div class="card-body">
+        <h2 style="font-size: 1.5em;" th:text="${restaurante.nombre}"></h2>
+        <p class="fw-light" th:text="${restaurante.direccion}"></p>
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center" style="gap: .5em;">
+            <p class="contRestaurant-estrellas mb-0" th:text="${restaurante.estrellas}"></p>
+            <i class="fas fa-star" style="color: #ffc107;"></i>
           </div>
-        </div>
-
-        <div class="contRestaurant">
-          <img
-            th:src="@{/img/restaurant/restaurant4.jpg}"
-            alt=""
-            class="contRestaurant-img"
-          />
-          <div class="contRestaurant-info">
-            <h2 class="contRestaurant-nombre">Rincón Oriental</h2>
-            <p class="contRestaurant-descripcion">
-              Un lugar acogedor que ofrece auténticos sabores de Asia, desde
-              sushi fresco hasta platos de curry fragantes, en un ambiente
-              moderno y elegante.
-            </p>
-            <div class="contRestaurant-contEstrellaYBtn">
-              <p class="contRestaurant-estrellas">4.6⭐</p>
-              <button class="contRestaurant-btnReservar">Reservar</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="contRestaurant">
-          <img
-            th:src="@{/img/restaurant/restaurant5.jpg}"
-            alt=""
-            class="contRestaurant-img"
-          />
-          <div class="contRestaurant-info">
-            <h2 class="contRestaurant-nombre">Brasa y Sazón</h2>
-            <p class="contRestaurant-descripcion">
-              Un asador rústico que combina la técnica de la parrilla con
-              sabores latinoamericanos audaces, creando platos llenos de sabor y
-              carácter.
-            </p>
-            <div class="contRestaurant-contEstrellaYBtn">
-              <p class="contRestaurant-estrellas">4.9⭐</p>
-              <button class="contRestaurant-btnReservar">Reservar</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="contRestaurant">
-          <img
-            th:src="@{/img/restaurant/restaurant6.jpg}"
-            alt=""
-            class="contRestaurant-img"
-          />
-          <div class="contRestaurant-info">
-            <h2 class="contRestaurant-nombre">Gastronomía del Mundo</h2>
-            <p class="contRestaurant-descripcion">
-              Un buffet internacional que ofrece una amplia gama de platos de
-              todo el mundo, desde la cocina italiana hasta la tailandesa, todo
-              en un solo lugar.
-            </p>
-            <div class="contRestaurant-contEstrellaYBtn">
-              <p class="contRestaurant-estrellas">4.8⭐</p>
-              <button class="contRestaurant-btnReservar">Reservar</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="contRestaurant">
-          <img
-            th:src="@{/img/restaurant/restaurant7.jpg}"
-            alt=""
-            class="contRestaurant-img"
-          />
-          <div class="contRestaurant-info">
-            <h2 class="contRestaurant-nombre">La Taberna del Viejo Mundo</h2>
-            <p class="contRestaurant-descripcion">
-              Un encantador restaurante que evoca la atmósfera de una taberna
-              europea tradicional, sirviendo platos clásicos y cervezas
-              artesanales en un ambiente acogedor y animado.
-            </p>
-            <div class="contRestaurant-contEstrellaYBtn">
-              <p class="contRestaurant-estrellas">4.7⭐</p>
-              <button class="contRestaurant-btnReservar">Reservar</button>
-            </div>
-          </div>
-        </div>
-        <div class="contRestaurant">
-          <img
-            th:src="@{/img/restaurant/restaurant8.jpg}"
-            alt=""
-            class="contRestaurant-img"
-          />
-          <div class="contRestaurant-info">
-            <h2 class="contRestaurant-nombre">Sabores del Mediterráneo</h2>
-            <p class="contRestaurant-descripcion">
-              Un encantador restaurante que ofrece una fusión de sabores
-              mediterráneos, con platos frescos y deliciosos inspirados en la
-              costa y el campo.
-            </p>
-            <div class="contRestaurant-contEstrellaYBtn">
-              <p class="contRestaurant-estrellas">4.6⭐</p>
-              <button class="contRestaurant-btnReservar">Reservar</button>
-            </div>
-          </div>
+          <button class="contRestaurant-btnReservar">Reservar</button>
         </div>
       </div>
-    </main>
-  </body>
+    </div>
+  </div>
+  <footer class="p-3 mt-5 d-flex align-items-center justify-content-between bg-dark text-white">
+    <p class="mb-0">Genesis</p>
+    <p class="mb-0">Mateo</p>
+    <p class="mb-0">Axel</p>
+    <p class="mb-0">Ivan</p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</main>
+</body>
 </html>

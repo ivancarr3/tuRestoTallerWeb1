@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public class RepositorioRestauranteImpl implements RepositorioRestaurante {
 
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     public RepositorioRestauranteImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -23,9 +23,17 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
     }
 
     @Override
+    public List<Restaurante> get() {
+
+        String hql = "FROM Restaurante";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        return query.getResultList();
+    }
+
+    @Override
     public Restaurante buscar(Long id) {
 
-        String hql = "FROM restaurante WHERE id = :id";
+        String hql = "FROM Restaurante WHERE id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("id", id);
 
@@ -33,19 +41,26 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
     }
 
     @Override
-    public List<Restaurante> buscarPorEstrellas(Integer estrellas) {
+    public List<Restaurante> buscarPorEstrellas(Double estrellas) {
 
-        String hql = "FROM restaurante WHERE estrellas = :estrellas";
+        String hql = "FROM Restaurante WHERE estrellas = :estrellas";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("estrellas", estrellas);
+        return query.getResultList();
+    }
 
+    @Override
+    public List<Restaurante> ordenarPorEstrellas(String tipoDeOrden) {
+
+        String hql = "FROM Restaurante ORDER BY estrellas "+ tipoDeOrden;
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         return query.getResultList();
     }
 
     @Override
     public List<Restaurante> buscarPorDireccion(String direccion) {
 
-        String hql = "FROM restaurante WHERE direccion = :direccion";
+        String hql = "FROM Restaurante WHERE direccion = :direccion";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("direccion", direccion);
 
@@ -55,16 +70,17 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
     @Override
     public List<Restaurante> buscarPorNombre(String nombre) {
 
-        String hql = "FROM restaurante WHERE nombre = :nombre";
+        String hql = "FROM Restaurante WHERE LOWER(nombre) LIKE LOWER(:nombre)";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("nombre", nombre);
-
+        query.setParameter("nombre", "%"+nombre.toLowerCase()+"%");
         return query.getResultList();
     }
 
+
+
     @Override
     public void actualizar(Restaurante restaurante) {
-        String hql = "UPDATE restaurante SET nombre = :nombre, estrellas = :estrellas, direccion = :direccion WHERE id = :id";
+        String hql = "UPDATE Restaurante SET nombre = :nombre, estrellas = :estrellas, direccion = :direccion WHERE id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("nombre", restaurante.getNombre());
         query.setParameter("estrellas", restaurante.getEstrellas());
@@ -75,7 +91,7 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
 
     @Override
     public void eliminar(Restaurante restaurante) {
-        String hql = "DELETE FROM restaurante WHERE id = :id";
+        String hql = "DELETE FROM Restaurante WHERE id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("id", restaurante.getId());
         query.executeUpdate();

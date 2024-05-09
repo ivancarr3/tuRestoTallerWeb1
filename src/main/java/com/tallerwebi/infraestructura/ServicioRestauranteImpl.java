@@ -17,11 +17,16 @@ import com.tallerwebi.servicio.ServicioRestaurante;
 @Transactional
 public class ServicioRestauranteImpl implements ServicioRestaurante {
 
-    private RepositorioRestaurante repositorioRestaurante;
+    private final RepositorioRestaurante repositorioRestaurante;
 
     @Autowired
     public ServicioRestauranteImpl(RepositorioRestaurante repositorioRestaurante){
         this.repositorioRestaurante = repositorioRestaurante;
+    }
+
+    @Override
+    public List<Restaurante> get() {
+        return repositorioRestaurante.get();
     }
 
     @Override
@@ -30,18 +35,39 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
     }
 
     @Override
-    public List<Restaurante> consultarRestaurantePorNombre(String nombre) {
+    public List<Restaurante> consultarRestaurantePorNombre(String nombre) throws RestauranteNoEncontrado {
+        List<Restaurante> restaurantes = repositorioRestaurante.buscarPorNombre(nombre);
+        if(restaurantes.isEmpty()){
+            throw new RestauranteNoEncontrado();
+        }
         return repositorioRestaurante.buscarPorNombre(nombre);
     }
 
     @Override
-    public List<Restaurante> consultarRestaurantePorEstrellas(Integer estrellas) {
+    public List<Restaurante> consultarRestaurantePorEstrellas(Double estrellas) throws RestauranteNoEncontrado {
+        List<Restaurante> restaurantes = repositorioRestaurante.buscarPorEstrellas(estrellas);
+        if(restaurantes.isEmpty()){
+            throw new RestauranteNoEncontrado();
+        }
         return repositorioRestaurante.buscarPorEstrellas(estrellas);
     }
 
     @Override
-    public List<Restaurante> consultarRestaurantePorDireccion(String direccion) {
+    public List<Restaurante> consultarRestaurantePorDireccion(String direccion) throws RestauranteNoEncontrado {
+        List<Restaurante> restaurantes = repositorioRestaurante.buscarPorDireccion(direccion);
+        if(restaurantes.isEmpty()){
+            throw new RestauranteNoEncontrado();
+        }
         return repositorioRestaurante.buscarPorDireccion(direccion);
+    }
+
+    @Override
+    public List<Restaurante> consultarOrdenPorEstrellas(String tipoDeOrden) throws RestauranteNoEncontrado {
+        List<Restaurante> restaurantes = repositorioRestaurante.ordenarPorEstrellas(tipoDeOrden);
+        if(restaurantes.isEmpty()){
+            throw new RestauranteNoEncontrado();
+        }
+        return restaurantes;
     }
 
     @Override

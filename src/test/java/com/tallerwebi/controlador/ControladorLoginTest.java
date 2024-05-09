@@ -29,7 +29,6 @@ public class ControladorLoginTest {
 	private HttpSession sessionMock;
 	private ServicioLogin servicioLoginMock;
 
-
 	@BeforeEach
 	public void init(){
 		datosLoginMock = new DatosLogin("dami@unlam.com", "123");
@@ -54,7 +53,7 @@ public class ControladorLoginTest {
 		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Usuario o clave incorrecta"));
 		verify(sessionMock, times(0)).setAttribute("ROL", "ADMIN");
 	}
-	
+
 	@Test
 	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome(){
 		// preparacion
@@ -63,10 +62,10 @@ public class ControladorLoginTest {
 
 		when(requestMock.getSession()).thenReturn(sessionMock);
 		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioEncontradoMock);
-		
+
 		// ejecucion
 		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginMock, requestMock);
-		
+
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
 		verify(sessionMock, times(1)).setAttribute("ROL", usuarioEncontradoMock.getRol());
