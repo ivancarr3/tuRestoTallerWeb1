@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.Restaurante;
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 import com.tallerwebi.infraestructura.RepositorioRestauranteImpl;
 import com.tallerwebi.servicio.ServicioHome;
+import com.tallerwebi.servicio.ServicioPlato;
 import com.tallerwebi.servicio.ServicioRestaurante;
 import org.hsqldb.SchemaObjectSet;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,11 +24,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ControladorHomeTest {
     private ControladorHome controladorHome;
     private ServicioRestaurante servicioRestauranteMock;
+    private ServicioPlato servicioPlato;
 
     @BeforeEach
     public void init(){
         this.servicioRestauranteMock = mock(ServicioRestaurante.class);
-        this.controladorHome = new ControladorHome(this.servicioRestauranteMock);
+        this.controladorHome = new ControladorHome(this.servicioRestauranteMock, this.servicioPlato);
     }
 
     @Test

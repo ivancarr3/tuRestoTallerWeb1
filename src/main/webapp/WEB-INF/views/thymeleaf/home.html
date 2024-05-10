@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta
           name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
@@ -29,7 +29,11 @@
         width: 358px !important;
         height: 300px !important;
       }
-    </style>
+
+      a {
+        text-decoration: none;
+      }
+   </style>
 </head>
 
 <body>
@@ -188,7 +192,7 @@
             ></p>
             <i class="fas fa-star" style="color: #ffc107"></i>
           </div>
-          <button class="contRestaurant-btnReservar">Reservar</button>
+          <a th:href="@{/reserva/{id}(id=${restaurante.id})}" class="contRestaurant-btnReservar">Explorar</a>
           <p
                   th:if="${error != null}"
                   class="alert alert-danger"
