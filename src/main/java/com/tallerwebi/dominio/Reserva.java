@@ -6,38 +6,44 @@ import java.util.Date;
 
 @Entity
 public class Reserva {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private Integer idRestaurante;
+    private Long idRestaurante;
 
     @Column(nullable = false)
     private Integer cantidadPersonas;
 
     @Column(nullable = false)
-    private Date hora;
+    private Date fecha;
+
+    @Column(nullable = false)
+    private Long idUsuario;
 
     public Reserva() {}
-    public Reserva (Long id, Integer idRestaurante, Integer cantidadPersonas, Date hora) {
+    public Reserva (Long id, Long idRestaurante, Integer cantidadPersonas, Date fecha, Long idUsuario) {
         this.id = id;
         this.idRestaurante = idRestaurante;
         this.cantidadPersonas = cantidadPersonas;
-        this.hora = hora;
+        this.fecha = fecha;
+        this.idUsuario = idUsuario;
     }
 
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
-    public Integer getIdRestaurante() {return idRestaurante;}
-    public void setIdRestaurante(Integer idRestaurante) {this.idRestaurante = idRestaurante;}
+    public Long getIdRestaurante() {return idRestaurante;}
+    public void setIdRestaurante(Long idRestaurante) {this.idRestaurante = idRestaurante;}
     public Integer getCantidadPersonas() {return cantidadPersonas;}
     public void setCantidadPersonas(Integer cantidadPersonas) {this.cantidadPersonas = cantidadPersonas;}
-    public Date getHora() {return hora;}
-    public void setHora(Date hora) {this.hora = hora;}
-
-    public String getHoraFormateada() {
+    public Date getFecha() {return fecha;}
+    public void setFecha(Date fecha) {this.fecha = fecha;}
+    public Long getIdUsuario() {return idUsuario;}
+    public void setIdUsuario(Long idUsuario) {this.idUsuario = idUsuario;}
+    public String getFechaFormateada() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        return formatter.format(this.hora);
+        return formatter.format(this.fecha);
     }
 }
