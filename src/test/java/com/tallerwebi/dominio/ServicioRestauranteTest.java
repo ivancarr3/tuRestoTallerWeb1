@@ -25,14 +25,15 @@ public class ServicioRestauranteTest {
         this.repositorioRestaurante = mock(RepositorioRestaurante.class);
         this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante);
         this.restaurantesMock = new ArrayList<>();
-        this.restaurantesMock.add(new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000"));
+
+        this.restaurantesMock.add(new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg"));
     }
 
     @Test
     public void queSePuedanObtenerTodosLosRestaurantes(){
         // preparacion
-        this.restaurantesMock.add(new Restaurante(2L, "La Farola", 4.0, "Almafuerte 3344"));
-        this.restaurantesMock.add(new Restaurante(3L, "Benjamin", 4.5, "Arieta 3344"));
+        this.restaurantesMock.add(new Restaurante(2L, "La Farola", 4.0, "Almafuerte 3344", "restaurant.jpg"));
+        this.restaurantesMock.add(new Restaurante(3L, "Benjamin", 4.5, "Arieta 3344", "restaurant.jpg"));
         when(this.repositorioRestaurante.get()).thenReturn(this.restaurantesMock);
 
         // ejecucion

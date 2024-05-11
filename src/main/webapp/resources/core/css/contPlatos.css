@@ -19,7 +19,11 @@
 }
 
 .contPlato:hover {
+<<<<<<< HEAD
     transform: scale(1.02);
+=======
+  transform: scale(1.02);
+>>>>>>> 14b3e7d15d667908c8ec87e78aa8a1d835bcadcb
 }
 
 .contPlato-img {

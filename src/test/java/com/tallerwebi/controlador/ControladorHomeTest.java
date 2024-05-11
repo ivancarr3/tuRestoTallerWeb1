@@ -16,30 +16,32 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.tallerwebi.dominio.Restaurante;
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
+import com.tallerwebi.servicio.ServicioPlato;
 import com.tallerwebi.servicio.ServicioRestaurante;
 
 public class ControladorHomeTest {
-	
+
 	private ControladorHome controladorHome;
 	private ServicioRestaurante servicioRestauranteMock;
-	
-	
+	private ServicioPlato servicioPlato;
+
 	@BeforeEach
-	public void init(){
-		
+	public void init() {
 		servicioRestauranteMock = mock(ServicioRestaurante.class);
-		controladorHome = new ControladorHome(servicioRestauranteMock);
+		this.controladorHome = new ControladorHome(this.servicioRestauranteMock, this.servicioPlato);
 	}
 
 	@Test
-	public void QueAlNoBuscarNadaElHomeMeTraigaTodosLosrestaurantes() throws RestauranteNoEncontrado{
+	public void QueAlNoBuscarNadaElHomeMeTraigaTodosLosrestaurantes() throws RestauranteNoEncontrado {
 		// preparacion
 		List<Restaurante> restaurantesMockeados = new ArrayList<>();
-		Restaurante restauranteMockeado1 = new Restaurante(null, "La Farola", 4.0, "Santa Maria 3500");
-		Restaurante restauranteMockeado2 = new Restaurante(null, "El Club de la Milanesa", 5.0, "Arieta 5000");
+		Restaurante restauranteMockeado1 = new Restaurante(null, "La Farola", 4.0, "Santa Maria 3500",
+				"restaurant.jpg");
+		Restaurante restauranteMockeado2 = new Restaurante(null, "El Club de la Milanesa", 5.0, "Arieta 5000",
+				"restaurant2.jpg");
 		restaurantesMockeados.add(restauranteMockeado1);
 		restaurantesMockeados.add(restauranteMockeado2);
-		
+
 		when(servicioRestauranteMock.get()).thenReturn(restaurantesMockeados);
 
 		// ejecucion
@@ -50,20 +52,21 @@ public class ControladorHomeTest {
 		List<Restaurante> restaurantesModel = (List<Restaurante>) modelAndView.getModel().get("restaurantes");
 		assertEquals(2, restaurantesModel.size());
 	}
-	
+
 	@Test
 	public void QueAlBuscarUnRestaurantePorNombreQueExistaMeMuestreEseRestaurante() throws RestauranteNoEncontrado {
-		//preparacion 
+		// preparacion
 		List<Restaurante> restaurantesMockeados = new ArrayList<>();
-		Restaurante restauranteMockeado1 = new Restaurante(null, "La Farola", 4.0, "Santa Maria 3500");
+		Restaurante restauranteMockeado1 = new Restaurante(null, "La Farola", 4.0, "Santa Maria 3500",
+				"restaurant.jpg");
 		restaurantesMockeados.add(restauranteMockeado1);
-		
+
 		when(servicioRestauranteMock.consultarRestaurantePorNombre(anyString())).thenReturn(restaurantesMockeados);
-		
-		//ejecucion
+
+		// ejecucion
 		ModelAndView modelAndView = controladorHome.buscar("La Farola");
-		
-		//validacion
+
+		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("Home"));
 		List<Restaurante> restaurantesModel = (List<Restaurante>) modelAndView.getModel().get("restaurantes");
 		assertEquals(1, restaurantesModel.size());
@@ -72,5 +75,25 @@ public class ControladorHomeTest {
 		assertEquals("Santa Maria 3500", restaurantesModel.get(0).getDireccion());
 
 	}
-	
+
+	@Test
+	public void queAlIngresarALaPantallaHomeMuestreTodosLosRestaurantesExistentes() {
+		// preparacion
+		List<Restaurante> restaurantesMock = new ArrayList<Restaurante>();
+		restaurantesMock.add(new Restaurante(null, "El club de la Milanesa", 5.0, "Arieta 5000", "restaurant.jpg"));
+		restaurantesMock.add(
+				new Restaurante(null, "La Trattoria Bella Italia", 3.0, "Avenida Libertador 789", "restaurant2.jpg"));
+		restaurantesMock
+				.add(new Restaurante(null, "La Parrilla de Don Juan", 4.0, "Avenida Central 456", "restaurant3.jpg"));
+
+		when(this.servicioRestauranteMock.get()).thenReturn(restaurantesMock);
+
+		// ejecucion
+		ModelAndView mav = this.controladorHome.mostrarHome();
+
+		// verificacion
+		List<Restaurante> restaurantes = (List<Restaurante>) mav.getModel().get("restaurantes");
+		assertEquals(restaurantes.size(), 3);
+	}
+
 }

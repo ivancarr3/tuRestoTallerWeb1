@@ -4,9 +4,17 @@ html {
 }
 
 button {
+<<<<<<< HEAD
     cursor: pointer;
 }
 
 input[type="submit"] {
     cursor: pointer;
+=======
+  cursor: pointer;
+}
+
+input[type="submit"] {
+  cursor: pointer;
+>>>>>>> 14b3e7d15d667908c8ec87e78aa8a1d835bcadcb
 }

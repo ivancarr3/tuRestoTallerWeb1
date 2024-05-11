@@ -34,7 +34,7 @@ public class RepositorioRestauranteTest {
 
     @Test
     public void queGuardeRestauranteCorrectamente() {
-        Restaurante restaurante = new Restaurante(1L, "La Quintana", 4.5, "Arieta 5000");
+        Restaurante restaurante = new Restaurante(1L, "La Quintana", 4.5, "Arieta 5000", "restaurant.jpg");
 
         repositorioRestaurante.guardar(restaurante);
         List<Restaurante> restaurantes = repositorioRestaurante.get();
@@ -44,7 +44,8 @@ public class RepositorioRestauranteTest {
 
     @Test
     public void queDevuelvaRestaurantePorId() {
-        Restaurante restaurante = new Restaurante(1L, "La Quintana", 4.5, "Arieta 5000");
+
+        Restaurante restaurante = new Restaurante(1L, "La Quintana", 4.5, "Arieta 5000", "restaurant.jpg");
 
         repositorioRestaurante.guardar(restaurante);
         Long id = restaurante.getId();
@@ -58,12 +59,12 @@ public class RepositorioRestauranteTest {
 
     @Test
     public void queActualizeRestaurante() {
-        Restaurante restaurante = new Restaurante(1L, "La Quintana", 4.5, "Arieta 5000");
+        Restaurante restaurante = new Restaurante(1L, "La Quintana", 4.5, "Arieta 5000", "restaurant.jpg");
 
         repositorioRestaurante.guardar(restaurante);
         Long id = restaurante.getId();
 
-        Restaurante restauranteActualizado = new Restaurante(2L, "Benjamin", 4.0, "Almafuerte 3344");
+        Restaurante restauranteActualizado = new Restaurante(2L, "Benjamin", 4.0, "Almafuerte 3344", "restaurant.jpg");
         restauranteActualizado.setId(id);
 
         repositorioRestaurante.actualizar(restauranteActualizado);
@@ -76,7 +77,8 @@ public class RepositorioRestauranteTest {
 
     @Test
     public void queElimineRestaurante() {
-        Restaurante restaurante = new Restaurante(1L, "La Quintana", 4.5, "Arieta 5000");
+
+        Restaurante restaurante = new Restaurante(1L, "La Quintana", 4.5, "Arieta 5000", "restaurant.jpg");
 
         repositorioRestaurante.guardar(restaurante);
         Long id = restaurante.getId();
