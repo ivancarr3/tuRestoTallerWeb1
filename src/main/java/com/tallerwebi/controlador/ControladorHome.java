@@ -2,6 +2,7 @@ package com.tallerwebi.controlador;
 
 import com.tallerwebi.dominio.Plato;
 import com.tallerwebi.dominio.Restaurante;
+import com.tallerwebi.dominio.excepcion.PlatoNoEncontrado;
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 
 import com.tallerwebi.servicio.ServicioPlato;
@@ -117,7 +118,7 @@ public class ControladorHome {
 	}
 
 	@RequestMapping(path = "/reserva/{id}/filtrarPlato", method = RequestMethod.POST)
-	public ModelAndView filtrarPlato(@PathVariable("id") Long id_restaurante, @RequestParam("precio") String precioStr) {
+	public ModelAndView filtrarPlato(@PathVariable("id") Long id_restaurante, @RequestParam("precio") String precioStr) throws PlatoNoEncontrado {
 		Integer precio = Integer.valueOf(precioStr);
 		List<Plato> platos;
 		ModelMap model = new ModelMap();
@@ -129,7 +130,11 @@ public class ControladorHome {
 			model.put("restaurante", restaurante);
 
 			return new ModelAndView("reserva", model);
-		} catch (Exception e) {
+		}catch (PlatoNoEncontrado e) {
+			model.put("error", "No existen platos");
+			return new ModelAndView("reserva", model);
+		}
+		catch (Exception e) {
 			model.put(ERROR_NAME, "Error del servidor" + e.getMessage());
 			return new ModelAndView("reserva", model);
 		}

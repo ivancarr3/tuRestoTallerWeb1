@@ -18,14 +18,19 @@ public class Plato {
     @Column(nullable = false)
     private String descripcion;
 
+    @Column(nullable = false)
+    private String imagen;
+
     public Plato() {}
-    public Plato (Long id, String nombre, Integer precio, String descripcion) {
+    public Plato (Long id, String nombre, Integer precio, String descripcion, String imagen) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
+        this.imagen = imagen;
     }
 
+    public void setId(Long id) {this.id = id;}
     public Long getId() {return id;}
     public String getNombre() {return nombre;}
     public void setNombre(String nombre) {this.nombre = nombre;}
@@ -33,4 +38,6 @@ public class Plato {
     public void setPrecio(Integer precio) {this.precio = precio;}
     public String getDescripcion() {return descripcion;}
     public void setDescripcion(String descripcion) {this.descripcion = descripcion;}
+    public String getImagen() {return imagen;}
+    public void setImagen(String imagen) {this.imagen = imagen;}
 }

@@ -25,14 +25,14 @@ public class ServicioPlatoTest {
         this.repositorioPlato = mock(RepositorioPlato.class);
         this.servicioPlato = new ServicioPlatoImpl(this.repositorioPlato);
         this.platosMock = new ArrayList<>();
-        this.platosMock.add(new Plato(1L, "milanesa", 20000, "napolitana"));
+        this.platosMock.add(new Plato(1L, "milanesa", 20000, "napolitana", ""));
     }
 
     @Test
     public void queSePuedanObtenerTodosLosPlatos(){
         // preparacion
-        this.platosMock.add(new Plato(2L, "fideos", 20050, "con salsa"));
-        this.platosMock.add(new Plato(3L, "pizza", 20010, "jamon y morron"));
+        this.platosMock.add(new Plato(2L, "fideos", 20050, "con salsa", ""));
+        this.platosMock.add(new Plato(3L, "pizza", 20010, "jamon y morron", ""));
         when(this.repositorioPlato.get()).thenReturn(this.platosMock);
 
         // ejecucion
@@ -45,7 +45,7 @@ public class ServicioPlatoTest {
     @Test
     public void queAlBuscarPlatosPorNombreDevuelvaLosCorrespondientes() throws PlatoNoEncontrado {
         // preparacion
-        this.platosMock.add(new Plato(2L, "milanesa", 20000, "de pollo"));
+        this.platosMock.add(new Plato(2L, "milanesa", 20000, "de pollo", ""));
         when(this.repositorioPlato.buscarPlatoPorNombre("milanesa")).thenReturn(this.platosMock);
 
         // ejecucion
