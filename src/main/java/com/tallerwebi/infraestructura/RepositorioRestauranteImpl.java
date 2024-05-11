@@ -1,5 +1,6 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.Plato;
 import com.tallerwebi.dominio.RepositorioRestaurante;
 import com.tallerwebi.dominio.Restaurante;
 import org.hibernate.SessionFactory;
@@ -75,8 +76,6 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
         query.setParameter("nombre", "%"+nombre.toLowerCase()+"%");
         return query.getResultList();
     }
-
-
 
     @Override
     public void actualizar(Restaurante restaurante) {

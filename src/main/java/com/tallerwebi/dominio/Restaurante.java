@@ -28,7 +28,6 @@ public class Restaurante {
         this.nombre = nombre;
         this.estrellas = estrellas;
         this.direccion = direccion;
-
         this.imagen = imagen; //!= null ? "/img/restaurant/".concat(imagen) : "/img/restaurant/restaurant.jpg";
     }
 
