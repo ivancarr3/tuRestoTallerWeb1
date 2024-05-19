@@ -2,15 +2,21 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.RepositorioReserva;
 import com.tallerwebi.dominio.Reserva;
+import com.tallerwebi.dominio.Restaurante;
+import com.tallerwebi.dominio.excepcion.EspacioNoDisponible;
 import com.tallerwebi.dominio.excepcion.ReservaExistente;
 import com.tallerwebi.dominio.excepcion.ReservaNoEncontrada;
 import com.tallerwebi.servicio.ServicioReserva;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+@Service("servicioReserva")
+@Transactional
 public class ServicioReservaImpl implements ServicioReserva {
 
     private final RepositorioReserva repositorioReserva;
@@ -35,7 +41,7 @@ public class ServicioReservaImpl implements ServicioReserva {
         List<Reserva> reservasUsuario = repositorioReserva.buscarReservasDelUsuario(reserva.getIdUsuario());
         if (!reservasUsuario.isEmpty()) {
             for (Reserva reservaUsuario : reservasUsuario) {
-                if (reservaUsuario.getIdRestaurante().equals(reserva.getIdRestaurante()) && esMismoDia(reservaUsuario.getFecha(), reserva.getFecha())) {
+                if (reservaUsuario.getRestaurante().getId().equals(reserva.getRestaurante().getId()) && esMismoDia(reservaUsuario.getFecha(), reserva.getFecha())) {
                     throw new ReservaExistente();
                 }
             }
@@ -69,5 +75,18 @@ public class ServicioReservaImpl implements ServicioReserva {
             throw new ReservaNoEncontrada();
         }
         repositorioReserva.eliminar(reserva);
+    }
+
+    @Override
+    public void crearReserva(Reserva reserva) throws EspacioNoDisponible {
+        Restaurante restaurante = reserva.getRestaurante();
+        List<Reserva> reservasExistentes = repositorioReserva.getReservasPorRestaurante(restaurante.getId());
+
+        Integer personasTotales = reservasExistentes.stream().mapToInt(Reserva::getCantidadPersonas).sum();
+        if (personasTotales + reserva.getCantidadPersonas() > restaurante.getCapacidadMaxima()) {
+            throw new EspacioNoDisponible();
+        }
+
+        repositorioReserva.guardar(reserva);
     }
 }

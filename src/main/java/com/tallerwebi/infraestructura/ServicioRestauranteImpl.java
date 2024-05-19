@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.tallerwebi.dominio.Reserva;
+import com.tallerwebi.servicio.ServicioReserva;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +20,12 @@ import com.tallerwebi.servicio.ServicioRestaurante;
 public class ServicioRestauranteImpl implements ServicioRestaurante {
 
     private final RepositorioRestaurante repositorioRestaurante;
+    private final ServicioReserva servicioReserva;
 
     @Autowired
-    public ServicioRestauranteImpl(RepositorioRestaurante repositorioRestaurante){
+    public ServicioRestauranteImpl(RepositorioRestaurante repositorioRestaurante, ServicioReserva servicioReserva){
         this.repositorioRestaurante = repositorioRestaurante;
+        this.servicioReserva = servicioReserva;
     }
 
     @Override
@@ -95,6 +99,10 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
             throw new RestauranteNoEncontrado();
         }
         repositorioRestaurante.eliminar(restaurante);
+    }
+
+    public void realizarReserva(Reserva reserva) throws Exception {
+        servicioReserva.crearReserva(reserva);
     }
 }
 

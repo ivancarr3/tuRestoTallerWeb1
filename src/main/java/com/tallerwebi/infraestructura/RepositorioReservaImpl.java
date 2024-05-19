@@ -6,9 +6,11 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.List;
 
-@Repository
+@Repository("repositorioReserva")
+@Transactional
 public class RepositorioReservaImpl implements RepositorioReserva {
     private final SessionFactory sessionFactory;
 
@@ -55,4 +57,11 @@ public class RepositorioReservaImpl implements RepositorioReserva {
         query.executeUpdate();
     }
 
+    @Override
+    public List<Reserva> getReservasPorRestaurante(Long idRestaurante) {
+        String hql = "FROM Reserva WHERE restaurante.id = :idRestaurante";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("idRestaurante", idRestaurante);
+        return query.getResultList();
+    }
 }

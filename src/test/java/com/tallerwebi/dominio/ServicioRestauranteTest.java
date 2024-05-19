@@ -2,6 +2,7 @@ package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 import com.tallerwebi.infraestructura.ServicioRestauranteImpl;
+import com.tallerwebi.servicio.ServicioReserva;
 import com.tallerwebi.servicio.ServicioRestaurante;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,22 +19,23 @@ public class ServicioRestauranteTest {
 
     private ServicioRestaurante servicioRestaurante;
     private RepositorioRestaurante repositorioRestaurante;
+    private ServicioReserva servicioReserva;
     private List<Restaurante> restaurantesMock;
 
     @BeforeEach
     public void init(){
         this.repositorioRestaurante = mock(RepositorioRestaurante.class);
-        this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante);
+        this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante, this.servicioReserva);
         this.restaurantesMock = new ArrayList<>();
 
-        this.restaurantesMock.add(new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg"));
+        this.restaurantesMock.add(new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 100));
     }
 
     @Test
     public void queSePuedanObtenerTodosLosRestaurantes(){
         // preparacion
-        this.restaurantesMock.add(new Restaurante(2L, "La Farola", 4.0, "Almafuerte 3344", "restaurant.jpg"));
-        this.restaurantesMock.add(new Restaurante(3L, "Benjamin", 4.5, "Arieta 3344", "restaurant.jpg"));
+        this.restaurantesMock.add(new Restaurante(2L, "La Farola", 4.0, "Almafuerte 3344", "restaurant.jpg", 100));
+        this.restaurantesMock.add(new Restaurante(3L, "Benjamin", 4.5, "Arieta 3344", "restaurant.jpg", 100));
         when(this.repositorioRestaurante.get()).thenReturn(this.restaurantesMock);
 
         // ejecucion

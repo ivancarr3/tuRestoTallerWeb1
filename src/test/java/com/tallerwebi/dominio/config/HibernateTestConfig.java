@@ -21,7 +21,7 @@ public class HibernateTestConfig{
         //dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:hsqldb:mem:db_");
         //dataSource.setUrl("jdbc:mysql://localhost:3305/turesto");
-        dataSource.setUsername("root");
+        dataSource.setUsername("");
         dataSource.setPassword("");
         return dataSource;
     }

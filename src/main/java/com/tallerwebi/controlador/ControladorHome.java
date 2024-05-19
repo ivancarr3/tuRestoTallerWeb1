@@ -119,7 +119,7 @@ public class ControladorHome {
 
 	@RequestMapping(path = "/reserva/{id}/filtrarPlato", method = RequestMethod.POST)
 	public ModelAndView filtrarPlato(@PathVariable("id") Long id_restaurante, @RequestParam("precio") String precioStr) throws PlatoNoEncontrado {
-		Integer precio = Integer.valueOf(precioStr);
+		Double precio = Double.valueOf(precioStr);
 		List<Plato> platos;
 		ModelMap model = new ModelMap();
 		try {

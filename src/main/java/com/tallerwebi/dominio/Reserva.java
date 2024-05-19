@@ -11,8 +11,9 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long idRestaurante;
+    @ManyToOne
+    @JoinColumn(name = "idRestaurante", nullable = false)
+    private Restaurante restaurante;
 
     @Column(nullable = false)
     private Integer cantidadPersonas;
@@ -24,9 +25,9 @@ public class Reserva {
     private Long idUsuario;
 
     public Reserva() {}
-    public Reserva (Long id, Long idRestaurante, Integer cantidadPersonas, Date fecha, Long idUsuario) {
+    public Reserva (Long id, Restaurante restaurante, Integer cantidadPersonas, Date fecha, Long idUsuario) {
         this.id = id;
-        this.idRestaurante = idRestaurante;
+        this.restaurante = restaurante;
         this.cantidadPersonas = cantidadPersonas;
         this.fecha = fecha;
         this.idUsuario = idUsuario;
@@ -34,14 +35,19 @@ public class Reserva {
 
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
-    public Long getIdRestaurante() {return idRestaurante;}
-    public void setIdRestaurante(Long idRestaurante) {this.idRestaurante = idRestaurante;}
     public Integer getCantidadPersonas() {return cantidadPersonas;}
     public void setCantidadPersonas(Integer cantidadPersonas) {this.cantidadPersonas = cantidadPersonas;}
     public Date getFecha() {return fecha;}
     public void setFecha(Date fecha) {this.fecha = fecha;}
     public Long getIdUsuario() {return idUsuario;}
     public void setIdUsuario(Long idUsuario) {this.idUsuario = idUsuario;}
+    public Restaurante getRestaurante() {
+        return restaurante;
+    }
+    public void setRestaurante(Restaurante restaurante) {
+        this.restaurante = restaurante;
+    }
+
     public String getFechaFormateada() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return formatter.format(this.fecha);

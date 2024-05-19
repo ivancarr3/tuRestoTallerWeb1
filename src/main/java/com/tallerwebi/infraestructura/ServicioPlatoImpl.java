@@ -44,12 +44,21 @@ public class ServicioPlatoImpl implements ServicioPlato {
     }
 
     @Override
-    public List<Plato> consultarPlatoPorPrecio(Integer precio) throws PlatoNoEncontrado {
+    public List<Plato> consultarPlatoPorPrecio(Double precio) throws PlatoNoEncontrado {
         List<Plato> platos = repositorioPlato.buscarPlatoPorPrecio(precio);
         if(platos.isEmpty()){
             throw new PlatoNoEncontrado();
         }
         return repositorioPlato.buscarPlatoPorPrecio(precio);
+    }
+
+    @Override
+    public List<Plato> ordenarPorPrecio(String orden) throws PlatoNoEncontrado {
+        List<Plato> platos = repositorioPlato.ordenarPorPrecio(orden);
+        if(platos.isEmpty()){
+            throw new PlatoNoEncontrado();
+        }
+        return platos;
     }
 
     @Override

@@ -13,7 +13,7 @@ public class Plato {
     private String nombre;
 
     @Column(nullable = false)
-    private Integer precio;
+    private Double precio;
 
     @Column(nullable = false)
     private String descripcion;
@@ -22,7 +22,7 @@ public class Plato {
     private String imagen;
 
     public Plato() {}
-    public Plato (Long id, String nombre, Integer precio, String descripcion, String imagen) {
+    public Plato (Long id, String nombre, Double precio, String descripcion, String imagen) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -34,8 +34,8 @@ public class Plato {
     public Long getId() {return id;}
     public String getNombre() {return nombre;}
     public void setNombre(String nombre) {this.nombre = nombre;}
-    public Integer getPrecio() {return precio;}
-    public void setPrecio(Integer precio) {this.precio = precio;}
+    public Double getPrecio() {return precio;}
+    public void setPrecio(Double precio) {this.precio = precio;}
     public String getDescripcion() {return descripcion;}
     public void setDescripcion(String descripcion) {this.descripcion = descripcion;}
     public String getImagen() {return imagen;}

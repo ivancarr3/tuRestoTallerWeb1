@@ -1,7 +1,7 @@
 package com.tallerwebi.dominio;
 
 import javax.persistence.*;
-import java.nio.file.Paths;
+import java.util.List;
 
 @Entity
 public class Restaurante {
@@ -22,13 +22,20 @@ public class Restaurante {
     @Column(nullable = false)
     private String imagen;
 
+    @Column(nullable = false)
+    private Integer capacidadMaxima;
+
+    @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL)
+    private List<Reserva> reservas;
+
     public Restaurante() {}
-    public Restaurante (Long id, String nombre, Double estrellas, String direccion, String imagen) {
+    public Restaurante (Long id, String nombre, Double estrellas, String direccion, String imagen, Integer capacidadMaxima) {
         this.id = id;
         this.nombre = nombre;
         this.estrellas = estrellas;
         this.direccion = direccion;
-        this.imagen = imagen; //!= null ? "/img/restaurant/".concat(imagen) : "/img/restaurant/restaurant.jpg";
+        this.imagen = imagen;
+        this.capacidadMaxima = capacidadMaxima;
     }
 
     public Long getId() {return id;}
@@ -41,4 +48,8 @@ public class Restaurante {
     public void setDireccion(String direccion) {this.direccion = direccion;}
     public String getImagen() {return imagen;}
     public void setImagen(String imagen) {this.imagen = imagen;}
+    public Integer getCapacidadMaxima() {return capacidadMaxima;}
+    public void setCapacidadMaxima(Integer capacidadMaxima) {this.capacidadMaxima = capacidadMaxima;}
+    public List<Reserva> getReservas() {return reservas;}
+    public void setReservas(List<Reserva> reservas) {this.reservas = reservas;}
 }
