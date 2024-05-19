@@ -1,7 +1,6 @@
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.excepcion.PlatoNoEncontrado;
-import com.tallerwebi.infraestructura.ServicioPlatoImpl;
 import com.tallerwebi.servicio.ServicioPlato;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

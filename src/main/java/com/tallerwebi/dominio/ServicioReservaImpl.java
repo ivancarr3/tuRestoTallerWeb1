@@ -1,4 +1,4 @@
-package com.tallerwebi.infraestructura;
+package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.RepositorioReserva;
 import com.tallerwebi.dominio.Reserva;

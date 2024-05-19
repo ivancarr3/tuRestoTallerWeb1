@@ -1,7 +1,6 @@
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
-import com.tallerwebi.infraestructura.ServicioRestauranteImpl;
 import com.tallerwebi.servicio.ServicioReserva;
 import com.tallerwebi.servicio.ServicioRestaurante;
 import org.junit.jupiter.api.BeforeEach;
