@@ -2,6 +2,7 @@ package com.tallerwebi.controlador;
 
 import com.tallerwebi.dominio.Plato;
 import com.tallerwebi.dominio.Restaurante;
+import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
 import com.tallerwebi.dominio.excepcion.PlatoNoEncontrado;
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 
@@ -35,7 +36,7 @@ public class ControladorHome {
 	}
 
 	@RequestMapping(path = "/home", method = RequestMethod.POST)
-	public ModelAndView buscar(@ModelAttribute("busqueda") String busqueda) throws RestauranteNoEncontrado {
+	public ModelAndView buscar(@ModelAttribute("busqueda") String busqueda) throws RestauranteNoEncontrado, NoHayRestaurantes {
 		List<Restaurante> restaurantes;
 		if (busqueda != null) {
 			ModelMap model = new ModelMap();
@@ -58,7 +59,7 @@ public class ControladorHome {
 
 	@RequestMapping(path = "/filtrar", method = RequestMethod.POST)
 	public ModelAndView filtrar(@RequestParam(value = "filtrado", required = false) Double estrella,
-								@RequestParam(value = "filtro_orden", required = false) String tipoDeOrden) throws RestauranteNoEncontrado {
+								@RequestParam(value = "filtro_orden", required = false) String tipoDeOrden) throws RestauranteNoEncontrado, NoHayRestaurantes {
 		List<Restaurante> restaurantes;
 		ModelMap model = new ModelMap();
 		if (estrella != null) {
@@ -79,7 +80,7 @@ public class ControladorHome {
 				restaurantes = servicioRestaurante.consultarOrdenPorEstrellas(tipoDeOrden);
 				model.put(MODEL_NAME, restaurantes);
 				return new ModelAndView("home", model);
-			} catch (RestauranteNoEncontrado error) {
+			} catch (NoHayRestaurantes error) {
 				model.put("errorFiltro", "No se encontraron restaurantes" );
 				model.put(MODEL_NAME, servicioRestaurante.get());
 				return new ModelAndView("home", model);
@@ -93,7 +94,7 @@ public class ControladorHome {
 	}
 
 	@RequestMapping(path = "/home", method = RequestMethod.GET)
-	public ModelAndView mostrarHome() {
+	public ModelAndView mostrarHome() throws NoHayRestaurantes {
 		List<Restaurante> restaurantes = servicioRestaurante.get();
 		ModelMap model = new ModelMap();
 		model.put(MODEL_NAME, restaurantes);
@@ -101,7 +102,7 @@ public class ControladorHome {
 	}
 
 	@RequestMapping(path = "/reserva/{id}", method = RequestMethod.GET)
-	public ModelAndView reservar(@PathVariable("id") Long id) throws RestauranteNoEncontrado {
+	public ModelAndView reservar(@PathVariable("id") Long id) throws RestauranteNoEncontrado, NoHayRestaurantes {
 		ModelMap model = new ModelMap();
 		try {
 			Restaurante restaurante = servicioRestaurante.consultar(id);

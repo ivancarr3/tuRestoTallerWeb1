@@ -1,6 +1,7 @@
 package com.tallerwebi.controlador;
 
 import com.tallerwebi.dominio.Restaurante;
+import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 import com.tallerwebi.servicio.ServicioPlato;
 import com.tallerwebi.servicio.ServicioRestaurante;
@@ -30,7 +31,7 @@ public class ControladorHomeTest {
     }
 
     @Test
-    public void queAlIngresarALaPantallaHomeMuestreTodosLosRestaurantesExistentes(){
+    public void queAlIngresarALaPantallaHomeMuestreTodosLosRestaurantesExistentes() throws NoHayRestaurantes {
         //preparacion
         List<Restaurante> restaurantesMock = new ArrayList<Restaurante>();
         restaurantesMock.add(new Restaurante(null, "El club de la Milanesa",
@@ -51,7 +52,7 @@ public class ControladorHomeTest {
     }
 
     @Test
-    public void QueAlNoBuscarNadaElHomeMeTraigaTodosLosrestaurantes() throws RestauranteNoEncontrado{
+    public void QueAlNoBuscarNadaElHomeMeTraigaTodosLosrestaurantes() throws RestauranteNoEncontrado, NoHayRestaurantes{
         // preparacion
         List<Restaurante> restaurantesMockeados = new ArrayList<>();
         Restaurante restauranteMockeado1 = new Restaurante(null, "La Farola", 4.0,

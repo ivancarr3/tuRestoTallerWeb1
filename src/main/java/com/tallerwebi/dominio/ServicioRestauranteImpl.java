@@ -4,13 +4,11 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.tallerwebi.dominio.Reserva;
+import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
 import com.tallerwebi.servicio.ServicioReserva;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tallerwebi.dominio.RepositorioRestaurante;
-import com.tallerwebi.dominio.Restaurante;
 import com.tallerwebi.dominio.excepcion.RestauranteExistente;
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 import com.tallerwebi.servicio.ServicioRestaurante;
@@ -29,13 +27,22 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
     }
 
     @Override
-    public List<Restaurante> get() {
-        return repositorioRestaurante.get();
+    public List<Restaurante> get() throws NoHayRestaurantes {
+        List<Restaurante> restaurantes = repositorioRestaurante.get();
+        if (restaurantes == null) {
+            throw new NoHayRestaurantes();
+        }
+
+        return restaurantes;
     }
 
     @Override
-    public Restaurante consultar(Long id) {
-        return repositorioRestaurante.buscar(id);
+    public Restaurante consultar(Long id) throws RestauranteNoEncontrado {
+        Restaurante restaurante = repositorioRestaurante.buscar(id);
+        if (restaurante == null) {
+            throw new RestauranteNoEncontrado();
+        }
+        return restaurante;
     }
 
     @Override
@@ -66,10 +73,10 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
     }
 
     @Override
-    public List<Restaurante> consultarOrdenPorEstrellas(String tipoDeOrden) throws RestauranteNoEncontrado {
+    public List<Restaurante> consultarOrdenPorEstrellas(String tipoDeOrden) throws NoHayRestaurantes {
         List<Restaurante> restaurantes = repositorioRestaurante.ordenarPorEstrellas(tipoDeOrden);
         if(restaurantes.isEmpty()){
-            throw new RestauranteNoEncontrado();
+            throw new NoHayRestaurantes();
         }
         return restaurantes;
     }
@@ -102,7 +109,11 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
     }
 
     public void realizarReserva(Reserva reserva) throws Exception {
-        servicioReserva.crearReserva(reserva);
+        try {
+            servicioReserva.crearReserva(reserva);
+        } catch (Exception e) {
+            throw new Exception("Error al realizar la reserva.");
+        }
     }
 }
 
