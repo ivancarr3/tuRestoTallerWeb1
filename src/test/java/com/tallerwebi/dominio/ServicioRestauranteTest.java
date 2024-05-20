@@ -26,13 +26,16 @@ public class ServicioRestauranteTest {
         this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante);
         this.restaurantesMock = new ArrayList<>();
         this.restaurantesMock.add(new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg"));
+
     }
 
     @Test
     public void queSePuedanObtenerTodosLosRestaurantes(){
         // preparacion
+
         this.restaurantesMock.add(new Restaurante(2L, "La Farola", 4.0, "Almafuerte 3344", "restaurant.jpg"));
         this.restaurantesMock.add(new Restaurante(3L, "Benjamin", 4.5, "Arieta 3344", "restaurant.jpg"));
+
         when(this.repositorioRestaurante.get()).thenReturn(this.restaurantesMock);
 
         // ejecucion
@@ -92,10 +95,8 @@ public class ServicioRestauranteTest {
     public void queAlBuscarRestaurantesPorEstrellasDevuelvaLosCorrespondientes() throws RestauranteNoEncontrado {
         // preparacion
         when(this.repositorioRestaurante.buscarPorEstrellas(4.5)).thenReturn(this.restaurantesMock);
-
         // ejecucion
         List<Restaurante> restaurantes = this.servicioRestaurante.consultarRestaurantePorEstrellas(4.5);
-
         // verificacion
         assertThat(restaurantes.size(), equalTo(1));
     }

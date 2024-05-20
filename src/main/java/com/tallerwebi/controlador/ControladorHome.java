@@ -25,6 +25,7 @@ public class ControladorHome {
 		this.servicioRestaurante = servicioRestaurante;
 	}
 
+
 	@RequestMapping(path = "/", method = RequestMethod.GET)
 	public ModelAndView inicio() {
 		return new ModelAndView("redirect:/home");
@@ -52,6 +53,7 @@ public class ControladorHome {
 			return new ModelAndView("home");
 		}
 	}
+
 
 	@RequestMapping(path = "/filtrar", method = RequestMethod.POST)
 	public ModelAndView filtrar(@RequestParam(value = "filtrado", required = false) Double estrella,
@@ -89,6 +91,7 @@ public class ControladorHome {
 			return new ModelAndView("home");
 		}
 	}
+
 
 	@RequestMapping(path = "/home", method = RequestMethod.GET)
 	public ModelAndView mostrarHome() {

@@ -19,6 +19,7 @@ public class Restaurante {
     @Column(nullable = false)
     private String direccion;
 
+
     @Column(nullable = false)
     private String imagen;
 
@@ -28,7 +29,9 @@ public class Restaurante {
         this.nombre = nombre;
         this.estrellas = estrellas;
         this.direccion = direccion;
+
         this.imagen = imagen; //!= null ? "/img/restaurant/".concat(imagen) : "/img/restaurant/restaurant.jpg";
+
     }
 
     public Long getId() {return id;}
