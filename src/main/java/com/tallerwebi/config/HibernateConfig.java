@@ -20,7 +20,7 @@ public class HibernateConfig {
 //        dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 //        dataSource.setUrl("jdbc:hsqldb:mem:db_");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/turesto");
+        dataSource.setUrl("jdbc:mysql://localhost:3305/turesto");
         dataSource.setUsername("root");
         dataSource.setPassword("");
         return dataSource;
@@ -46,8 +46,8 @@ public class HibernateConfig {
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
         properties.setProperty("hibernate.show_sql", "true");
         properties.setProperty("hibernate.format_sql", "true");
-//        properties.setProperty("hibernate.hbm2ddl.auto", "create");
-        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        properties.setProperty("hibernate.hbm2ddl.auto", "create");
+//        properties.setProperty("hibernate.hbm2ddl.auto", "update");
         return properties;
     }
 }

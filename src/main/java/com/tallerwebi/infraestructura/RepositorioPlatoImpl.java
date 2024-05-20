@@ -3,13 +3,17 @@ package com.tallerwebi.infraestructura;
 import com.tallerwebi.dominio.Plato;
 import com.tallerwebi.dominio.RepositorioPlato;
 
+import com.tallerwebi.dominio.Restaurante;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.List;
 
-@Repository
+@Repository("repositorioPlato")
+@Transactional
 public class RepositorioPlatoImpl implements RepositorioPlato {
 
     private final SessionFactory sessionFactory;
@@ -32,18 +36,21 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
 
     @Override
     public Plato buscar(Long id) {
+        try {
+            String hql = "FROM Plato WHERE id = :id";
+            Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+            query.setParameter("id", id);
 
-        String hql = "FROM Plato WHERE id = :id";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("id", id);
-
-        return (Plato) query.getSingleResult();
+            return (Plato) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
-    public List<Plato> buscarPlatoPorPrecio(Integer precio) {
+    public List<Plato> buscarPlatoPorPrecio(Double precio) {
 
-        String hql = "FROM Plato WHERE precio = :precio";
+        String hql = "FROM Plato WHERE precio >= :precio";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("precio", precio);
 
@@ -53,10 +60,18 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
     @Override
     public List<Plato> buscarPlatoPorNombre(String nombre) {
 
-        String hql = "FROM Plato WHERE nombre = :nombre";
+        String hql = "FROM Plato WHERE LOWER(nombre) LIKE LOWER(:nombre)";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("nombre", nombre);
+        query.setParameter("nombre", "%"+nombre.toLowerCase()+"%");
 
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Plato> ordenarPorPrecio(String tipoDeOrden) {
+
+        String hql = "FROM Plato ORDER BY precio "+ tipoDeOrden;
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         return query.getResultList();
     }
 

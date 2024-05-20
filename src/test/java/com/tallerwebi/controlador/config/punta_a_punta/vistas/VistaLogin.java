@@ -1,4 +1,4 @@
-package com.tallerwebi.punta_a_punta.vistas;
+package com.tallerwebi.controlador.config.punta_a_punta.vistas;
 
 import com.microsoft.playwright.Page;
 

@@ -1,4 +1,4 @@
-package com.tallerwebi.punta_a_punta.infraestructura.config;
+package com.tallerwebi.controlador.config.punta_a_punta.infraestructura.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
