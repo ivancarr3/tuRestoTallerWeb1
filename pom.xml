@@ -174,7 +174,7 @@
                         <port>8080</port>
                     </httpConnector>
                     <webApp>
-                        <contextPath>/spring</contextPath>
+                        <contextPath>/turesto</contextPath>
                     </webApp>
                 </configuration>
             </plugin>

@@ -3,7 +3,6 @@ package com.tallerwebi.infraestructura;
 import com.tallerwebi.dominio.Plato;
 import com.tallerwebi.dominio.RepositorioPlato;
 
-import com.tallerwebi.dominio.Restaurante;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
