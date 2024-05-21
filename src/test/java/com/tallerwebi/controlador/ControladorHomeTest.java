@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tallerwebi.dominio.Restaurante;
+import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 import com.tallerwebi.servicio.ServicioPlato;
 import com.tallerwebi.servicio.ServicioRestaurante;
@@ -25,6 +26,7 @@ public class ControladorHomeTest {
 	private ServicioRestaurante servicioRestauranteMock;
 	private ServicioPlato servicioPlato;
 
+
 	@BeforeEach
 	public void init() {
 		servicioRestauranteMock = mock(ServicioRestaurante.class);
@@ -32,13 +34,13 @@ public class ControladorHomeTest {
 	}
 
 	@Test
-	public void QueAlNoBuscarNadaElHomeMeTraigaTodosLosrestaurantes() throws RestauranteNoEncontrado {
+	public void QueAlNoBuscarNadaElHomeMeTraigaTodosLosrestaurantes() throws RestauranteNoEncontrado, NoHayRestaurantes {
 		// preparacion
 		List<Restaurante> restaurantesMockeados = new ArrayList<>();
 		Restaurante restauranteMockeado1 = new Restaurante(null, "La Farola", 4.0, "Santa Maria 3500",
-				"restaurant.jpg");
+				"restaurant.jpg", 100);
 		Restaurante restauranteMockeado2 = new Restaurante(null, "El Club de la Milanesa", 5.0, "Arieta 5000",
-				"restaurant2.jpg");
+				"restaurant2.jpg", 100);
 		restaurantesMockeados.add(restauranteMockeado1);
 		restaurantesMockeados.add(restauranteMockeado2);
 
@@ -54,11 +56,11 @@ public class ControladorHomeTest {
 	}
 
 	@Test
-	public void QueAlBuscarUnRestaurantePorNombreQueExistaMeMuestreEseRestaurante() throws RestauranteNoEncontrado {
+	public void QueAlBuscarUnRestaurantePorNombreQueExistaMeMuestreEseRestaurante() throws RestauranteNoEncontrado, NoHayRestaurantes {
 		// preparacion
 		List<Restaurante> restaurantesMockeados = new ArrayList<>();
 		Restaurante restauranteMockeado1 = new Restaurante(null, "La Farola", 4.0, "Santa Maria 3500",
-				"restaurant.jpg");
+				"restaurant.jpg", 100);
 		restaurantesMockeados.add(restauranteMockeado1);
 
 		when(servicioRestauranteMock.consultarRestaurantePorNombre(anyString())).thenReturn(restaurantesMockeados);
@@ -77,14 +79,16 @@ public class ControladorHomeTest {
 	}
 
 	@Test
-	public void queAlIngresarALaPantallaHomeMuestreTodosLosRestaurantesExistentes() {
+	public void queAlIngresarALaPantallaHomeMuestreTodosLosRestaurantesExistentes() throws NoHayRestaurantes {
 		// preparacion
 		List<Restaurante> restaurantesMock = new ArrayList<Restaurante>();
-		restaurantesMock.add(new Restaurante(null, "El club de la Milanesa", 5.0, "Arieta 5000", "restaurant.jpg"));
-		restaurantesMock.add(
-				new Restaurante(null, "La Trattoria Bella Italia", 3.0, "Avenida Libertador 789", "restaurant2.jpg"));
-		restaurantesMock
-				.add(new Restaurante(null, "La Parrilla de Don Juan", 4.0, "Avenida Central 456", "restaurant3.jpg"));
+        restaurantesMock.add(new Restaurante(null, "El club de la Milanesa",
+                5.0, "Arieta 5000", "restaurant.jpg", 100));
+        restaurantesMock.add(new Restaurante(null, "La Trattoria Bella Italia",
+                3.0, "Avenida Libertador 789", "restaurant2.jpg", 100));
+        restaurantesMock.add(new Restaurante(null, "La Parrilla de Don Juan",
+                4.0, "Avenida Central 456", "restaurant3.jpg", 100));
+
 
 		when(this.servicioRestauranteMock.get()).thenReturn(restaurantesMock);
 

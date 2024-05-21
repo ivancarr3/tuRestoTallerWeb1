@@ -22,7 +22,7 @@ public class HibernateConfig {
 //        dataSource.setUrl("jdbc:hsqldb:mem:db_");
         dataSource.setUrl("jdbc:mysql://localhost:3305/turesto");
         dataSource.setUsername("root");
-        dataSource.setPassword("fedeymateo123");
+        dataSource.setPassword("");
         return dataSource;
     }
 
@@ -46,8 +46,8 @@ public class HibernateConfig {
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
         properties.setProperty("hibernate.show_sql", "true");
         properties.setProperty("hibernate.format_sql", "true");
-//        properties.setProperty("hibernate.hbm2ddl.auto", "create");
-        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        properties.setProperty("hibernate.hbm2ddl.auto", "create");
+//        properties.setProperty("hibernate.hbm2ddl.auto", "update");
         return properties;
     }
 }

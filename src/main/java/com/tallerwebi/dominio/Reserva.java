@@ -6,38 +6,50 @@ import java.util.Date;
 
 @Entity
 public class Reserva {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Integer idRestaurante;
+    @ManyToOne
+    @JoinColumn(name = "idRestaurante", nullable = false)
+    private Restaurante restaurante;
 
     @Column(nullable = false)
     private Integer cantidadPersonas;
 
     @Column(nullable = false)
-    private Date hora;
+    private Date fecha;
+
+    @Column(nullable = false)
+    private Long idUsuario;
 
     public Reserva() {}
-    public Reserva (Long id, Integer idRestaurante, Integer cantidadPersonas, Date hora) {
+    public Reserva (Long id, Restaurante restaurante, Integer cantidadPersonas, Date fecha, Long idUsuario) {
         this.id = id;
-        this.idRestaurante = idRestaurante;
+        this.restaurante = restaurante;
         this.cantidadPersonas = cantidadPersonas;
-        this.hora = hora;
+        this.fecha = fecha;
+        this.idUsuario = idUsuario;
     }
 
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
-    public Integer getIdRestaurante() {return idRestaurante;}
-    public void setIdRestaurante(Integer idRestaurante) {this.idRestaurante = idRestaurante;}
     public Integer getCantidadPersonas() {return cantidadPersonas;}
     public void setCantidadPersonas(Integer cantidadPersonas) {this.cantidadPersonas = cantidadPersonas;}
-    public Date getHora() {return hora;}
-    public void setHora(Date hora) {this.hora = hora;}
+    public Date getFecha() {return fecha;}
+    public void setFecha(Date fecha) {this.fecha = fecha;}
+    public Long getIdUsuario() {return idUsuario;}
+    public void setIdUsuario(Long idUsuario) {this.idUsuario = idUsuario;}
+    public Restaurante getRestaurante() {
+        return restaurante;
+    }
+    public void setRestaurante(Restaurante restaurante) {
+        this.restaurante = restaurante;
+    }
 
-    public String getHoraFormateada() {
+    public String getFechaFormateada() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        return formatter.format(this.hora);
+        return formatter.format(this.fecha);
     }
 }

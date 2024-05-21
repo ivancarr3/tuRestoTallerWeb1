@@ -38,7 +38,7 @@
 
 <body>
 <header>
-  <h2 class="header-titulo mb-0">TuResto</h2>
+  <a class="header-titulo mb-0" style="text-decoration: none; color: black;" th:href="@{/home}">TuResto</a>
   <button class="btn btn-dark" style="font-size: 16px; font-weight: 600">
     Ingresar
   </button>
@@ -176,7 +176,7 @@
             style="width: 18rem"
     >
       <img
-              th:src="@{/img/restaurant/restaurant.jpg}"
+              th:src="@{/img/restaurant/__${restaurante.imagen}__}"
               alt="Restaurante"
               title="Restaurante"
               class="card-image-top"
