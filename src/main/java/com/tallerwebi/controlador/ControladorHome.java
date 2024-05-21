@@ -37,22 +37,17 @@ public class ControladorHome {
 
 	@RequestMapping(path = "/home", method = RequestMethod.POST)
 	public ModelAndView buscar(@ModelAttribute("busqueda") String busqueda) throws RestauranteNoEncontrado, NoHayRestaurantes {
-		List<Restaurante> restaurantes;
-		if (busqueda != null) {
-			ModelMap model = new ModelMap();
-			try {
-				restaurantes = servicioRestaurante.consultarRestaurantePorNombre(busqueda);
-				model.put(MODEL_NAME, restaurantes);
-				return new ModelAndView("home", model);
-			} catch (RestauranteNoEncontrado error) {
-				model.put("errorBusqueda", "No se encontraron restaurantes con el nombre " + busqueda);
-				model.put(MODEL_NAME, servicioRestaurante.get());
-				return new ModelAndView("home", model);
-			} catch (Exception e) {
-				model.put(ERROR_NAME, "Error del servidor" + e.getMessage());
-				return new ModelAndView("home");
-			}
-		} else {
+		ModelMap model = new ModelMap();
+		try {
+			List<Restaurante> restaurantes = servicioRestaurante.consultarRestaurantePorNombre(busqueda);
+			model.put(MODEL_NAME, restaurantes);
+			return new ModelAndView("home", model);
+		} catch (RestauranteNoEncontrado error) {
+			model.put("errorBusqueda", "No se encontraron restaurantes con el nombre " + busqueda);
+			model.put(MODEL_NAME, servicioRestaurante.get());
+			return new ModelAndView("home", model);
+		} catch (Exception e) {
+			model.put(ERROR_NAME, "Error del servidor" + e.getMessage());
 			return new ModelAndView("home");
 		}
 	}
@@ -60,35 +55,17 @@ public class ControladorHome {
 	@RequestMapping(path = "/filtrar", method = RequestMethod.POST)
 	public ModelAndView filtrar(@RequestParam(value = "filtrado", required = false) Double estrella,
 								@RequestParam(value = "filtro_orden", required = false) String tipoDeOrden) throws RestauranteNoEncontrado, NoHayRestaurantes {
-		List<Restaurante> restaurantes;
 		ModelMap model = new ModelMap();
-		if (estrella != null) {
-			try {
-				restaurantes = servicioRestaurante.consultarRestaurantePorEstrellas(estrella);
-				model.put(MODEL_NAME, restaurantes);
-				return new ModelAndView("home", model);
-			} catch (RestauranteNoEncontrado error) {
-				model.put("errorFiltro", "No se encontraron restaurantes con " +estrella+ " estrella/s" );
-				model.put(MODEL_NAME, servicioRestaurante.get());
-				return new ModelAndView("home", model);
-			} catch (Exception e) {
-				model.put(ERROR_NAME, "Error del servidor" + e.getMessage());
-				return new ModelAndView("home");
-			}
-		} else if(tipoDeOrden != null) {
-			try {
-				restaurantes = servicioRestaurante.consultarOrdenPorEstrellas(tipoDeOrden);
-				model.put(MODEL_NAME, restaurantes);
-				return new ModelAndView("home", model);
-			} catch (NoHayRestaurantes error) {
-				model.put("errorFiltro", "No se encontraron restaurantes" );
-				model.put(MODEL_NAME, servicioRestaurante.get());
-				return new ModelAndView("home", model);
-			} catch (Exception e) {
-				model.put(ERROR_NAME, "Error del servidor" + e.getMessage());
-				return new ModelAndView("home");
-			}
-		} else {
+		try {
+			List<Restaurante> restaurantes = servicioRestaurante.consultarRestaurantePorFiltros(estrella, tipoDeOrden);
+			model.put(MODEL_NAME, restaurantes);
+			return new ModelAndView("home", model);
+		} catch (RestauranteNoEncontrado error) {
+			model.put("errorFiltro", "No se encontraron restaurantes" );
+			model.put(MODEL_NAME, servicioRestaurante.get());
+			return new ModelAndView("home", model);
+		} catch (Exception e) {
+			model.put(ERROR_NAME, "Error del servidor" + e.getMessage());
 			return new ModelAndView("home");
 		}
 	}

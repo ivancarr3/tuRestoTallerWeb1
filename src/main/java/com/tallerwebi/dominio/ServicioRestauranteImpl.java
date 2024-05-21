@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -47,12 +48,35 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
 
     @Override
     public List<Restaurante> consultarRestaurantePorNombre(String nombre) throws RestauranteNoEncontrado {
+    	if(nombre == null) {
+    		return repositorioRestaurante.get();
+    	}
         List<Restaurante> restaurantes = repositorioRestaurante.buscarPorNombre(nombre);
         if(restaurantes.isEmpty()){
             throw new RestauranteNoEncontrado();
         }
-        return repositorioRestaurante.buscarPorNombre(nombre);
+        return restaurantes;
     }
+    
+
+	@Override
+	public List<Restaurante> consultarRestaurantePorFiltros(Double estrellas, String tipoDeOrden) throws RestauranteNoEncontrado {
+		
+		List<Restaurante> restaurantes = new ArrayList<Restaurante>();
+		
+		if (estrellas != null && tipoDeOrden != null) {
+			restaurantes = repositorioRestaurante.buscarPorEstrellasYOrdenar(estrellas, tipoDeOrden);
+		} else if (estrellas != null) {
+			restaurantes = repositorioRestaurante.buscarPorEstrellas(estrellas);
+		} else if (tipoDeOrden != null) {
+			restaurantes = repositorioRestaurante.ordenarPorEstrellas(tipoDeOrden);
+		}
+		
+        if (restaurantes.isEmpty()) {
+            throw new RestauranteNoEncontrado();
+        }
+        return restaurantes;
+	}
 
     @Override
     public List<Restaurante> consultarRestaurantePorEstrellas(Double estrellas) throws RestauranteNoEncontrado {
@@ -60,7 +84,7 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
         if(restaurantes.isEmpty()){
             throw new RestauranteNoEncontrado();
         }
-        return repositorioRestaurante.buscarPorEstrellas(estrellas);
+        return restaurantes;
     }
 
     @Override
@@ -69,7 +93,7 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
         if(restaurantes.isEmpty()){
             throw new RestauranteNoEncontrado();
         }
-        return repositorioRestaurante.buscarPorDireccion(direccion);
+        return restaurantes;
     }
 
     @Override
@@ -115,5 +139,6 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
             throw new Exception("Error al realizar la reserva.");
         }
     }
+
 }
 

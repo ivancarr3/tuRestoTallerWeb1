@@ -46,6 +46,17 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
         }
     }
 
+
+    @Override
+    public List<Restaurante> buscarPorEstrellasYOrdenar(Double estrellas, String tipoDeOrden) {
+
+        String hql = "FROM Restaurante WHERE estrellas >= :estrellas ORDER BY estrellas " + tipoDeOrden;
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("estrellas", estrellas);
+        return query.getResultList();
+    }
+
+    
     @Override
     public List<Restaurante> buscarPorEstrellas(Double estrellas) {
 
