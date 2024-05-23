@@ -62,6 +62,7 @@ public class SpringWebTestConfig implements WebMvcConfigurer {
         templateEngine.setEnableSpringELCompiler(true);
         return templateEngine;
     }
+
     // Spring + Thymeleaf
     // Configure Thymeleaf View Resolver
     @Bean

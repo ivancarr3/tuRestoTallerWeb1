@@ -90,8 +90,7 @@
             th:action="@{/home}"
             method="POST"
             class="buscador-formBusqueda w-100 mb-4 d-flex"
-            style="flex-direction: column; gap: 1em"
-    >
+            style="flex-direction: column; gap: 1em">
       <div class="input-group" style="flex-wrap: nowrap">
         <input
                 type="text"
@@ -120,7 +119,6 @@
               <label for="1-star-rating" class="star-rating star">
                 1<i class="fas fa-star" style="color: #ffc107"></i>
               </label>
-
               <input type="radio" id="2-star-rating" th:value="2.0" name="filtrado" />
               <label for="2-star-rating" class="star-rating star">
                 2<i class="fas fa-star" style="color: #ffc107"></i>
@@ -190,7 +188,7 @@
             ></p>
             <i class="fas fa-star" style="color: #ffc107"></i>
           </div>
-          <a th:href="@{/reserva/{id}(id=${restaurante.id})}" class="contRestaurant-btnReservar">Explorar</a>
+          <a th:href="@{/restaurante/{id}(id=${restaurante.id})}" class="contRestaurant-btnReservar">Explorar</a>
           <p
                   th:if="${error != null}"
                   class="alert alert-danger"

@@ -122,7 +122,9 @@ public class RepositorioRestauranteTest {
         restaurante.setDireccion(direccion);
         restaurante.setEstrellas(estrellas);
 
+
         repositorioRestaurante.actualizar(restaurante);
+
         Restaurante restauranteActualizadoEncontrado = repositorioRestaurante.buscar(id);
 
         assertEquals(restauranteActualizadoEncontrado.getNombre(), nombre);
@@ -132,7 +134,9 @@ public class RepositorioRestauranteTest {
 
     @Test
     public void queElimineRestaurante() {
+
         Restaurante restaurante = crearYGuardarRestaurante("La Quintana", 4.5, "Arieta 5000");
+
 
         Long id = restaurante.getId();
         repositorioRestaurante.eliminar(restaurante);

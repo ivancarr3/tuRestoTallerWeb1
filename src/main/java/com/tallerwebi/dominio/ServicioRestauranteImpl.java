@@ -132,13 +132,13 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
         repositorioRestaurante.eliminar(restaurante);
     }
 
-    public void realizarReserva(Reserva reserva) throws Exception {
+    /*public void realizarReserva(Reserva reserva) throws Exception {
         try {
             servicioReserva.crearReserva(reserva);
         } catch (Exception e) {
             throw new Exception("Error al realizar la reserva.");
         }
-    }
+    }*/
 
 }
 

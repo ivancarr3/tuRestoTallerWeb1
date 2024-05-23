@@ -29,6 +29,7 @@ public class Restaurante {
     private List<Reserva> reservas;
 
     public Restaurante() {}
+
     public Restaurante (Long id, String nombre, Double estrellas, String direccion, String imagen, Integer capacidadMaxima) {
         this.id = id;
         this.nombre = nombre;

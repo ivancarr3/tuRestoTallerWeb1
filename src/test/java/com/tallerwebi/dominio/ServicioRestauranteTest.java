@@ -108,11 +108,11 @@ public class ServicioRestauranteTest {
 
     @Test
     public void queAlBuscarRestaurantesPorEstrellasDevuelvaLosCorrespondientes() throws RestauranteNoEncontrado {
+
         List<Restaurante> restaurantesPorEstrella = List.of(this.restaurantesMock.get(1));
         when(this.repositorioRestaurante.buscarPorEstrellas(4.5)).thenReturn(restaurantesPorEstrella);
 
         List<Restaurante> restaurantes = this.servicioRestaurante.consultarRestaurantePorEstrellas(4.5);
-
         assertThat(restaurantes.size(), equalTo(1));
     }
 

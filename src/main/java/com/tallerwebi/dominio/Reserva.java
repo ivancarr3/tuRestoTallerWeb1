@@ -16,21 +16,35 @@ public class Reserva {
     private Restaurante restaurante;
 
     @Column(nullable = false)
+    private String nombre;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private Integer numeroCelular;
+
+    @Column(nullable = false)
+    private Integer dni;
+
+    @Column(nullable = false)
     private Integer cantidadPersonas;
 
     @Column(nullable = false)
     private Date fecha;
 
-    @Column(nullable = false)
-    private Long idUsuario;
-
     public Reserva() {}
-    public Reserva (Long id, Restaurante restaurante, Integer cantidadPersonas, Date fecha, Long idUsuario) {
+
+    public Reserva (Long id, Restaurante restaurante, String nombre, String email, Integer numCel,
+            Integer dni, Integer cantidadPersonas, Date fecha) {
         this.id = id;
         this.restaurante = restaurante;
+        this.nombre = nombre;
+        this.email = email;
+        this.numeroCelular = numCel;
+        this.dni = dni;
         this.cantidadPersonas = cantidadPersonas;
         this.fecha = fecha;
-        this.idUsuario = idUsuario;
     }
 
     public Long getId() {return id;}
@@ -39,8 +53,6 @@ public class Reserva {
     public void setCantidadPersonas(Integer cantidadPersonas) {this.cantidadPersonas = cantidadPersonas;}
     public Date getFecha() {return fecha;}
     public void setFecha(Date fecha) {this.fecha = fecha;}
-    public Long getIdUsuario() {return idUsuario;}
-    public void setIdUsuario(Long idUsuario) {this.idUsuario = idUsuario;}
     public Restaurante getRestaurante() {
         return restaurante;
     }
@@ -51,5 +63,37 @@ public class Reserva {
     public String getFechaFormateada() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return formatter.format(this.fecha);
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Integer getNumeroCelular() {
+        return numeroCelular;
+    }
+
+    public void setNumeroCelular(Integer numeroCelular) {
+        this.numeroCelular = numeroCelular;
+    }
+
+    public Integer getDni() {
+        return dni;
+    }
+
+    public void setDni(Integer dni) {
+        this.dni = dni;
     }
 }

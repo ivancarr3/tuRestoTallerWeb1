@@ -86,7 +86,6 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
 
     @Override
     public List<Restaurante> buscarPorNombre(String nombre) {
-
         String hql = "FROM Restaurante WHERE LOWER(nombre) LIKE LOWER(:nombre)";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("nombre", "%"+nombre.toLowerCase()+"%");
