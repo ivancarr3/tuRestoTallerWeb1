@@ -1,7 +1,7 @@
-package com.tallerwebi.punta_a_punta;
+package com.tallerwebi.controlador.config.punta_a_punta;
 
 import com.microsoft.playwright.*;
-import com.tallerwebi.punta_a_punta.vistas.VistaLogin;
+import com.tallerwebi.controlador.config.punta_a_punta.vistas.VistaLogin;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;

@@ -1,9 +1,10 @@
-package com.tallerwebi.infraestructura;
+package com.tallerwebi.dominio;
 
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.tallerwebi.dominio.excepcion.NoHayPlatos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,13 +26,22 @@ public class ServicioPlatoImpl implements ServicioPlato {
     }
 
     @Override
-    public List<Plato> get() {
-        return repositorioPlato.get();
+    public List<Plato> get() throws NoHayPlatos {
+        List<Plato> platos = repositorioPlato.get();
+        if (platos == null) {
+            throw new NoHayPlatos();
+        }
+
+        return platos;
     }
 
     @Override
-    public Plato consultar(Long id) {
-        return repositorioPlato.buscar(id);
+    public Plato consultar(Long id) throws PlatoNoEncontrado {
+        Plato plato = repositorioPlato.buscar(id);
+        if (plato == null) {
+            throw new PlatoNoEncontrado();
+        }
+        return plato;
     }
 
     @Override
@@ -44,12 +54,21 @@ public class ServicioPlatoImpl implements ServicioPlato {
     }
 
     @Override
-    public List<Plato> consultarPlatoPorPrecio(Integer precio) throws PlatoNoEncontrado {
+    public List<Plato> consultarPlatoPorPrecio(Double precio) throws PlatoNoEncontrado {
         List<Plato> platos = repositorioPlato.buscarPlatoPorPrecio(precio);
         if(platos.isEmpty()){
             throw new PlatoNoEncontrado();
         }
         return repositorioPlato.buscarPlatoPorPrecio(precio);
+    }
+
+    @Override
+    public List<Plato> ordenarPorPrecio(String orden) throws NoHayPlatos {
+        List<Plato> platos = repositorioPlato.ordenarPorPrecio(orden);
+        if (platos == null) {
+            throw new NoHayPlatos();
+        }
+        return platos;
     }
 
     @Override
