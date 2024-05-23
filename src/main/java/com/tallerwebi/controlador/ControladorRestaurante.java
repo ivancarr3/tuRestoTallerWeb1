@@ -48,16 +48,17 @@ public class ControladorRestaurante {
         }
     }
 
-    @RequestMapping(path = "/restaurante/{id}/filtrarPlato", method = RequestMethod.POST)
-    public ModelAndView filtrarPlato(@PathVariable("id") Long id_restaurante, @RequestParam("precio") String precioStr) throws PlatoNoEncontrado {
+    @RequestMapping(path = "/restaurante/filtrarPlato", method = RequestMethod.POST)
+    public ModelAndView filtrarPlato(@RequestParam("id") String id_restaurante, @RequestParam("precio") String precioStr) throws PlatoNoEncontrado {
         Double precio = Double.valueOf(precioStr);
+        Long id = Long.valueOf(id_restaurante);
         List<Plato> platos;
         ModelMap model = new ModelMap();
         try {
             platos = servicioPlato.consultarPlatoPorPrecio(precio);
             model.put("platos", platos);
 
-            Restaurante restaurante = servicioRestaurante.consultar(id_restaurante);
+            Restaurante restaurante = servicioRestaurante.consultar(id);
             model.put("restaurante", restaurante);
 
             return new ModelAndView("restaurante", model);

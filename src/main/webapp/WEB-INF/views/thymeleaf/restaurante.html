@@ -28,9 +28,9 @@
 <body>
 <header class="mb-3">
     <a class="header-titulo mb-0" style="text-decoration: none; color: black;" th:href="@{/home}">TuResto</a>
-<!--     <button class="btn btn-dark" style="font-size: 16px; font-weight: 600"> -->
-<!--         Ingresar -->
-<!--     </button> -->
+    <button class="btn btn-dark" style="font-size: 16px; font-weight: 600">
+        Ingresar
+    </button>
 </header>
 <main>
     <div class="container">
@@ -82,7 +82,7 @@
         </div>
     </div>
     <div class="container">
-        <form th:action="@{/filtrarPlato}" th:method="POST">
+        <form th:action="@{/restaurante/filtrarPlato}" id="form_plato" th:method="POST">
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Filtrar platos por precio
@@ -94,6 +94,7 @@
                     <li class="dropdown-item" style="cursor: pointer;" th:onclick="|seleccionarOpcion('50000')|">Mayor a $50.000</li>
                 </ul>
             </div>
+            <input type="hidden" name="id" th:value="${restaurante.id}">
             <input id="opcionSeleccionada" type="hidden" name="precio" value="">
         </form>
         <p
@@ -182,7 +183,7 @@
 <script>
     function seleccionarOpcion(precio) {
         document.getElementById('opcionSeleccionada').value = precio;
-        document.querySelector('form').submit();
+        document.getElementById('form_plato').submit();
     }
 </script>
 <script

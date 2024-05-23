@@ -21,6 +21,10 @@ public class Plato {
     @Column(nullable = false)
     private String imagen;
 
+    @ManyToOne
+    @JoinColumn(name = "idRestaurante")
+    private Restaurante restaurante;
+
     public Plato() {}
     public Plato (Long id, String nombre, Double precio, String descripcion, String imagen) {
         this.id = id;
