@@ -188,7 +188,7 @@
             ></p>
             <i class="fas fa-star" style="color: #ffc107"></i>
           </div>
-          <a th:href="@{/reserva/{id}(id=${restaurante.id})}" class="contRestaurant-btnReservar">Explorar</a>
+          <a th:href="@{/restaurante/{id}(id=${restaurante.id})}" class="contRestaurant-btnReservar">Explorar</a>
           <p
                   th:if="${error != null}"
                   class="alert alert-danger"

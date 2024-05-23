@@ -1,5 +1,5 @@
 INSERT INTO usuario (id, email, password, rol) VALUES (null, 'test@unlam.edu.ar', 'test', 'ADMIN');
-INSERT INTO restaurante (id, nombre, estrellas, direccion, imagen, capacidadMaxima) VALUES (null, 'El club de la Milanesa', 5.0, 'Arieta 5000', 'restaurant.jpg', 100),
+INSERT INTO restaurante (id, nombre, estrellas, direccion, imagen, capacidadMaxima) VALUES (null, 'El club de la Milanesa', 5.0, 'Arieta 5000', 'restaurant.jpg', 2),
                                                                   (null, 'Mundo Milanesa', 3.0, 'Avenida Libertador 789', 'restaurant1.jpg', 100),
                                                                   (null, 'La Trattoria Bella Italia', 3.0, 'Avenida Libertador 789', 'restaurant2.jpg', 100),
                                                                   (null, 'La Parrilla de Don Juan', 4.0, 'Avenida Central 456', 'restaurant3.jpg', 100),
@@ -11,5 +11,5 @@ INSERT INTO plato (id, nombre, precio, descripcion, imagen) VALUES (null, 'milan
                                                             (null, 'empanadas', 15000, 'milanesa rellena de amor', 'pizza.jpeg'),
                                                             (null, 'asado', 15000, 'milanesa rellena de amor', 'pizza.jpeg'),
                                                             (null, 'lechuga', 15000, 'milanesa rellena de amor', 'pizza.jpeg');
-INSERT INTO reserva (id, idRestaurante, cantidadPersonas, fecha, idUsuario) VALUES (null, 1, 2, '2024-05-11 21:15:56', 1);
+
 

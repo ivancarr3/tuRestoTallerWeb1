@@ -77,45 +77,4 @@ public class ControladorHome {
 		model.put(MODEL_NAME, restaurantes);
 		return new ModelAndView("home", model);
 	}
-
-	@RequestMapping(path = "/reserva/{id}", method = RequestMethod.GET)
-	public ModelAndView reservar(@PathVariable("id") Long id) throws RestauranteNoEncontrado, NoHayRestaurantes {
-		ModelMap model = new ModelMap();
-		try {
-			Restaurante restaurante = servicioRestaurante.consultar(id);
-			model.put("restaurante", restaurante);
-			return new ModelAndView("reserva", model);
-		} catch (RestauranteNoEncontrado error) {
-			model.put("errorId", "No se encontró el restaurante" );
-			model.put(MODEL_NAME, servicioRestaurante.get());
-			return new ModelAndView("home", model);
-		} catch (Exception e) {
-			model.put(ERROR_NAME, "Error del servidor" + e.getMessage());
-			return new ModelAndView("home");
-		}
-	}
-
-	@RequestMapping(path = "/reserva/{id}/filtrarPlato", method = RequestMethod.POST)
-	public ModelAndView filtrarPlato(@PathVariable("id") Long id_restaurante, @RequestParam("precio") String precioStr) throws PlatoNoEncontrado {
-		Double precio = Double.valueOf(precioStr);
-		List<Plato> platos;
-		ModelMap model = new ModelMap();
-		try {
-			platos = servicioPlato.consultarPlatoPorPrecio(precio);
-			model.put("platos", platos);
-
-			Restaurante restaurante = servicioRestaurante.consultar(id_restaurante);
-			model.put("restaurante", restaurante);
-
-			return new ModelAndView("reserva", model);
-		}catch (PlatoNoEncontrado e) {
-			model.put("error", "No existen platos");
-			return new ModelAndView("reserva", model);
-		}
-		catch (Exception e) {
-			model.put(ERROR_NAME, "Error del servidor" + e.getMessage());
-			return new ModelAndView("reserva", model);
-		}
-	}
-
 }

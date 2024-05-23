@@ -6,7 +6,7 @@
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <title>Reserva</title>
+    <title>Restaurante</title>
     <link rel="stylesheet" th:href="@{/css/reset.css}" />
     <link rel="stylesheet" th:href="@{/css/index.css}" />
     <link rel="stylesheet" th:href="@{/css/header.css}" />
@@ -44,14 +44,45 @@
                         <h5 class="card-title" th:text="${restaurante.nombre}"></h5>
                         <p class="card-text" th:text="${restaurante.direccion}"></p>
                         <p class="card-text"><small class="text-body-secondary" th:text="${restaurante.estrellas}"></small> <i class="fas fa-star" style="color: #ffc107"></i></p>
-                        <a th:href="@{/reserva/final/{id}(id=${restaurante.id})}" class="btn btn-dark">Reservar</a>
+
+                        <form action="#" th:action="@{/reservar}" method="POST">
+                            <input type="hidden" name="id" th:value="${restaurante.id}">
+                            <label for="nombre_form">Nombre</label>
+                            <input type="text" id="nombre_form" name="nombre_form">
+
+                            <label for="email_form">Correo electronico</label>
+                            <input type="email" id="email_form" name="email_form">
+
+                            <label for="num_form">Telefono</label>
+                            <input type="number" id="num_form" name="num_form">
+
+                            <label for="dni_form">Documento</label>
+                            <input type="number" id="dni_form" name="dni_form">
+
+                            <label for="fecha_form">Fecha</label>
+                            <input type="date" id="fecha_form" name="fecha_form">
+
+                            <label for="cant_personas_form">Cantidad de personas</label>
+                            <select id="cant_personas_form" name="cant_personas_form">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+
+                            <button type="submit">Reservar</button>
+                        </form>
+                        <p th:if="${errorForm != null}"
+                                class="alert alert-danger"
+                                th:text="${errorForm}"></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="container">
-        <form th:action="@{/reserva/{id}/filtrarPlato(id=${restaurante.id})}" th:method="POST">
+        <form th:action="@{/filtrarPlato}" th:method="POST">
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Filtrar platos por precio
