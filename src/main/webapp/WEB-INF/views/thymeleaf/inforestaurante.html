@@ -1,22 +1,359 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
   <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-
-    <title>Taller Web I</title>
-
-    <!-- custom style -->
-    <link rel="stylesheet" th:href="@{/css/reset.css}" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" th:href="@{/css/info-restaurante.css}" />
+    <title>Info Restaurante</title>
   </head>
-
   <body>
-    <header>
-      <h2>TuResto</h2>
-    </header>
-    <main></main>
+    <h2 class="nombreRestaurante">Nombre Restaurante</h2>
+
+    <section class="contenedorImagenes">
+      <div class="a">
+        <img class="contenedorImagenes-img" th:src="@{img/restaurant/restaurant5.jpg}" alt="" />
+      </div>
+      <div class="b">
+        <img
+          class="contenedorImagenes-img"
+          th:src="@{/img/platos/una-mesa-completa-de.jpg}"
+          alt=""
+        />
+      </div>
+      <div class="c">
+        <img
+          class="contenedorImagenes-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+      </div>
+      <div class="d">
+        <img
+          class="contenedorImagenes-img"
+          th:src="@{/img/platos/bulgogui.jpg}"
+          alt=""
+        />
+      </div>
+      <div class="e">
+        <img
+          class="contenedorImagenes-img"
+          th:src="@{/img/platos/una-mesa-apetitosa.jpg}"
+          alt=""
+        />
+      </div>
+    </section>
+
+    <h2>Realiza tu reserva</h2>
+    <section class="reserva">
+      <form action="#" method="post" class="reserva-form">
+        <label for="name" class="reserva-form-label">Nombre Completo</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          class="reserva-form-input"
+          required
+        />
+
+        <label for="email" class="reserva-form-label">Correo Electrónico</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="reserva-form-input"
+          required
+        />
+
+        <label for="phone" class="reserva-form-label">Teléfono</label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          class="reserva-form-input"
+          required
+        />
+
+        <label for="date" class="reserva-form-label">Fecha</label>
+        <input
+          type="date"
+          id="date"
+          name="date"
+          class="reserva-form-input"
+          required
+        />
+
+        <label for="time" class="reserva-form-label">Hora</label>
+        <input
+          type="time"
+          id="time"
+          name="time"
+          class="reserva-form-input"
+          required
+        />
+
+        <label for="guests" class="reserva-form-label"
+          >Número de Personas</label
+        >
+        <input
+          type="number"
+          id="guests"
+          name="guests"
+          class="reserva-form-input"
+          min="1"
+          required
+        />
+
+        <label for="requests" class="reserva-form-label"
+          >Solicitudes Especiales</label
+        >
+        <textarea
+          id="requests"
+          name="requests"
+          class="reserva-form-input"
+          rows="4"
+        ></textarea>
+
+        <input type="submit" class="reserva-form-input btn" value="Reservar" />
+      </form>
+      <div class="reserva-contMapa">
+        <img th:src="@{/img/map.jpg}" alt="safsd" class="map" />
+      </div>
+    </section>
+
+    <h2>Platos mas populares</h2>
+    <section class="contPlatos">
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+    </section>
+
+    <h2>Entradas</h2>
+    <section class="contPlatos">
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+    </section>
+
+    <h2>Platos pricipales</h2>
+    <section class="contPlatos">
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+    </section>
+
+    <h2>Postres</h2>
+    <section class="contPlatos">
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+      <div class="contPlato">
+        <img
+          class="contPlato-img"
+          th:src="@{/img/platos/bibimbap.jpg}"
+          alt=""
+        />
+        <div class="contPlato-contInfo">
+          <p class="contPlato-nombre">Nombre de plato muy muy largo</p>
+          <p class="contPlato-precio">$15</p>
+        </div>
+      </div>
+    </section>
   </body>
 </html>

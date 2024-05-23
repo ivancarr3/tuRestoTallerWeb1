@@ -1,0 +1,176 @@
+body {
+  font-family: sans-serif;
+}
+
+h2 {
+  font-size: 24px;
+  padding: 10px;
+  margin: 0;
+}
+
+h2,
+h3 {
+  padding-left: 15px;
+}
+
+.nombreRestaurante {
+  font-size: 30px;
+}
+
+.contenedorImagenes {
+  display: grid;
+  grid-template-columns: 50% 25% 25%;
+  grid-template-rows: 150px 150px;
+  padding: 10px;
+  max-width: 100vw;
+  gap: 10px;
+  max-width: 95vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contenedorImagenes-img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.a {
+  grid-row: 1 / span 2;
+}
+
+.reserva {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  padding-top: 0;
+}
+
+.reserva-form {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+}
+
+.reserva-form-label,
+.reserva-form-input,
+.btn {
+  font-size: 18px;
+}
+
+.reserva-form-label {
+  padding: 5px;
+  padding-left: 0px;
+  width: 250px;
+}
+
+.reserva-form-input {
+  width: 250px;
+  border-radius: 5px;
+  padding: 5px;
+  border: 1px solid grey;
+}
+
+.btn {
+  background-color: rgb(36, 36, 149);
+  color: white;
+  border-radius: 5px;
+  border: none;
+  font-weight: bolder;
+  width: fit-content;
+  padding: 10px;
+  margin: 5px;
+}
+.btn:hover {
+  cursor: pointer;
+}
+
+.reserva-contMapa {
+  max-height: 80%;
+}
+
+.reserva-contMapa img {
+  object-fit: cover;
+  width: 100%;
+}
+
+.contPlatos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-bottom: 20px;
+}
+
+.contPlato {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid grey;
+  border-radius: 5px;
+  overflow: hidden;
+  flex-basis: 200px;
+  max-width: 260px;
+  gap: 10px;
+  padding-bottom: 7px;
+  flex-grow: 1;
+}
+
+.contPlato-img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.contPlato-contInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.contPlato-calificacion,
+.contPlato-nombre,
+.contPlato-precio {
+  padding: 0;
+  margin: 0;
+}
+
+.contPlato-calificacion {
+  vertical-align: middle;
+}
+
+.contPlato-nombre {
+  font-weight: 500;
+  flex-grow: 1;
+  padding-left: 10px;
+}
+
+.contPlato-precio {
+  font-weight: 900;
+  font-size: 20px;
+  padding-right: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .contPlato-contInfo {
+    flex-direction: column;
+  }
+
+  .contPlato-nombre {
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .contPlato-precio {
+    padding: 0;
+  }
+}
