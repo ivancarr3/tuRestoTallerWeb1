@@ -1,19 +1,13 @@
 package com.tallerwebi.dominio;
 
-import com.tallerwebi.dominio.RepositorioReserva;
-import com.tallerwebi.dominio.Reserva;
-import com.tallerwebi.dominio.Restaurante;
 import com.tallerwebi.dominio.excepcion.DatosInvalidosReserva;
 import com.tallerwebi.dominio.excepcion.EspacioNoDisponible;
-import com.tallerwebi.dominio.excepcion.ReservaExistente;
 import com.tallerwebi.dominio.excepcion.ReservaNoEncontrada;
 import com.tallerwebi.servicio.ServicioReserva;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -22,10 +16,12 @@ import java.util.List;
 public class ServicioReservaImpl implements ServicioReserva {
 
     private final RepositorioReserva repositorioReserva;
+    private final RepositorioRestaurante repositorioRestaurante;
 
     @Autowired
-    public ServicioReservaImpl(RepositorioReserva repositorioReserva){
+    public ServicioReservaImpl(RepositorioReserva repositorioReserva, RepositorioRestaurante repositorioRestaurante){
         this.repositorioReserva = repositorioReserva;
+        this.repositorioRestaurante = repositorioRestaurante;
     }
 
     @Override
@@ -37,8 +33,6 @@ public class ServicioReservaImpl implements ServicioReserva {
     public Reserva buscarReserva(Long id) {
         return repositorioReserva.buscarReserva(id);
     }
-
-
 
     @Override
     public void actualizar(Reserva reserva) throws ReservaNoEncontrada {
@@ -72,22 +66,25 @@ public class ServicioReservaImpl implements ServicioReserva {
         if (!verificarEspacioDisponible(reserva)) {
             throw new EspacioNoDisponible();
         }
+
         repositorioReserva.guardar(reserva);
+        restauranteEncontrado.setEspacioDisponible(restauranteEncontrado.getCapacidadMaxima() - reserva.getCantidadPersonas());
+        repositorioRestaurante.actualizar(restauranteEncontrado);
     }
 
-    private boolean validarDatosReserva(String nombre_form, String email_form, Integer num_form,
-                                        Integer dni_form, Integer cant_personas, Date fecha_form){
-        if (nombre_form == null || nombre_form.isEmpty() || email_form == null || email_form.isEmpty() ||
-                num_form == null || dni_form == null || cant_personas == null || fecha_form == null) {
+    private boolean validarDatosReserva(String nombreForm, String emailForm, Integer numForm,
+                                        Integer dniForm, Integer cantPersonas, Date fechaForm){
+        if (nombreForm == null || nombreForm.isEmpty() || emailForm == null || emailForm.isEmpty() ||
+                numForm == null || dniForm == null || cantPersonas == null || fechaForm == null) {
             return false;
         }
 
         Date fechaActual = new Date();
 
-        if (fecha_form.before(fechaActual)) {
+        if (fechaForm.before(fechaActual)) {
             return false;
         }
-        if (!email_form.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+        if (!emailForm.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             return false;
         }
         return true;
