@@ -39,7 +39,7 @@
 <body>
 <header>
   <a class="header-titulo mb-0" style="text-decoration: none; color: black;" th:href="@{/home}">TuResto</a>
-  
+  <a th:href="@{/usuarioPerfil}" class="contRestaurant-btnReservar">Mi Perfil</a>
 </header>
 <main>
   <div class="contPlatos">
@@ -104,53 +104,74 @@
       </div>
     </form>
 
-    <div class="accordion mb-3" id="accordionExample">
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-            Filtros
-          </button>
-        </h2>
-        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-          <div class="accordion-body">
-            <form action="#" th:action="@{/filtrar}" method="POST">
-              <input type="radio" id="1-star-rating" th:value="1.0" name="filtrado" />
-              <label for="1-star-rating" class="star-rating star">
-                1<i class="fas fa-star" style="color: #ffc107"></i>
-              </label>
-              <input type="radio" id="2-star-rating" th:value="2.0" name="filtrado" />
-              <label for="2-star-rating" class="star-rating star">
-                2<i class="fas fa-star" style="color: #ffc107"></i>
-              </label>
-
-              <input type="radio" id="3-star-rating" th:value="3.0" name="filtrado" />
-              <label for="3-star-rating" class="star-rating star">
-                3<i class="fas fa-star" style="color: #ffc107"></i>
-              </label>
-
-              <input type="radio" id="4-star-rating" th:value="4.0" name="filtrado" />
-              <label for="4-star-rating" class="star-rating star">
-                4<i class="fas fa-star" style="color: #ffc107"></i>
-              </label>
-
-              <input type="radio" id="5-star-rating" th:value="5.0" name="filtrado" />
-              <label for="5-star-rating" class="star-rating star">
-                5<i class="fas fa-star" style="color: #ffc107"></i>
-              </label>
-
-              <input type="radio" name="filtro_orden" th:value="DESC" />
-              <label>DESC</label>
-
-              <input type="radio" name="filtro_orden" th:value="ASC" />
-              <label>ASC</label>
-
-              <button type="submit" class="btn btn-primary">Filtrar</button>
-            </form>
-          </div>
+    <h2>Filtros</h2>
+    <div class="d-flex align-items-center justify-content-start mb-3" style="gap: .8em;">
+      <form action="#" th:action="@{/filtrar}" method="POST" style="cursor: pointer; border: none; color: white; background-color: #595959; border-radius: 10px; padding: 5px 10px;">
+        <button type="submit" style="cursor: pointer; background-color: #595959; border: none; color: white; padding: 5px 10px; border-radius: 10px;">
+          <label class="star-rating star">
+            1 <i class="fas fa-star" style="color: #ffc107"></i>
+          </label>
+        </button>
+        <input type="hidden" th:value="1.0" name="filtrado" />
+      </form>
+      <form action="#" th:action="@{/filtrar}" method="POST" style="cursor: pointer; border: none; color: white; background-color: #595959; border-radius: 10px; padding: 5px 10px;">
+        <button type="submit" style="cursor: pointer; background-color: #595959; border: none; color: white; padding: 5px 10px; border-radius: 10px; ">
+          <label class="star-rating star">
+            2 <i class="fas fa-star" style="color: #ffc107"></i>
+          </label>
+        </button>
+        <input type="hidden" th:value="2.0" name="filtrado" />
+      </form>
+      <form action="#" th:action="@{/filtrar}" method="POST" style="cursor: pointer; border: none; color: white; background-color: #595959; border-radius: 10px; padding: 5px 10px;">
+        <button type="submit" style="cursor: pointer; background-color: #595959; border: none; color: white; padding: 5px 10px; border-radius: 10px; ">
+          <label class="star-rating star">
+            3 <i class="fas fa-star" style="color: #ffc107"></i>
+          </label>
+        </button>
+        <input type="hidden" th:value="3.0" name="filtrado" />
+      </form>
+      <form action="#" th:action="@{/filtrar}" method="POST" style="cursor: pointer; border: none; color: white; background-color: #595959; border-radius: 10px; padding: 5px 10px;">
+        <button type="submit" style="cursor: pointer; background-color: #595959; border: none; color: white; padding: 5px 10px; border-radius: 10px; ">
+          <label class="star-rating star">
+            4 <i class="fas fa-star" style="color: #ffc107"></i>
+          </label>
+        </button>
+        <input type="hidden" th:value="4.0" name="filtrado" />
+      </form>
+      <form action="#" th:action="@{/filtrar}" method="POST" style="cursor: pointer; border: none; color: white; background-color: #595959; border-radius: 10px; padding: 5px 10px;">
+        <button type="submit" style="cursor: pointer; background-color: #595959; border: none; color: white; padding: 5px 10px; border-radius: 10px; ">
+          <label class="star-rating star">
+            5 <i class="fas fa-star" style="color: #ffc107"></i>
+          </label>
+        </button>
+        <input type="hidden" th:value="5.0" name="filtrado" />
+      </form>
+      <form action="#" th:action="@{/filtrar}" method="POST" style="cursor: pointer; border: none; color: white; background-color: #595959; border-radius: 10px; padding: 5px 10px;">
+        <button type="submit" style="cursor: pointer; background-color: #595959; border: none; color: white; padding: 5px 10px; border-radius: 10px; ">
+          <label class="star-rating star">
+            Estrellas Ascendente <i class="fas fa-arrow-up"></i>
+          </label>
+        </button>
+        <input type="hidden" th:value="ASC" name="filtro_orden" />
+      </form>
+      <form action="#" th:action="@{/filtrar}" method="POST" style="cursor: pointer; border: none; color: white; background-color: #595959; border-radius: 10px; padding: 5px 10px;">
+        <button type="submit" style="cursor: pointer; background-color: #595959; border: none; color: white; padding: 5px 10px; border-radius: 10px; ">
+          <label class="star-rating star">
+            Estrellas Descendente <i class="fas fa-arrow-down"></i>
+          </label>
+        </button>
+        <input type="hidden" th:value="DESC" name="filtro_orden" />
+      </form>
+    </div>
+    <form class="row row-cols-lg-auto g-3 align-items-center" action="#" th:action="@{/filtrar_capacidad}" method="POST">
+      <div class="col-12">
+        <label class="mb-2">Buscar por espacio disponible <i class="fas fa-user"></i></label>
+        <div class="input-group mb-3">
+          <input type="number" placeholder="Número de comensales" class="form-control" id="capacidadPersonas" name="capacidadPersonas" />
+          <button type="submit" class="btn btn-dark">Filtrar</button>
         </div>
       </div>
-    </div>
+    </form>
     <p
             th:if="${errorFiltro != null}"
             class="alert alert-danger"
@@ -163,7 +184,7 @@
     ></p>
   </div>
   <div
-          class="container d-flex align-items-center justify-content-center flex-wrap"
+          class="container d-flex align-items-center justify-content-start flex-wrap"
           style="gap: 3em"
   >
     <div

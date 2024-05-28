@@ -31,7 +31,7 @@ public class ServicioRestauranteTest {
         this.repositorioRestaurante = mock(RepositorioRestaurante.class);
         this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante, this.servicioReserva);
         this.restaurantesMock = new ArrayList<>();
-        this.restaurantesMock.add(new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 100));
+        this.restaurantesMock.add(new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 2));
         this.restaurantesMock.add(new Restaurante(2L, "La Farola", 4.0, "Almafuerte 3344", "restaurant.jpg", 100));
         this.restaurantesMock.add(new Restaurante(3L, "Benjamin", 4.5, "Arieta 3344", "restaurant.jpg", 100));
     }
@@ -114,6 +114,25 @@ public class ServicioRestauranteTest {
 
         List<Restaurante> restaurantes = this.servicioRestaurante.consultarRestaurantePorEstrellas(4.5);
         assertThat(restaurantes.size(), equalTo(1));
+    }
+
+    @Test
+    public void queAlBuscarRestaurantesPorEspacioDevuelvaLosCorrespondientes() throws NoHayRestaurantes {
+
+        List<Restaurante> restaurantesPorEspacio = List.of(this.restaurantesMock.get(1));
+        when(this.repositorioRestaurante.buscarPorEspacio(4)).thenReturn(restaurantesPorEspacio);
+
+        List<Restaurante> restaurantes = this.servicioRestaurante.consultarRestaurantePorEspacio(4);
+        assertThat(restaurantes.size(), equalTo(1));
+    }
+
+    @Test
+    public void queAlNoEncontrarRestaurantesPorEspacioLanceExcepcion() throws NoHayRestaurantes {
+        when(this.repositorioRestaurante.buscarPorEspacio(1)).thenReturn(this.restaurantesMock);
+
+        assertThrows(NoHayRestaurantes.class, () -> {
+            this.servicioRestaurante.consultarRestaurantePorEspacio(15);
+        });
     }
 
     @Test

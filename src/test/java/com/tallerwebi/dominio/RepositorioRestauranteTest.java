@@ -37,27 +37,27 @@ public class RepositorioRestauranteTest {
 
     @BeforeEach
     public void init() {
-        this.restaurantes.add(crearYGuardarRestaurante("La Quintana", 4.5, "Arieta 5000"));
-        this.restaurantes.add(crearYGuardarRestaurante("Benjamin", 3.9, "Arieta 5446"));
-        this.restaurantes.add(crearYGuardarRestaurante("La Capilla", 4.2, "Almafuerte 1111"));
+        this.restaurantes.add(crearYGuardarRestaurante("La Quintana", 4.5, "Arieta 5000", 1));
+        this.restaurantes.add(crearYGuardarRestaurante("Benjamin", 3.9, "Arieta 5446", 2));
+        this.restaurantes.add(crearYGuardarRestaurante("La Capilla", 4.2, "Almafuerte 1111", 3));
     }
 
-    private Restaurante crearYGuardarRestaurante(String nombre, double estrellas, String direccion) {
-        Restaurante restaurante = new Restaurante(null, nombre, estrellas, direccion, "restaurant.jpg", 100);
+    private Restaurante crearYGuardarRestaurante(String nombre, double estrellas, String direccion, Integer capacidad) {
+        Restaurante restaurante = new Restaurante(null, nombre, estrellas, direccion, "restaurant.jpg", capacidad);
         repositorioRestaurante.guardar(restaurante);
         return restaurante;
     }
 
     @Test
     public void queGuardeRestauranteCorrectamente() {
-        crearYGuardarRestaurante("La Quintana", 4.5, "Arieta 5000");
+        crearYGuardarRestaurante("La Quintana", 4.5, "Arieta 5000", 4);
         List<Restaurante> restaurantes = repositorioRestaurante.get();
         assertThat(restaurantes.size(), equalTo(4));
     }
 
     @Test
     public void queDevuelvaRestaurantePorId() {
-        Restaurante restaurante = crearYGuardarRestaurante("La Quintana", 4.5, "Arieta 5000");
+        Restaurante restaurante = crearYGuardarRestaurante("La Quintana", 4.5, "Arieta 5000", 5);
         Long id = restaurante.getId();
         Restaurante restauranteEncontrado = repositorioRestaurante.buscar(id);
         assertNotNull(restauranteEncontrado);
@@ -70,6 +70,14 @@ public class RepositorioRestauranteTest {
     public void queAlBuscarPorEstrellasDevuelvaLosCorrespondientes() {
         Double estrellas = 4.0;
         List<Restaurante> restaurantes = repositorioRestaurante.buscarPorEstrellas(estrellas);
+
+        assertEquals(2, restaurantes.size());
+    }
+
+    @Test
+    public void queAlBuscarPorEpacioDevuelvaLosCorrespondientes() {
+        Integer espacio = 2;
+        List<Restaurante> restaurantes = repositorioRestaurante.buscarPorEspacio(espacio);
 
         assertEquals(2, restaurantes.size());
     }
@@ -112,7 +120,7 @@ public class RepositorioRestauranteTest {
 
     @Test
     public void queActualizeRestaurante() {
-        Restaurante restaurante = crearYGuardarRestaurante("La Quintana", 4.5, "Arieta 5000");
+        Restaurante restaurante = crearYGuardarRestaurante("La Quintana", 4.5, "Arieta 5000", 6);
 
         Long id = restaurante.getId();
         String nombre = "Test";
@@ -135,7 +143,7 @@ public class RepositorioRestauranteTest {
     @Test
     public void queElimineRestaurante() {
 
-        Restaurante restaurante = crearYGuardarRestaurante("La Quintana", 4.5, "Arieta 5000");
+        Restaurante restaurante = crearYGuardarRestaurante("La Quintana", 4.5, "Arieta 5000", 7);
 
 
         Long id = restaurante.getId();

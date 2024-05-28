@@ -15,6 +15,7 @@ public interface ServicioRestaurante {
     List<Restaurante> consultarRestaurantePorFiltros(Double estrellas, String tipoDeOrden) throws RestauranteNoEncontrado;
     List<Restaurante> consultarRestaurantePorDireccion(String direccion) throws RestauranteNoEncontrado;
     List<Restaurante> consultarOrdenPorEstrellas(String tipoDeOrden) throws NoHayRestaurantes;
+    List<Restaurante> consultarRestaurantePorEspacio(Integer capacidad) throws NoHayRestaurantes;
     List<Restaurante> get() throws NoHayRestaurantes;
     void crearRestaurante(Restaurante restaurante) throws RestauranteExistente;
     void actualizarRestaurante(Restaurante restaurante) throws RestauranteNoEncontrado;

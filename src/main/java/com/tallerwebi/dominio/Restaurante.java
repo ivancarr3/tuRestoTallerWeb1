@@ -25,6 +25,9 @@ public class Restaurante {
     @Column(nullable = false)
     private Integer capacidadMaxima;
 
+    @Column(nullable = false)
+    private Integer espacioDisponible;
+
     @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL)
     private List<Reserva> reservas;
 
@@ -37,6 +40,7 @@ public class Restaurante {
         this.direccion = direccion;
         this.imagen = imagen;
         this.capacidadMaxima = capacidadMaxima;
+        this.espacioDisponible = capacidadMaxima;
     }
 
     public Long getId() {return id;}
@@ -53,4 +57,10 @@ public class Restaurante {
     public void setCapacidadMaxima(Integer capacidadMaxima) {this.capacidadMaxima = capacidadMaxima;}
     public List<Reserva> getReservas() {return reservas;}
     public void setReservas(List<Reserva> reservas) {this.reservas = reservas;}
+    public Integer getEspacioDisponible() {
+        return espacioDisponible;
+    }
+    public void setEspacioDisponible(Integer espacioDisponible) {
+        this.espacioDisponible = espacioDisponible;
+    }
 }
