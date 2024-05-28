@@ -12,4 +12,5 @@ INSERT INTO plato (id, nombre, precio, descripcion, imagen) VALUES (null, 'milan
                                                             (null, 'asado', 15000, 'milanesa rellena de amor', 'pizza.jpeg'),
                                                             (null, 'lechuga', 15000, 'milanesa rellena de amor', 'pizza.jpeg');
 INSERT INTO reserva (id, idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha) VALUES (null, 1, "mateo", "mateo", 1234, 4321, 2, "2024-09-10");
+INSERT INTO reserva (id, idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha) VALUES (null, 1, "gene", "gene", 1234, 4321, 2, "2024-06-11");
 

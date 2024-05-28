@@ -28,6 +28,11 @@ public class ServicioReservaImpl implements ServicioReserva {
     public List<Reserva> buscarReservasDelUsuario(Long idUsuario) {
         return repositorioReserva.buscarReservasDelUsuario(idUsuario);
     }
+    
+    @Override
+    public List<Reserva> buscarTodasLasReservas() {
+        return repositorioReserva.buscarTodasLasReservas();
+    }
 
     @Override
     public Reserva buscarReserva(Long id) {

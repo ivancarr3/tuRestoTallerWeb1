@@ -1,16 +1,22 @@
 package com.tallerwebi.controlador;
 
-import com.tallerwebi.dominio.Restaurante;
-import com.tallerwebi.dominio.excepcion.*;
-import com.tallerwebi.servicio.ServicioReserva;
-import com.tallerwebi.servicio.ServicioRestaurante;
+import java.util.Date;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Date;
+import com.tallerwebi.dominio.Restaurante;
+import com.tallerwebi.dominio.excepcion.DatosInvalidosReserva;
+import com.tallerwebi.dominio.excepcion.EspacioNoDisponible;
+import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
+import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
+import com.tallerwebi.servicio.ServicioReserva;
+import com.tallerwebi.servicio.ServicioRestaurante;
 
 @Controller
 public class ControladorReserva {
@@ -32,9 +38,9 @@ public class ControladorReserva {
                                  @RequestParam("num_form") Integer numForm,
                                  @RequestParam("dni_form") Integer dniForm,
                                  @RequestParam("cant_personas_form") Integer cantPersonas,
-                                 @RequestParam("fecha_form") Date fechaForm) throws RestauranteNoEncontrado, NoHayRestaurantes,
-            EspacioNoDisponible, DatosInvalidosReserva {
-        ModelMap model = new ModelMap();
+                                 @RequestParam("fecha_form") 
+								 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date fechaForm) throws RestauranteNoEncontrado, NoHayRestaurantes, EspacioNoDisponible, DatosInvalidosReserva {
+		ModelMap model = new ModelMap();
 
         try {
             Restaurante restauranteEncontrado = servicioRestaurante.consultar(idRestaurante);

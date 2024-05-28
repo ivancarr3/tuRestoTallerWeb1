@@ -30,6 +30,14 @@ public class RepositorioReservaImpl implements RepositorioReserva {
         query.setParameter("id", idUsuario);
         return query.getResultList();
     }
+    
+    @Override
+    public List<Reserva> buscarTodasLasReservas() {
+        String hql = "FROM Reserva";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        return query.getResultList();
+    }
+    
 
     @Override
     public Reserva buscarReserva(Long id) {
