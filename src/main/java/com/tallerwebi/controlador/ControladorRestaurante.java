@@ -69,13 +69,21 @@ public class ControladorRestaurante {
         List<Plato> platos;
         ModelMap model = new ModelMap();
         try {
-            platos = servicioPlato.consultarPlatoPorPrecio(precio);
-            model.put("platos", platos);
-
             Restaurante restaurante = servicioRestaurante.consultar(idRestaurante);
+            platos = servicioPlato.consultarPlatoPorPrecio(precio);
+
+            Map<Categoria, List<Plato>> platosPorCategoria = platos.stream()
+                    .collect(Collectors.groupingBy(Plato::getCategoria));
+
+            List<Plato> platosRecomendados = platos.stream()
+                    .filter(Plato::isEsRecomendado)
+                    .collect(Collectors.toList());
+
+            model.put("platosPorCategoria", platosPorCategoria);
+            model.put("platosRecomendados", platosRecomendados);
             model.put(MODEL_NAME_SINGULAR, restaurante);
 
-            return new ModelAndView(MODEL_NAME_SINGULAR, model);
+            return new ModelAndView("restaurante", model);
         } catch (PlatoNoEncontrado e) {
             model.put(ERROR_NAME, "No existen platos");
             model.put(MODEL_NAME_SINGULAR, servicioRestaurante.consultar(idRestaurante));

@@ -86,7 +86,6 @@
     </div>
     <div class="container">
         <form action="#" th:action="@{/restaurante/filtrarPlato}" id="form_plato" th:method="POST" method="POST">
-
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Filtrar platos por precio
@@ -101,16 +100,8 @@
             <input id="precioPlato" type="hidden" name="precioPlato" value="">
             <input id="idRestaurante" type="hidden" name="idRestaurante" th:value="${restaurante.id}">
         </form>
-        <p
-                th:if="${errorFiltroPlato != null}"
-                class="alert alert-danger"
-                th:text="${errorFiltroPlato}"
-        ></p>
-        <p
-                th:if="${error != null}"
-                class="alert alert-danger mt-3"
-                th:text="${error}"
-        ></p>
+        <p th:if="${errorFiltroPlato != null}" class="alert alert-danger" th:text="${errorFiltroPlato}"></p>
+        <p th:if="${error != null}" class="alert alert-danger mt-3" th:text="${error}"></p>
     </div>
 
     <div class="container d-flex align-items-center justify-content-center flex-wrap mt-3" style="gap: 3em">
@@ -191,7 +182,6 @@
 
 <script>
     function seleccionarOpcion(precio) {
-
         document.getElementById('precioPlato').value = precio;
         document.getElementById('form_plato').submit();
     }
