@@ -41,3 +41,30 @@
   align-items: center;
   background-color: rgba(0, 0, 0, 0.164);
 }
+
+.scrolling-wrapper {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.card {
+  display: inline-block;
+  width: 15rem; /* O ajusta según tus necesidades */
+  margin-right: 10px; /* Espacio entre las cards */
+}
+
+.navigation-buttons {
+  margin-top: 1em; /* Espacio entre el carrusel y los botones de navegación */
+  text-align: center;
+}
+
+.nav-btn {
+  font-size: 1.5em;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.prev-btn {
+  margin-right: 1em; /* Espacio entre los botones de navegación */
+}

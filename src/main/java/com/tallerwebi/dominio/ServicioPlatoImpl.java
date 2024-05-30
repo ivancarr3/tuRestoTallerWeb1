@@ -36,6 +36,20 @@ public class ServicioPlatoImpl implements ServicioPlato {
     }
 
     @Override
+    public List<Plato> getPlatosDeRestaurante(Long idRestaurante) throws NoHayPlatos {
+        List<Plato> platos = repositorioPlato.getPlatosDeRestaurante(idRestaurante);
+        if (platos == null) {
+            throw new NoHayPlatos();
+        }
+        return platos;
+    }
+
+    @Override
+    public List<Plato> getPlatosAgrupadosPorCategoria() {
+        return repositorioPlato.getPlatosAgrupadosPorCategoria();
+    }
+
+    @Override
     public Plato consultar(Long id) throws PlatoNoEncontrado {
         Plato plato = repositorioPlato.buscar(id);
         if (plato == null) {
@@ -97,5 +111,7 @@ public class ServicioPlatoImpl implements ServicioPlato {
         }
         repositorioPlato.eliminarPlato(plato);
     }
+
+
 }
 

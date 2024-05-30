@@ -8,7 +8,9 @@ public interface RepositorioPlato {
     List<Plato> buscarPlatoPorNombre(String nombre);
     List<Plato> buscarPlatoPorPrecio(Double precio);
     List<Plato> get();
+    List<Plato> getPlatosDeRestaurante(Long restauranteId);
     List<Plato> ordenarPorPrecio(String tipoDeOrden);
+    List<Plato> getPlatosAgrupadosPorCategoria();
     void guardarPlato(Plato plato);
     void modificarPlato(Plato plato);
     void eliminarPlato(Plato plato);

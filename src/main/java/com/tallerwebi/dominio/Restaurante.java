@@ -31,6 +31,9 @@ public class Restaurante {
     @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL)
     private List<Reserva> reservas;
 
+    @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Plato> platos;
+
     public Restaurante() {}
 
     public Restaurante (Long id, String nombre, Double estrellas, String direccion, String imagen, Integer capacidadMaxima) {

@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ControladorInforestaurante {
 
-    @GetMapping(path = "/inforestaurante")
+    @RequestMapping(path = "/inforestaurante", method = RequestMethod.GET)
     public ModelAndView inicio() {
         return new ModelAndView("inforestaurante");
     }

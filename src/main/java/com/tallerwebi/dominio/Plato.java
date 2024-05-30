@@ -21,13 +21,27 @@ public class Plato {
     @Column(nullable = false)
     private String imagen;
 
+    @ManyToOne
+    @JoinColumn(name = "id_restaurante", nullable = false)
+    private Restaurante restaurante;
+
+    @ManyToOne
+    @JoinColumn(name = "id_categoria", nullable = false)
+    private Categoria categoria;
+
+    @Column(nullable = false)
+    private boolean esRecomendado;
+
     public Plato() {}
-    public Plato (Long id, String nombre, Double precio, String descripcion, String imagen) {
+    public Plato (Long id, String nombre, Double precio, String descripcion, String imagen, Restaurante restaurante, Categoria categoria, boolean esRecomendado) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.imagen = imagen;
+        this.restaurante = restaurante;
+        this.categoria = categoria;
+        this.esRecomendado = esRecomendado;
     }
 
     public void setId(Long id) {this.id = id;}
@@ -40,4 +54,28 @@ public class Plato {
     public void setDescripcion(String descripcion) {this.descripcion = descripcion;}
     public String getImagen() {return imagen;}
     public void setImagen(String imagen) {this.imagen = imagen;}
+
+    public Restaurante getRestaurante() {
+        return restaurante;
+    }
+
+    public void setRestaurante(Restaurante restaurante) {
+        this.restaurante = restaurante;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public boolean isEsRecomendado() {
+        return esRecomendado;
+    }
+
+    public void setEsRecomendado(boolean esRecomendado) {
+        this.esRecomendado = esRecomendado;
+    }
 }
