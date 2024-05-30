@@ -2,15 +2,12 @@ package com.tallerwebi.controlador;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.tallerwebi.dominio.Restaurante;
 import com.tallerwebi.dominio.excepcion.DatosInvalidosReserva;
 import com.tallerwebi.dominio.excepcion.EspacioNoDisponible;
-import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 import com.tallerwebi.servicio.ServicioReserva;
 import com.tallerwebi.servicio.ServicioRestaurante;
@@ -54,7 +50,7 @@ public class ControladorReservaTest {
 	}
 
 	@Test
-	public void noSeEncontroRestaurante() throws RestauranteNoEncontrado {
+	public void noSeEncontroRestaurante() throws RestauranteNoEncontrado, DatosInvalidosReserva, EspacioNoDisponible {
 		doThrow(new RestauranteNoEncontrado()).when(servicioRestauranteMock).consultar(1L);
 
 		ModelAndView modelAndView = controladorReserva.reservar(1L, "asdfs", "sadfasd", Integer.valueOf(1),
