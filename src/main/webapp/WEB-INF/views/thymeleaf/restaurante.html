@@ -85,6 +85,7 @@
     </div>
     <div class="container">
         <form action="#" th:action="@{/restaurante/filtrarPlato}" id="form_plato" th:method="POST" method="POST">
+
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Filtrar platos por precio
@@ -184,6 +185,7 @@
 </footer>
 <script>
     function seleccionarOpcion(precio) {
+
         document.getElementById('precioPlato').value = precio;
         document.getElementById('form_plato').submit();
     }
@@ -204,6 +206,7 @@
         console.log("Documento: " + documento);
         console.log("Fecha: " + fecha);
         console.log("Cantidad de personas: " + cantPersonas);
+
     }
 </script>
 <script
