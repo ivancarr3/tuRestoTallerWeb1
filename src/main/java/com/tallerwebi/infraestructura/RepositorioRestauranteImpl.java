@@ -46,7 +46,6 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
         }
     }
 
-
     @Override
     public List<Restaurante> buscarPorEstrellasYOrdenar(Double estrellas, String tipoDeOrden) {
 
@@ -80,6 +79,16 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
         String hql = "FROM Restaurante WHERE LOWER(direccion) LIKE LOWER(:direccion)";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("direccion", "%"+direccion.toLowerCase()+"%");
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Restaurante> buscarPorEspacio(Integer espacio) {
+
+        String hql = "FROM Restaurante WHERE espacioDisponible >= :espacio";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("espacio", espacio);
 
         return query.getResultList();
     }

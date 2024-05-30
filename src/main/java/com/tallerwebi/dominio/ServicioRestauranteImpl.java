@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -83,6 +84,15 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
         List<Restaurante> restaurantes = repositorioRestaurante.buscarPorEstrellas(estrellas);
         if(restaurantes.isEmpty()){
             throw new RestauranteNoEncontrado();
+        }
+        return restaurantes;
+    }
+
+    @Override
+    public List<Restaurante> consultarRestaurantePorEspacio(Integer capacidad) throws NoHayRestaurantes {
+        List<Restaurante> restaurantes = repositorioRestaurante.buscarPorEspacio(capacidad);
+        if(restaurantes.isEmpty()){
+            throw new NoHayRestaurantes();
         }
         return restaurantes;
     }

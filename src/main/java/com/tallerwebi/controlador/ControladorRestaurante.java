@@ -12,10 +12,7 @@ import com.tallerwebi.servicio.ServicioPlato;
 import com.tallerwebi.servicio.ServicioRestaurante;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,16 +22,16 @@ import java.util.List;
 @Controller
 public class ControladorRestaurante {
 
-
     private final ServicioRestaurante servicioRestaurante;
     private final ServicioPlato servicioPlato;
-    private static final String MODEL_NAME = "restaurantes";
+    private static final String MODEL_NAME_SINGULAR = "restaurante";
     private static final String ERROR_NAME = "error";
 
     public ControladorRestaurante(ServicioRestaurante servicioRestaurante, ServicioPlato servicioPlato){
         this.servicioRestaurante = servicioRestaurante;
         this.servicioPlato = servicioPlato;
     }
+
 
     @RequestMapping(path = "/restaurante/{id}", method = RequestMethod.GET)
     public ModelAndView mostrarRestaurante(@PathVariable("id") Long id) throws RestauranteNoEncontrado, NoHayRestaurantes, NoHayPlatos {
@@ -54,7 +51,7 @@ public class ControladorRestaurante {
             return new ModelAndView("restaurante", model);
         } catch (RestauranteNoEncontrado error) {
             model.put("errorId", "No se encontró el restaurante" );
-            model.put(MODEL_NAME, servicioRestaurante.get());
+            model.put(MODEL_NAME_SINGULAR, servicioRestaurante.get());
             return new ModelAndView("home", model);
         } catch (NoHayPlatos error) {
             model.put("error", "No hay platos en este restaurante");
@@ -66,8 +63,8 @@ public class ControladorRestaurante {
         }
     }
 
-    @RequestMapping(path = "/restaurante/{id}/filtrarPlato", method = RequestMethod.POST)
-    public ModelAndView filtrarPlato(@PathVariable("id") Long id_restaurante, @RequestParam("precio") String precioStr) throws PlatoNoEncontrado {
+    @PostMapping(path = "/restaurante/filtrarPlato")
+    public ModelAndView filtrarPlato(@RequestParam("idRestaurante") Long idRestaurante, @RequestParam("precioPlato") String precioStr) throws PlatoNoEncontrado, RestauranteNoEncontrado {
         Double precio = Double.valueOf(precioStr);
         List<Plato> platos;
         ModelMap model = new ModelMap();
@@ -75,17 +72,21 @@ public class ControladorRestaurante {
             platos = servicioPlato.consultarPlatoPorPrecio(precio);
             model.put("platos", platos);
 
-            Restaurante restaurante = servicioRestaurante.consultar(id_restaurante);
-            model.put("restaurante", restaurante);
+            Restaurante restaurante = servicioRestaurante.consultar(idRestaurante);
+            model.put(MODEL_NAME_SINGULAR, restaurante);
 
-            return new ModelAndView("restaurante", model);
-        }catch (PlatoNoEncontrado e) {
-            model.put("error", "No existen platos");
-            return new ModelAndView("restaurante", model);
-        }
-        catch (Exception e) {
+            return new ModelAndView(MODEL_NAME_SINGULAR, model);
+        } catch (PlatoNoEncontrado e) {
+            model.put(ERROR_NAME, "No existen platos");
+            model.put(MODEL_NAME_SINGULAR, servicioRestaurante.consultar(idRestaurante));
+            return new ModelAndView(MODEL_NAME_SINGULAR, model);
+        } catch (RestauranteNoEncontrado e) {
+            model.put(ERROR_NAME, "No existe el restaurante");
+            model.put(MODEL_NAME_SINGULAR, servicioRestaurante.consultar(idRestaurante));
+            return new ModelAndView(MODEL_NAME_SINGULAR, model);
+        } catch (Exception e) {
             model.put(ERROR_NAME, "Error del servidor" + e.getMessage());
-            return new ModelAndView("restaurante", model);
+            return new ModelAndView(MODEL_NAME_SINGULAR, model);
         }
     }
 }

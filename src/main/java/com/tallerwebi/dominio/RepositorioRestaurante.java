@@ -8,6 +8,7 @@ public interface RepositorioRestaurante {
     List<Restaurante> buscarPorNombre(String nombre);
     List<Restaurante> buscarPorEstrellas(Double estrellas);
     List<Restaurante> ordenarPorEstrellas(String tipoDeOrden);
+    List<Restaurante> buscarPorEspacio(Integer espacio);
     List<Restaurante> buscarPorEstrellasYOrdenar(Double estrellas, String tipoDeOrden);
     Restaurante buscar(Long id);
     List<Restaurante> get();
