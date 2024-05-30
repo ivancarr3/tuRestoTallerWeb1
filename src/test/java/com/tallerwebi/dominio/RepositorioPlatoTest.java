@@ -30,6 +30,7 @@ public class RepositorioPlatoTest {
     @Autowired
     private RepositorioRestaurante repositorioRestaurante;
 
+    @Autowired
     private RepositorioCategoria repositorioCategoria;
 
     @Autowired
