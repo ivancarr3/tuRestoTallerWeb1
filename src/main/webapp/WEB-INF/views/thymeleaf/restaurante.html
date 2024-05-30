@@ -14,7 +14,7 @@
     <link rel="stylesheet" th:href="@{/css/contRestaurants.css}" />
     <link rel="stylesheet" th:href="@{/css/buscador.css}" />
     <link rel="stylesheet" th:href="@{/css/login.css}" />
-    <link rel="stylesheet" th:href="@{/css/info-restaurante.css}" />
+    <!--<link rel="stylesheet" th:href="@{/css/info-restaurante.css}" /> -->
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -35,7 +35,7 @@
 </header>
 <main>
     <div class="container">
-        <div class="card mb-3">
+        <div class="card mb-3" style="width: 100%;">
             <div class="row g-0">
                 <div class="col-md-4">
                     <img th:src="@{/img/restaurant/restaurant.jpg}" class="img-fluid rounded-start" alt="prueba" title="prueba">
@@ -45,40 +45,60 @@
                         <h5 class="card-title" th:text="${restaurante.nombre}"></h5>
                         <p class="card-text" th:text="${restaurante.direccion}"></p>
                         <p class="card-text"><small class="text-body-secondary" th:text="${restaurante.estrellas}"></small> <i class="fas fa-star" style="color: #ffc107"></i></p>
-                        <p class="card-text" th:text="'Hay ' + ${restaurante.espacioDisponible} + ' espacios disponibles'"></p>
-                        <form action="#" th:action="@{/reservar}" th:method="POST" method="POST" id="form_reserva">
-                            <input type="hidden" id="id_form" name="id_form" th:value="${restaurante.id}">
-                            <label for="nombre_form">Nombre</label>
-                            <input type="text" id="nombre_form" name="nombre_form">
+                        <p class="card-text"><small th:text="'Hay ' + ${restaurante.espacioDisponible} + ' espacios disponibles'"></small> <i class="fas fa-user"></i></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="container" style="padding-right: 0; padding-left: 0;">
+            <div class="row">
+                <div class="col-lg-10 col-xl-8" style="width: 100%;">
+                    <div class="card" style="width: 100%; border: 0;">
+                        <div class="row no-gutters">
+                            <div class="col-md-12">
+                                <form th:action="@{/reservar}" enctype="application/x-www-form-urlencoded" th:method="POST" method="POST" id="form_reserva">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input type="hidden" id="id_form" name="id_form" th:value="${restaurante.id}">
+                                            <label for="nombre_form" class="mb-2">Nombre</label>
+                                            <input type="text" class="form-control mb-2" id="nombre_form" name="nombre_form">
 
-                            <label for="email_form">Correo electronico</label>
-                            <input type="email" id="email_form" name="email_form">
+                                            <label for="email_form" class="mb-2">Correo electronico</label>
+                                            <input type="email" class="form-control mb-2" id="email_form" name="email_form">
 
-                            <label for="num_form">Telefono</label>
-                            <input type="number" id="num_form" name="num_form">
+                                            <label for="num_form" class="mb-2">Telefono</label>
+                                            <input type="number" class="form-control" id="num_form" name="num_form">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="dni_form" class="mb-2">Documento</label>
+                                            <input type="number" class="form-control mb-2" id="dni_form" name="dni_form">
 
-                            <label for="dni_form">Documento</label>
-                            <input type="number" id="dni_form" name="dni_form">
+                                            <label for="fecha_form" class="mb-2">Fecha</label>
+                                            <input type="date" class="form-control mb-2" id="fecha_form" name="fecha_form">
 
-                            <label for="fecha_form">Fecha</label>
-                            <input type="date" id="fecha_form" name="fecha_form">
-
-                            <label for="cant_personas_form">Cantidad de personas</label>
-                            <select id="cant_personas_form" name="cant_personas_form">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-
-                            <button type="submit" class="btn btn-warning">Reservar</button>
-                        </form>
-                        <p
-                                th:if="${errorForm != null}"
-                                class="alert alert-danger"
-                                th:text="${errorForm}">
-                        </p>
+                                            <label for="cant_personas_form" class="mb-2">Cantidad de personas</label>
+                                            <select id="cant_personas_form" class="form-control" name="cant_personas_form">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-warning my-2">Reservar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <p
+                                        th:if="${errorForm != null}"
+                                        class="alert alert-danger"
+                                        th:text="${errorForm}">
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -103,12 +123,10 @@
         <p th:if="${errorFiltroPlato != null}" class="alert alert-danger" th:text="${errorFiltroPlato}"></p>
         <p th:if="${error != null}" class="alert alert-danger mt-3" th:text="${error}"></p>
     </div>
-
     <div class="container d-flex align-items-center justify-content-center flex-wrap mt-3" style="gap: 3em">
-        <div class="container">
-
+        <div class="container" style="padding-right: 0; padding-left: 0;">
             <h2>Platos Recomendados</h2>
-            <div id="carruselRecomendados" class="carousel slide" data-bs-ride="carousel">
+            <div id="carruselRecomendados" class="carousel slide mb-3" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
                         <div class="row">
@@ -133,8 +151,6 @@
                     <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
-
-
             <h2>Platos por Categoría</h2>
             <div th:each="entry : ${platosPorCategoria}">
                 <h3 th:text="${entry.key.descripcion}"></h3>
@@ -167,7 +183,6 @@
     <p class="mb-0">Axel</p>
     <p class="mb-0">Ivan</p>
 </footer>
-
 <script>
     document.querySelector('.prev-btn').addEventListener('click', function() {
         document.querySelector('#carruselRecomendados').carousel('prev');
@@ -179,7 +194,6 @@
         document.querySelector('#carruselCategoria').carousel('next');
     });
 </script>
-
 <script>
     function seleccionarOpcion(precio) {
         document.getElementById('precioPlato').value = precio;

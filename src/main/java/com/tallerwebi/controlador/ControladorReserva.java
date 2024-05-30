@@ -13,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.tallerwebi.dominio.Restaurante;
 import com.tallerwebi.dominio.excepcion.DatosInvalidosReserva;
 import com.tallerwebi.dominio.excepcion.EspacioNoDisponible;
-import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 import com.tallerwebi.servicio.ServicioReserva;
 import com.tallerwebi.servicio.ServicioRestaurante;
@@ -38,7 +37,10 @@ public class ControladorReserva {
             @RequestParam("num_form") Integer numForm,
             @RequestParam("dni_form") Integer dniForm,
             @RequestParam("cant_personas_form") Integer cantPersonas,
-            @RequestParam("fecha_form") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date fechaForm) {
+            @RequestParam("fecha_form") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date fechaForm) throws
+            RestauranteNoEncontrado,
+            DatosInvalidosReserva,
+            EspacioNoDisponible {
         ModelMap model = new ModelMap();
 
         try {
