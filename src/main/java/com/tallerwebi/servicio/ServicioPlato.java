@@ -13,6 +13,8 @@ public interface ServicioPlato {
     List<Plato> consultarPlatoPorNombre(String nombre) throws PlatoNoEncontrado;
     List<Plato> consultarPlatoPorPrecio(Double precio) throws PlatoNoEncontrado;
     List<Plato> get() throws NoHayPlatos;
+    List<Plato> getPlatosDeRestaurante(Long id) throws NoHayPlatos;
+    List<Plato> getPlatosAgrupadosPorCategoria();
     List<Plato> ordenarPorPrecio(String tipoDeOrden) throws NoHayPlatos;
     void crearPlato(Plato plato) throws PlatoExistente;
     void actualizarPlato(Plato plato) throws PlatoNoEncontrado;
