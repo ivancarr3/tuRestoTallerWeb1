@@ -22,7 +22,7 @@ import com.tallerwebi.servicio.ServicioRestaurante;
 public class ControladorReserva {
 
     private final ServicioRestaurante servicioRestaurante;
-    private static final String MODEL_NAME = "restaurante";
+    private static final String VIEW_NAME = "errReserva";
     private static final String ERROR_NAME = "error";
     private final ServicioReserva servicioReserva;
 
@@ -33,14 +33,13 @@ public class ControladorReserva {
 
     @PostMapping(path = "/reservar")
     public ModelAndView reservar(@RequestParam("id_form") Long idRestaurante,
-                                 @RequestParam("nombre_form") String nombreForm,
-                                 @RequestParam("email_form") String emailForm,
-                                 @RequestParam("num_form") Integer numForm,
-                                 @RequestParam("dni_form") Integer dniForm,
-                                 @RequestParam("cant_personas_form") Integer cantPersonas,
-                                 @RequestParam("fecha_form") 
-								 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date fechaForm) throws RestauranteNoEncontrado, NoHayRestaurantes, EspacioNoDisponible, DatosInvalidosReserva {
-		ModelMap model = new ModelMap();
+            @RequestParam("nombre_form") String nombreForm,
+            @RequestParam("email_form") String emailForm,
+            @RequestParam("num_form") Integer numForm,
+            @RequestParam("dni_form") Integer dniForm,
+            @RequestParam("cant_personas_form") Integer cantPersonas,
+            @RequestParam("fecha_form") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date fechaForm) {
+        ModelMap model = new ModelMap();
 
         try {
             Restaurante restauranteEncontrado = servicioRestaurante.consultar(idRestaurante);
@@ -49,16 +48,22 @@ public class ControladorReserva {
             return new ModelAndView("reserva_exitosa", model);
         } catch (RestauranteNoEncontrado error) {
             model.put("errorId", "No se encontró el restaurante");
-            model.put(MODEL_NAME, servicioRestaurante.consultar(1L));
-            return new ModelAndView(MODEL_NAME, model);
-        } catch (DatosInvalidosReserva | EspacioNoDisponible error) {
+            // model.put(VIEW_NAME, servicioRestaurante.consultar(1L));
+            model.put(ERROR_NAME, error.getMessage());
+            return new ModelAndView(VIEW_NAME, model);
+        } catch (DatosInvalidosReserva error) {
             model.put("errorForm", error.getMessage());
-            model.put(MODEL_NAME, servicioRestaurante.consultar(idRestaurante));
-            return new ModelAndView(MODEL_NAME, model);
+            // model.put(VIEW_NAME, servicioRestaurante.consultar(idRestaurante));
+            model.put(ERROR_NAME, error.getMessage());
+            return new ModelAndView(VIEW_NAME, model);
+        } catch (EspacioNoDisponible error) {
+            model.put(ERROR_NAME, error.getMessage());
+            model.put("errorForm", error.getMessage());
+            return new ModelAndView(VIEW_NAME, model);
         } catch (Exception e) {
             model.put(ERROR_NAME, "Error del servidor: " + e.getMessage());
-            model.put(MODEL_NAME, servicioRestaurante.consultar(idRestaurante));
-            return new ModelAndView(MODEL_NAME, model);
+            // model.put(VIEW_NAME, servicioRestaurante.consultar(idRestaurante));
+            return new ModelAndView(VIEW_NAME, model);
         }
     }
 
