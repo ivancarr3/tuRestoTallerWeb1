@@ -35,16 +35,16 @@ public class ControladorReservaTest {
 	@Test
 	public void laReservaSeRealizaExitosamente()
 			throws EspacioNoDisponible, DatosInvalidosReserva, RestauranteNoEncontrado {
-		Restaurante restaurante = new Restaurante(1L, "asd", 2.2, "asd", "asd", Integer.valueOf(3));
+		Restaurante restaurante = new Restaurante(1L, "asd", 2.2, "asd", "asd", 3);
 
 		when(servicioRestauranteMock.consultar(1L)).thenReturn(restaurante);
 
 		doNothing().when(servicioReservaMock).crearReserva(restaurante, "asdfs",
-				"sadfasd", Integer.valueOf(1),
-				Integer.valueOf(1), Integer.valueOf(1), Date.valueOf("2020-10-10"));
+				"sadfasd", 1,
+				1, 1, Date.valueOf("2020-10-10"));
 
-		ModelAndView modelAndView = controladorReserva.reservar(1L, "asdfs", "sadfasd", Integer.valueOf(1),
-				Integer.valueOf(1), Integer.valueOf(1), Date.valueOf("2020-10-10"));
+		ModelAndView modelAndView = controladorReserva.reservar(1L, "asdfs", "sadfasd", 1,
+				1, 1, Date.valueOf("2020-10-10"));
 
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("reserva_exitosa"));
 	}
@@ -53,8 +53,8 @@ public class ControladorReservaTest {
 	public void noSeEncontroRestaurante() throws RestauranteNoEncontrado, DatosInvalidosReserva, EspacioNoDisponible {
 		doThrow(new RestauranteNoEncontrado()).when(servicioRestauranteMock).consultar(1L);
 
-		ModelAndView modelAndView = controladorReserva.reservar(1L, "asdfs", "sadfasd", Integer.valueOf(1),
-				Integer.valueOf(1), Integer.valueOf(1), Date.valueOf("2020-10-10"));
+		ModelAndView modelAndView = controladorReserva.reservar(1L, "asdfs", "sadfasd", 1,
+				1, 1, Date.valueOf("2020-10-10"));
 
 		assertThat(modelAndView.getModel().get("error").toString(),
 				equalToIgnoringCase("No se encontró el restaurante."));
@@ -63,16 +63,16 @@ public class ControladorReservaTest {
 
 	@Test
 	public void espacioNoDisponible() throws RestauranteNoEncontrado, EspacioNoDisponible, DatosInvalidosReserva {
-		Restaurante restaurante = new Restaurante(1L, "asd", 2.2, "asd", "asd", Integer.valueOf(3));
+		Restaurante restaurante = new Restaurante(1L, "asd", 2.2, "asd", "asd", 3);
 
 		when(servicioRestauranteMock.consultar(1L)).thenReturn(restaurante);
 
 		doThrow(new EspacioNoDisponible()).when(servicioReservaMock).crearReserva(restaurante, "dsa", "asd",
-				Integer.valueOf(2), Integer.valueOf(2),
-				Integer.valueOf(2), Date.valueOf("2020-10-10"));
+				2, 2,
+				2, Date.valueOf("2020-10-10"));
 
-		ModelAndView modelAndView = controladorReserva.reservar(1L, "dsa", "asd", Integer.valueOf(2),
-				Integer.valueOf(2), Integer.valueOf(2), Date.valueOf("2020-10-10"));
+		ModelAndView modelAndView = controladorReserva.reservar(1L, "dsa", "asd", 2,
+				2, 2, Date.valueOf("2020-10-10"));
 
 		assertThat(modelAndView.getModel().get("error").toString(),
 				equalToIgnoringCase("No hay suficiente espacio disponible en el restaurante."));
@@ -81,16 +81,16 @@ public class ControladorReservaTest {
 
 	@Test
 	public void datosInvalidos() throws EspacioNoDisponible, DatosInvalidosReserva, RestauranteNoEncontrado {
-		Restaurante restaurante = new Restaurante(1L, "asd", 2.2, "asd", "asd", Integer.valueOf(3));
+		Restaurante restaurante = new Restaurante(1L, "asd", 2.2, "asd", "asd", 3);
 
 		when(servicioRestauranteMock.consultar(1L)).thenReturn(restaurante);
 
 		doThrow(new DatosInvalidosReserva()).when(servicioReservaMock).crearReserva(restaurante, "dsa", "asd",
-				Integer.valueOf(2), Integer.valueOf(2),
-				Integer.valueOf(2), Date.valueOf("2020-10-10"));
+				2, 2,
+				2, Date.valueOf("2020-10-10"));
 
-		ModelAndView modelAndView = controladorReserva.reservar(1L, "dsa", "asd", Integer.valueOf(2),
-				Integer.valueOf(2), Integer.valueOf(2), Date.valueOf("2020-10-10"));
+		ModelAndView modelAndView = controladorReserva.reservar(1L, "dsa", "asd", 2,
+				2, 2, Date.valueOf("2020-10-10"));
 
 		assertThat(modelAndView.getModel().get("error").toString(),
 				equalToIgnoringCase("Datos ingresados invalidos para la reserva"));

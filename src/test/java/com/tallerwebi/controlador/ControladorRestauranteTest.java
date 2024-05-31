@@ -60,7 +60,8 @@ public class ControladorRestauranteTest {
                 .andExpect(view().name("restaurante"))
                 .andExpect(model().attributeExists("platosPorCategoria"))
                 .andExpect(model().attributeExists("platosRecomendados"))
-                .andExpect(model().attributeExists("restaurante"));
+                .andExpect(model().attributeExists("restaurante"))
+                .andExpect(model().attribute("platosRecomendados", hasSize(1)));
 
         verify(servicioRestauranteMock, times(1)).consultar(restauranteId);
         verify(servicioPlatoMock, times(1)).getPlatosDeRestaurante(restauranteId);
@@ -79,7 +80,6 @@ public class ControladorRestauranteTest {
                 new Plato(1L, "Plato 1", 25000.0, "Descripción 1", "imagen1.jpg", restaurante, categoria, true),
                 new Plato(2L, "Plato 2", 30000.0, "Descripción 2", "imagen2.jpg", restaurante, categoria, false)
         );
-
 
         when(servicioRestauranteMock.consultar(restauranteId)).thenReturn(restaurante);
         when(servicioPlatoMock.consultarPlatoPorPrecio(precio)).thenReturn(platos);
