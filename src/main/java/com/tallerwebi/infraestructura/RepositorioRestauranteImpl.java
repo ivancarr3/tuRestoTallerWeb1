@@ -28,7 +28,6 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
 
     @Override
     public List<Restaurante> get() {
-
         String hql = "FROM Restaurante";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         return query.getResultList();

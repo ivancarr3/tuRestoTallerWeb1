@@ -30,41 +30,50 @@ public class RepositorioPlatoTest {
     @Autowired
     private RepositorioRestaurante repositorioRestaurante;
 
+    @Autowired
     private RepositorioCategoria repositorioCategoria;
 
     @Autowired
     private SessionFactory sessionFactory;
 
-    private List<Plato> platos = new ArrayList<>();
+    private final List<Plato> platos = new ArrayList<>();
+    private final Restaurante restauranteInit = new Restaurante(null, "Restaurante Mock", 4.5, "Direccion Mock", "imagenMock.jpg", 50);
+    private final Categoria categoriaInit = new Categoria(null, "Categoria Mock");
 
     @BeforeEach
     public void init() {
-
-        this.platos.add(crearYGuardarPlato("Milanesa de pollo", 20000.0, "Rellena de jyq"));
-        this.platos.add(crearYGuardarPlato("Milanesa de carne", 15000.0, "Con salsa"));
-        this.platos.add(crearYGuardarPlato("Tarta de espinaca", 14000.0, "Con queso"));
+        repositorioRestaurante.guardar(restauranteInit);
+        repositorioCategoria.guardar(categoriaInit);
+        this.platos.add(crearYGuardarPlato("Milanesa de pollo", 20000.0, "Rellena de jyq", restauranteInit, categoriaInit));
+        this.platos.add(crearYGuardarPlato("Milanesa de carne", 15000.0, "Con salsa", restauranteInit, categoriaInit));
+        this.platos.add(crearYGuardarPlato("Tarta de espinaca", 14000.0, "Con queso", restauranteInit, categoriaInit));
     }
 
-    private Plato crearYGuardarPlato(String nombre, Double precio, String descripcion) {
-        Restaurante restauranteMock = new Restaurante(1L, "Restaurante Mock", 4.5, "Direccion Mock", "imagenMock.jpg", 50);
-        repositorioRestaurante.guardar(restauranteMock);
-        Categoria categoriaMock = new Categoria(1L, "Categoria Mock");
-        repositorioCategoria.guardar(categoriaMock);
-        Plato plato = new Plato(null, nombre, precio, descripcion, "ensalada.jpg", restauranteMock, categoriaMock, true);
+    private Plato crearYGuardarPlato(String nombre, Double precio, String descripcion, Restaurante restaurante, Categoria categoria) {
+        Plato plato = new Plato(null, nombre, precio, descripcion, "ensalada.jpg", restaurante, categoria, true);
         repositorioPlato.guardarPlato(plato);
         return plato;
     }
 
     @Test
     public void queGuardePlatoCorrectamente() {
-        crearYGuardarPlato("Milanesas", 20000.0, "Rellenas de jyq");
+        crearYGuardarPlato("Milanesas", 20000.0, "Rellenas de jyq", this.restauranteInit, this.categoriaInit);
         List<Plato> platos = repositorioPlato.get();
         assertThat(platos.size(), equalTo(4));
     }
 
     @Test
+    public void queDevuelvaPlatosDeUnRestaurante() {
+        Plato plato = crearYGuardarPlato("Manteca rellena", 4500.0, "Bien sana", this.restauranteInit, this.categoriaInit);
+        Long idRestaurante = plato.getRestaurante().getId();
+        List<Plato> platos = repositorioPlato.getPlatosDeRestaurante(idRestaurante);
+        assertNotNull(platos);
+        assertEquals(4, platos.size());
+    }
+
+    @Test
     public void queDevuelvaPlatoPorId() {
-        Plato plato = crearYGuardarPlato("La Quintana", 4.5, "Arieta 5000");
+        Plato plato = crearYGuardarPlato("La Quintana", 4.5, "Arieta 5000", this.restauranteInit, this.categoriaInit);
         Long id = plato.getId();
         Plato platoEncontrado = repositorioPlato.buscar(id);
         assertNotNull(platoEncontrado);
@@ -112,7 +121,7 @@ public class RepositorioPlatoTest {
     @Test
     public void queActualizePlato() {
         Restaurante restauranteMock = repositorioRestaurante.buscar(1L);
-        Plato plato = crearYGuardarPlato("Milanesas", 20000.0, "Rellenas de jyq");
+        Plato plato = crearYGuardarPlato("Milanesas", 20000.0, "Rellenas de jyq", this.restauranteInit, this.categoriaInit);
 
         Long id = plato.getId();
         String nombre = "Test";
@@ -132,7 +141,7 @@ public class RepositorioPlatoTest {
     @Test
     public void queEliminePlato() {
         Restaurante restauranteMock = repositorioRestaurante.buscar(1L);
-        Plato plato = crearYGuardarPlato("Milanesas", 20000.0, "Rellenas de jyq");
+        Plato plato = crearYGuardarPlato("Milanesas", 20000.0, "Rellenas de jyq", this.restauranteInit, this.categoriaInit);
 
         Long id = plato.getId();
         repositorioPlato.eliminarPlato(plato);

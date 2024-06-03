@@ -2,6 +2,7 @@ package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.excepcion.DatosInvalidosReserva;
 import com.tallerwebi.dominio.excepcion.EspacioNoDisponible;
+import com.tallerwebi.dominio.excepcion.NoHayReservas;
 import com.tallerwebi.dominio.excepcion.ReservaNoEncontrada;
 import com.tallerwebi.servicio.ServicioReserva;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +31,23 @@ public class ServicioReservaImpl implements ServicioReserva {
     }
     
     @Override
-    public List<Reserva> buscarTodasLasReservas() {
-        return repositorioReserva.buscarTodasLasReservas();
+    public List<Reserva> buscarTodasLasReservas() throws NoHayReservas {
+        List<Reserva> reservas = repositorioReserva.buscarTodasLasReservas();
+        if (reservas == null) {
+            throw new NoHayReservas();
+        }
+
+        return reservas;
     }
 
     @Override
-    public Reserva buscarReserva(Long id) {
-        return repositorioReserva.buscarReserva(id);
+    public Reserva buscarReserva(Long id) throws ReservaNoEncontrada {
+        Reserva reserva =  repositorioReserva.buscarReserva(id);
+        if (reserva == null) {
+            throw new ReservaNoEncontrada();
+        }
+
+        return reserva;
     }
 
     @Override

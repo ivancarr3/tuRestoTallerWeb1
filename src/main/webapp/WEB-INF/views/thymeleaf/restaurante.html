@@ -60,6 +60,7 @@
                             <div class="col-md-12">
                                 <form th:action="@{/reservar}" enctype="application/x-www-form-urlencoded" th:method="POST" method="POST" id="form_reserva">
                                     <div class="row">
+                                        <h2 class="mb-3">Formulario de reserva</h2>
                                         <div class="col-md-6">
                                             <input type="hidden" id="id_form" name="id_form" th:value="${restaurante.id}">
                                             <label for="nombre_form" class="mb-2">Nombre</label>
