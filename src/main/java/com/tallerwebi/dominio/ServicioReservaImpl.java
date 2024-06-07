@@ -1,9 +1,6 @@
 package com.tallerwebi.dominio;
 
-import com.tallerwebi.dominio.excepcion.DatosInvalidosReserva;
-import com.tallerwebi.dominio.excepcion.EspacioNoDisponible;
-import com.tallerwebi.dominio.excepcion.NoHayReservas;
-import com.tallerwebi.dominio.excepcion.ReservaNoEncontrada;
+import com.tallerwebi.dominio.excepcion.*;
 import com.tallerwebi.servicio.ServicioReserva;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,12 +67,7 @@ public class ServicioReservaImpl implements ServicioReserva {
 
     @Override
     public void crearReserva(Restaurante restauranteEncontrado, String nombre_form, String email_form, Integer num_form,
-                             Integer dni_form, Integer cant_personas, Date fecha_form) throws EspacioNoDisponible, DatosInvalidosReserva {
-        if(!validarDatosReserva(nombre_form, email_form, num_form,
-                dni_form, cant_personas, fecha_form)){
-            System.out.println("Datos inválidos para la reserva");
-            throw new DatosInvalidosReserva();
-        }
+                             Integer dni_form, Integer cant_personas, Date fecha_form) throws EspacioNoDisponible {
         Reserva reserva = new Reserva(null, restauranteEncontrado, nombre_form, email_form, num_form,
                 dni_form, cant_personas, fecha_form);
 
@@ -86,24 +78,6 @@ public class ServicioReservaImpl implements ServicioReserva {
         repositorioReserva.guardar(reserva);
         restauranteEncontrado.setEspacioDisponible(restauranteEncontrado.getCapacidadMaxima() - reserva.getCantidadPersonas());
         repositorioRestaurante.actualizar(restauranteEncontrado);
-    }
-
-    private boolean validarDatosReserva(String nombreForm, String emailForm, Integer numForm,
-                                        Integer dniForm, Integer cantPersonas, Date fechaForm){
-        if (nombreForm == null || nombreForm.isEmpty() || emailForm == null || emailForm.isEmpty() ||
-                numForm == null || dniForm == null || cantPersonas == null || fechaForm == null) {
-            return false;
-        }
-
-        Date fechaActual = new Date();
-
-        if (fechaForm.before(fechaActual)) {
-            return false;
-        }
-        if (!emailForm.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            return false;
-        }
-        return true;
     }
 
     private boolean verificarEspacioDisponible(Reserva reserva) {

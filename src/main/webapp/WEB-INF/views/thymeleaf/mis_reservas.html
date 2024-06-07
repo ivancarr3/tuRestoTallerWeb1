@@ -20,14 +20,14 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 <style>
-.card img {
-	width: 358px !important;
-	height: 300px !important;
-}
+	.card img {
+		width: 358px !important;
+		height: 300px !important;
+	}
 
-a {
-	text-decoration: none;
-}
+	a {
+		text-decoration: none;
+	}
 </style>
 </head>
 
@@ -37,32 +37,25 @@ a {
 			style="text-decoration: none; color: black;" th:href="@{/home}">TuResto</a>
 		<!-- 		<a th:href="@{/usuarioPerfil}" class="contRestaurant-btnReservar">Mi -->
 		<!-- 			Perfil</a> -->
-
 	</header>
 	<main>
 		<br>
 		<div class="container">
-
-
-
-
 			<p th:if="${errorFiltro != null}" class="alert alert-danger"
 				th:text="${errorFiltro}"></p>
 			<p th:if="${error != null}" class="alert alert-danger"
 				th:text="${error}"></p>
-
 		</div>
 		<div
 			class="container d-flex align-items-center justify-content-start flex-wrap"
 			style="gap: 3em">
 			<div th:each="reserva : ${reservas}" class="card"
 				style="width: 18rem">
-
 				<div class="card-body">
 					<h2 style="font-size: 1.5em"
 						th:text="${reserva.restaurante.nombre}"></h2>
 					<p class="fw-light" th:text="${reserva.fecha}"></p>
-
+					<p class="fw-light" th:text="${reserva.cantidadPersonas}"></p>
 				</div>
 			</div>
 		</div>

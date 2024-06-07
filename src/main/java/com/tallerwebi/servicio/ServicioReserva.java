@@ -15,6 +15,6 @@ public interface ServicioReserva {
     void cancelarReserva(Reserva reserva) throws ReservaNoEncontrada;
     //void crearReserva(Reserva reserva) throws EspacioNoDisponible;
     void crearReserva(Restaurante restauranteEncontrado, String nombre_form, String email_form, Integer num_form,
-                      Integer dni_form, Integer cant_personas, Date fecha_form) throws EspacioNoDisponible, DatosInvalidosReserva;
+                      Integer dni_form, Integer cant_personas, Date fecha_form) throws EspacioNoDisponible;
 	List<Reserva> buscarTodasLasReservas() throws NoHayReservas;
 }
