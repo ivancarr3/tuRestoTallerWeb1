@@ -6,7 +6,6 @@ import com.tallerwebi.servicio.ServicioRestaurante;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -34,7 +33,7 @@ public class ServicioReservaTest {
         this.repositorioRestaurante = mock(RepositorioRestaurante.class);
         this.repositorioReserva = mock(RepositorioReserva.class);
         this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante, this.servicioReserva);
-        this.servicioReserva = new ServicioReservaImpl(this.repositorioReserva, this.repositorioRestaurante);
+        this.servicioReserva = new ServicioReservaImpl(this.repositorioReserva, this.repositorioRestaurante, new Email());
         this.reservasMock.add(new Reserva(1L, this.restauranteInit, "Pepe", "test@mail.com", 1234, 1234, 5, this.fecha));
         this.reservasMock.add(new Reserva(2L, this.restauranteInit, "Pepe", "test@mail.com", 1234, 1234, 5, this.fecha));
         this.reservasMock.add(new Reserva(3L, this.restauranteInit, "Pepe", "test@mail.com", 1234, 1234, 5, this.fecha));

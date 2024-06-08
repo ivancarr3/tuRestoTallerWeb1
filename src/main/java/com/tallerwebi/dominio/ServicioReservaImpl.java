@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Service("servicioReserva")
 @Transactional
@@ -15,11 +17,13 @@ public class ServicioReservaImpl implements ServicioReserva {
 
     private final RepositorioReserva repositorioReserva;
     private final RepositorioRestaurante repositorioRestaurante;
+    private final Email emailSender;
 
     @Autowired
-    public ServicioReservaImpl(RepositorioReserva repositorioReserva, RepositorioRestaurante repositorioRestaurante){
+    public ServicioReservaImpl(RepositorioReserva repositorioReserva, RepositorioRestaurante repositorioRestaurante, Email emailSender){
         this.repositorioReserva = repositorioReserva;
         this.repositorioRestaurante = repositorioRestaurante;
+        this.emailSender = emailSender;
     }
 
     @Override
@@ -78,13 +82,27 @@ public class ServicioReservaImpl implements ServicioReserva {
         repositorioReserva.guardar(reserva);
         restauranteEncontrado.setEspacioDisponible(restauranteEncontrado.getCapacidadMaxima() - reserva.getCantidadPersonas());
         repositorioRestaurante.actualizar(restauranteEncontrado);
+        this.sendMail(nombre_form, restauranteEncontrado.getNombre(), cant_personas, fecha_form, email_form);
     }
 
     private boolean verificarEspacioDisponible(Reserva reserva) {
         Restaurante restaurante = reserva.getRestaurante();
         List<Reserva> reservasExistentes = repositorioReserva.getReservasPorRestaurante(restaurante.getId());
 
-        int personasTotales = reservasExistentes.stream().mapToInt(Reserva::getCantidadPersonas).sum();
+        Integer personasTotales = reservasExistentes.stream().mapToInt(Reserva::getCantidadPersonas).sum();
         return personasTotales + reserva.getCantidadPersonas() <= restaurante.getCapacidadMaxima();
+    }
+
+    private void sendMail(String nombre_form, String nombreRestaurante, Integer cant_personas, Date fecha_form, String email_form) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE dd 'de' MMMM 'de' yyyy 'a las' HH:mm", new Locale("es", "ES"));
+        String fechaFormateada = dateFormat.format(fecha_form);
+        String subject = "Confirmación de Reserva";
+        String text = "Hola " + nombre_form + ",\n\n" +
+                "Tu reserva ha sido confirmada en " + nombreRestaurante + " para " + cant_personas + " personas el " + fechaFormateada + ".\n\n" +
+                "Gracias por tu reserva.\n" +
+                "Saludos,\n" +
+                nombreRestaurante;
+
+        emailSender.sendSimpleMessage(email_form, subject, text);
     }
 }

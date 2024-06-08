@@ -64,20 +64,20 @@
                                         <div class="col-md-6">
                                             <input type="hidden" id="id_form" name="idRestaurante" th:value="${restaurante.id}">
                                             <label for="nombre_form" class="mb-2">Nombre</label>
-                                            <input type="text" class="form-control mb-2" id="nombre_form" th:field="*{nombreForm}">
+                                            <input type="text" class="form-control mb-2" required id="nombre_form" th:field="*{nombreForm}">
 
                                             <label for="email_form" class="mb-2">Correo electronico</label>
-                                            <input type="email" class="form-control mb-2" id="email_form" th:field="*{emailForm}">
+                                            <input type="email" class="form-control mb-2" required id="email_form" th:field="*{emailForm}">
 
                                             <label for="num_form" class="mb-2">Telefono</label>
-                                            <input type="number" class="form-control" id="num_form" th:field="*{numForm}">
+                                            <input type="number" class="form-control" required id="num_form" th:field="*{numForm}">
                                         </div>
                                         <div class="col-md-6">
                                             <label for="dni_form" class="mb-2">Documento</label>
-                                            <input type="number" class="form-control mb-2" id="dni_form" th:field="*{dniForm}">
+                                            <input type="number" class="form-control mb-2" required id="dni_form" th:field="*{dniForm}">
 
                                             <label for="fecha_form" class="mb-2">Fecha</label>
-                                            <input type="date" class="form-control mb-2" id="fecha_form" th:field="*{fechaForm}">
+                                            <input type="date" class="form-control mb-2" required id="fecha_form" th:field="*{fechaForm}">
 
                                             <label for="cant_personas_form" class="mb-2">Cantidad de personas</label>
                                             <select id="cant_personas_form" class="form-control" th:field="*{cantPersonas}">
