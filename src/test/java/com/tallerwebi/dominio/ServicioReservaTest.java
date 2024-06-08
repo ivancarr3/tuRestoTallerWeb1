@@ -20,6 +20,7 @@ public class ServicioReservaTest {
     private RepositorioRestaurante repositorioRestaurante;
     private ServicioReserva servicioReserva;
     private RepositorioReserva repositorioReserva;
+    private Email emailSender = new Email();
     private final Restaurante restauranteInit = new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 7);
     private final List<Reserva> reservasMock = new ArrayList<>();
     private final Date fecha = new Date();
@@ -32,8 +33,9 @@ public class ServicioReservaTest {
         this.tomorrow = cal.getTime();
         this.repositorioRestaurante = mock(RepositorioRestaurante.class);
         this.repositorioReserva = mock(RepositorioReserva.class);
+        this.emailSender = mock(Email.class);
         this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante, this.servicioReserva);
-        this.servicioReserva = new ServicioReservaImpl(this.repositorioReserva, this.repositorioRestaurante, new Email());
+        this.servicioReserva = new ServicioReservaImpl(this.repositorioReserva, this.repositorioRestaurante, this.emailSender);
         this.reservasMock.add(new Reserva(1L, this.restauranteInit, "Pepe", "test@mail.com", 1234, 1234, 5, this.fecha));
         this.reservasMock.add(new Reserva(2L, this.restauranteInit, "Pepe", "test@mail.com", 1234, 1234, 5, this.fecha));
         this.reservasMock.add(new Reserva(3L, this.restauranteInit, "Pepe", "test@mail.com", 1234, 1234, 5, this.fecha));

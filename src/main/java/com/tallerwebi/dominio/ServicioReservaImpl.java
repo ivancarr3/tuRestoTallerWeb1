@@ -103,6 +103,6 @@ public class ServicioReservaImpl implements ServicioReserva {
                 "Saludos,\n" +
                 nombreRestaurante;
 
-        emailSender.sendSimpleMessage(email_form, subject, text);
+        this.emailSender.sendSimpleMessage(email_form, subject, text);
     }
 }
