@@ -4,6 +4,8 @@ import com.tallerwebi.dominio.excepcion.NoHayPlatos;
 import com.tallerwebi.dominio.excepcion.PlatoExistente;
 import com.tallerwebi.dominio.excepcion.PlatoNoEncontrado;
 import com.tallerwebi.servicio.ServicioPlato;
+import com.tallerwebi.servicio.ServicioReserva;
+import com.tallerwebi.servicio.ServicioRestaurante;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,17 +24,30 @@ public class ServicioPlatoTest {
 
     private ServicioPlato servicioPlato;
     private RepositorioPlato repositorioPlato;
+    private ServicioRestaurante servicioRestaurante;
+    private RepositorioRestaurante repositorioRestaurante;
     private List<Plato> platosMock;
+    private ServicioReserva servicioReserva;
+    private Categoria categoriaMock;
+
 
     @BeforeEach
     public void init(){
         this.repositorioPlato = mock(RepositorioPlato.class);
         this.servicioPlato = new ServicioPlatoImpl(this.repositorioPlato);
+        this.servicioReserva = mock(ServicioReserva.class);
+        this.repositorioRestaurante = mock(RepositorioRestaurante.class);
+        this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante, this.servicioReserva);
+        categoriaMock = mock(Categoria.class);
+
+        Restaurante resto1 = new Restaurante(1L, "El club de la milanesa", 4.0, "", "", 2);
+        Restaurante resto2 = new Restaurante(2L, "Mundo Milanesa", 3.0, "", "", 2);
+
         this.platosMock = new ArrayList<>();
-        this.platosMock.add(new Plato(1L, "milanesa de carne", 20000.0, "napolitana", ""));
-        this.platosMock.add(new Plato(2L, "pollo", 10000.0, "a la mostaza", ""));
-        this.platosMock.add(new Plato(3L, "asado", 17000.0, "con hueso", ""));
-        this.platosMock.add(new Plato(4L, "milanesa de pollo", 17000.0, "con queso", ""));
+        this.platosMock.add(new Plato(1L, "milanesa de carne", 20000.0, "napolitana", "",resto1, categoriaMock, true));
+        this.platosMock.add(new Plato(2L, "pollo", 10000.0, "a la mostaza", "",resto1, categoriaMock, true));
+        this.platosMock.add(new Plato(3L, "asado", 17000.0, "con hueso", "", resto2, categoriaMock, true));
+        this.platosMock.add(new Plato(4L, "milanesa de pollo", 17000.0, "con queso", "", resto2, categoriaMock, true));
     }
 
     @Test
@@ -139,7 +154,7 @@ public class ServicioPlatoTest {
     @Test
     public void queSeCreePlatoCorrectamente() throws PlatoExistente {
         when(repositorioPlato.buscar(anyLong())).thenReturn(null);
-        Plato nuevoPlato = new Plato(5L, "sopa", 9000.0, "con lentejas", "");
+        Plato nuevoPlato = new Plato(5L, "sopa", 9000.0, "con lentejas", "", new Restaurante(), new Categoria(), true);
 
         servicioPlato.crearPlato(nuevoPlato);
 
@@ -148,10 +163,10 @@ public class ServicioPlatoTest {
 
     @Test
     public void queLanceExcepcionSiSeCreaUnPlatoConElMismoId() throws PlatoExistente {
-        Plato platoExistente = new Plato(5L, "sopa", 9000.0, "con lentejas", "");
+        Plato platoExistente = new Plato(5L, "sopa", 9000.0, "con lentejas", "", new Restaurante(), new Categoria(), true);
         when(repositorioPlato.buscar(5L)).thenReturn(platoExistente);
 
-        Plato nuevoPlato = new Plato(5L, "sopa", 9000.0, "con lentejas", "");
+        Plato nuevoPlato = new Plato(5L, "sopa", 9000.0, "con lentejas", "", new Restaurante(), new Categoria(), true);
 
         assertThrows(PlatoExistente.class, () -> servicioPlato.crearPlato(nuevoPlato));
 
@@ -171,7 +186,7 @@ public class ServicioPlatoTest {
 
     @Test
     public void queLanceExcepcionSiQuiereActualizarUnPlatoQueNoExiste() throws PlatoNoEncontrado {
-        Plato plato = new Plato(56L, "sopa", 9000.0, "con lentejas", "");
+        Plato plato = new Plato(56L, "sopa", 9000.0, "con lentejas", "", new Restaurante(), new Categoria(), true);
 
         assertThrows(PlatoNoEncontrado.class, () -> servicioPlato.actualizarPlato(plato));
         verify(repositorioPlato, never()).modificarPlato(plato);

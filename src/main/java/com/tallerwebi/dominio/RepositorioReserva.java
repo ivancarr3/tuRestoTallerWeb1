@@ -9,4 +9,5 @@ public interface RepositorioReserva {
     void guardar(Reserva reserva);
     void actualizar(Reserva reserva);
     void eliminar(Reserva reserva);
+	List<Reserva> buscarTodasLasReservas();
 }

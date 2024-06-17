@@ -34,6 +34,14 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
     }
 
     @Override
+    public List<Plato> getPlatosDeRestaurante(Long idRestaurante) {
+        String hql = "FROM Plato WHERE restaurante.id = :idRestaurante";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("idRestaurante", idRestaurante);
+        return query.getResultList();
+    }
+
+    @Override
     public Plato buscar(Long id) {
         try {
             String hql = "FROM Plato WHERE id = :id";
@@ -44,6 +52,13 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    @Override
+    public List<Plato> getPlatosAgrupadosPorCategoria() {
+        String hql = "FROM Plato p JOIN FETCH p.categoria ORDER BY p.categoria.id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        return query.getResultList();
     }
 
     @Override
