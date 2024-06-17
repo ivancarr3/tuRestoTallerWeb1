@@ -75,7 +75,7 @@ public class ControladorRestaurante {
 
             Map<Categoria, List<Plato>> platosPorCategoria = platos.stream()
                     .collect(Collectors.groupingBy(Plato::getCategoria));
-
+          
             List<Plato> platosRecomendados = platos.stream()
                     .filter(Plato::isEsRecomendado)
                     .collect(Collectors.toList());
