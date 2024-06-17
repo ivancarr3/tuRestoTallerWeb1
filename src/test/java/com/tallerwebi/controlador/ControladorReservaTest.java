@@ -11,28 +11,28 @@ import java.util.Date;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tallerwebi.dominio.Restaurante;
 import com.tallerwebi.dominio.excepcion.DatosInvalidosReserva;
 import com.tallerwebi.dominio.excepcion.EspacioNoDisponible;
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
+import com.tallerwebi.servicio.ServicioMercadoPago;
 import com.tallerwebi.servicio.ServicioReserva;
 import com.tallerwebi.servicio.ServicioRestaurante;
 
 public class ControladorReservaTest {
 	private ControladorReserva controladorReserva;
-	private ControladorReserva controladorReservaMock;
 	private ServicioReserva servicioReservaMock;
+	private ServicioMercadoPago servicioMercadoPago;
 	private ServicioRestaurante servicioRestauranteMock;
 
 	@BeforeEach
 	public void init() {
 		servicioReservaMock = mock(ServicioReserva.class);
 		servicioRestauranteMock = mock(ServicioRestaurante.class);
-		controladorReservaMock = mock(ControladorReserva.class);
-		this.controladorReserva = new ControladorReserva(this.servicioRestauranteMock, this.servicioReservaMock);
+		this.controladorReserva = new ControladorReserva(this.servicioRestauranteMock, this.servicioReservaMock,
+				this.servicioMercadoPago);
 	}
 
 	@Test
@@ -50,9 +50,8 @@ public class ControladorReservaTest {
 
 		when(servicioRestauranteMock.consultar(1L)).thenReturn(restaurante);
 
-		doNothing().when(servicioReservaMock).crearReserva(restaurante, "nombre",
-				"test@test.com", 1,
-				1, 1, datosReserva.getFechaForm());
+		doNothing().when(servicioReservaMock).crearReserva(restaurante, "nombre", "test@test.com", 1, 1, 1,
+				datosReserva.getFechaForm());
 
 		ModelAndView modelAndView = controladorReserva.reservar(datosReserva);
 
@@ -92,8 +91,8 @@ public class ControladorReservaTest {
 
 		when(servicioRestauranteMock.consultar(1L)).thenReturn(restaurante);
 
-		doThrow(new EspacioNoDisponible()).when(servicioReservaMock).crearReserva(restaurante, "nombre", "test@test.com",
-				2, 2, 2, datosReserva.getFechaForm());
+		doThrow(new EspacioNoDisponible()).when(servicioReservaMock).crearReserva(restaurante, "nombre",
+				"test@test.com", 2, 2, 2, datosReserva.getFechaForm());
 
 		ModelAndView modelAndView = controladorReserva.reservar(datosReserva);
 
