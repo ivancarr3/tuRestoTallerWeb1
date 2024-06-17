@@ -1,105 +1,115 @@
 package com.tallerwebi.dominio;
 
-import com.tallerwebi.dominio.excepcion.DatosInvalidosReserva;
-import com.tallerwebi.dominio.excepcion.EspacioNoDisponible;
-import com.tallerwebi.dominio.excepcion.ReservaNoEncontrada;
-import com.tallerwebi.servicio.ServicioReserva;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.List;
+import com.tallerwebi.dominio.excepcion.EspacioNoDisponible;
+import com.tallerwebi.dominio.excepcion.NoHayReservas;
+import com.tallerwebi.dominio.excepcion.ReservaNoEncontrada;
+import com.tallerwebi.servicio.ServicioReserva;
 
 @Service("servicioReserva")
 @Transactional
 public class ServicioReservaImpl implements ServicioReserva {
 
-    private final RepositorioReserva repositorioReserva;
-    private final RepositorioRestaurante repositorioRestaurante;
+	private final RepositorioReserva repositorioReserva;
+	private final RepositorioRestaurante repositorioRestaurante;
+	private final Email emailSender;
 
-    @Autowired
-    public ServicioReservaImpl(RepositorioReserva repositorioReserva, RepositorioRestaurante repositorioRestaurante){
-        this.repositorioReserva = repositorioReserva;
-        this.repositorioRestaurante = repositorioRestaurante;
-    }
+	@Autowired
+	public ServicioReservaImpl(RepositorioReserva repositorioReserva, RepositorioRestaurante repositorioRestaurante,
+			Email emailSender) {
+		this.repositorioReserva = repositorioReserva;
+		this.repositorioRestaurante = repositorioRestaurante;
+		this.emailSender = emailSender;
+	}
 
-    @Override
-    public List<Reserva> buscarReservasDelUsuario(Long idUsuario) {
-        return repositorioReserva.buscarReservasDelUsuario(idUsuario);
-    }
-    
-    @Override
-    public List<Reserva> buscarTodasLasReservas() {
-        return repositorioReserva.buscarTodasLasReservas();
-    }
+	@Override
+	public List<Reserva> buscarReservasDelUsuario(Long idUsuario) {
+		return repositorioReserva.buscarReservasDelUsuario(idUsuario);
+	}
 
-    @Override
-    public Reserva buscarReserva(Long id) {
-        return repositorioReserva.buscarReserva(id);
-    }
+	@Override
+	public List<Reserva> buscarTodasLasReservas() throws NoHayReservas {
+		List<Reserva> reservas = repositorioReserva.buscarTodasLasReservas();
+		if (reservas == null) {
+			throw new NoHayReservas();
+		}
 
-    @Override
-    public void actualizar(Reserva reserva) throws ReservaNoEncontrada {
-        Reserva reservaNoEncontrada = repositorioReserva.buscarReserva(reserva.getId());
-        if(reservaNoEncontrada == null){
-            throw new ReservaNoEncontrada();
-        }
-        repositorioReserva.actualizar(reserva);
-    }
+		return reservas;
+	}
 
-    @Override
-    public void cancelarReserva(Reserva reserva) throws ReservaNoEncontrada {
-        Reserva reservaNoEncontrada = repositorioReserva.buscarReserva(reserva.getId());
-        if(reservaNoEncontrada == null){
-            throw new ReservaNoEncontrada();
-        }
-        repositorioReserva.eliminar(reserva);
-    }
+	@Override
+	public Reserva buscarReserva(Long id) throws ReservaNoEncontrada {
+		Reserva reserva = repositorioReserva.buscarReserva(id);
+		if (reserva == null) {
+			throw new ReservaNoEncontrada();
+		}
 
-    @Override
-    public void crearReserva(Restaurante restauranteEncontrado, String nombre_form, String email_form, Integer num_form,
-                             Integer dni_form, Integer cant_personas, Date fecha_form) throws EspacioNoDisponible, DatosInvalidosReserva {
-        if(!validarDatosReserva(nombre_form, email_form, num_form,
-                dni_form, cant_personas, fecha_form)){
-            System.out.println("Datos inválidos para la reserva");
-            throw new DatosInvalidosReserva();
-        }
-        Reserva reserva = new Reserva(null, restauranteEncontrado, nombre_form, email_form, num_form,
-                dni_form, cant_personas, fecha_form);
+		return reserva;
+	}
 
-        if (!verificarEspacioDisponible(reserva)) {
-            throw new EspacioNoDisponible();
-        }
+	@Override
+	public void actualizar(Reserva reserva) throws ReservaNoEncontrada {
+		Reserva reservaNoEncontrada = repositorioReserva.buscarReserva(reserva.getId());
+		if (reservaNoEncontrada == null) {
+			throw new ReservaNoEncontrada();
+		}
+		repositorioReserva.actualizar(reserva);
+	}
 
-        repositorioReserva.guardar(reserva);
-        restauranteEncontrado.setEspacioDisponible(restauranteEncontrado.getCapacidadMaxima() - reserva.getCantidadPersonas());
-        repositorioRestaurante.actualizar(restauranteEncontrado);
-    }
+	@Override
+	public void cancelarReserva(Reserva reserva) throws ReservaNoEncontrada {
+		Reserva reservaNoEncontrada = repositorioReserva.buscarReserva(reserva.getId());
+		if (reservaNoEncontrada == null) {
+			throw new ReservaNoEncontrada();
+		}
+		repositorioReserva.eliminar(reserva);
+	}
 
-    private boolean validarDatosReserva(String nombreForm, String emailForm, Integer numForm,
-                                        Integer dniForm, Integer cantPersonas, Date fechaForm){
-        if (nombreForm == null || nombreForm.isEmpty() || emailForm == null || emailForm.isEmpty() ||
-                numForm == null || dniForm == null || cantPersonas == null || fechaForm == null) {
-            return false;
-        }
+	@Override
+	public Reserva crearReserva(Restaurante restauranteEncontrado, String nombre_form, String email_form,
+			Integer num_form, Integer dni_form, Integer cant_personas, Date fecha_form) throws EspacioNoDisponible {
+		Reserva reserva = new Reserva(null, restauranteEncontrado, nombre_form, email_form, num_form, dni_form,
+				cant_personas, fecha_form);
 
-        Date fechaActual = new Date();
+		if (!verificarEspacioDisponible(reserva)) {
+			throw new EspacioNoDisponible();
+		}
 
-        if (fechaForm.before(fechaActual)) {
-            return false;
-        }
-        if (!emailForm.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            return false;
-        }
-        return true;
-    }
+		repositorioReserva.guardar(reserva);
+		restauranteEncontrado
+				.setEspacioDisponible(restauranteEncontrado.getCapacidadMaxima() - reserva.getCantidadPersonas());
+		repositorioRestaurante.actualizar(restauranteEncontrado);
+		this.sendMail(nombre_form, restauranteEncontrado.getNombre(), cant_personas, fecha_form, email_form);
+		return reserva;
+	}
 
-    private boolean verificarEspacioDisponible(Reserva reserva) {
-        Restaurante restaurante = reserva.getRestaurante();
-        List<Reserva> reservasExistentes = repositorioReserva.getReservasPorRestaurante(restaurante.getId());
+	private boolean verificarEspacioDisponible(Reserva reserva) {
+		Restaurante restaurante = reserva.getRestaurante();
+		List<Reserva> reservasExistentes = repositorioReserva.getReservasPorRestaurante(restaurante.getId());
 
-        int personasTotales = reservasExistentes.stream().mapToInt(Reserva::getCantidadPersonas).sum();
-        return personasTotales + reserva.getCantidadPersonas() <= restaurante.getCapacidadMaxima();
-    }
+		Integer personasTotales = reservasExistentes.stream().mapToInt(Reserva::getCantidadPersonas).sum();
+		return personasTotales + reserva.getCantidadPersonas() <= restaurante.getCapacidadMaxima();
+	}
+
+	private void sendMail(String nombre_form, String nombreRestaurante, Integer cant_personas, Date fecha_form,
+			String email_form) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE dd 'de' MMMM 'de' yyyy 'a las' HH:mm",
+				new Locale("es", "ES"));
+		String fechaFormateada = dateFormat.format(fecha_form);
+		String subject = "Confirmación de Reserva";
+		String text = "Hola " + nombre_form + ",\n\n" + "Tu reserva ha sido confirmada en " + nombreRestaurante
+				+ " para " + cant_personas + " personas el " + fechaFormateada + ".\n\n" + "Gracias por tu reserva.\n"
+				+ "Saludos,\n" + nombreRestaurante;
+
+		this.emailSender.sendSimpleMessage(email_form, subject, text);
+	}
 }

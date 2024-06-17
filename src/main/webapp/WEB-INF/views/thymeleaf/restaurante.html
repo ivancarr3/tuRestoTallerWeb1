@@ -58,28 +58,30 @@
                     <div class="card" style="width: 100%; border: 0;">
                         <div class="row no-gutters">
                             <div class="col-md-12">
-                                <form th:action="@{/reservar}" enctype="application/x-www-form-urlencoded" th:method="POST" method="POST" id="form_reserva">
+                                <form th:action="@{/reservar}" th:object="${datosReserva}" enctype="application/x-www-form-urlencoded" th:method="POST" method="POST" id="form_reserva">
                                     <div class="row">
+                                        <h2 class="mb-3">Formulario de reserva</h2>
                                         <div class="col-md-6">
-                                            <input type="hidden" id="id_form" name="id_form" th:value="${restaurante.id}">
+                                            <input type="hidden" id="id_form" name="idRestaurante" th:value="${restaurante.id}">
                                             <label for="nombre_form" class="mb-2">Nombre</label>
-                                            <input type="text" class="form-control mb-2" id="nombre_form" name="nombre_form">
+                                            <input type="text" class="form-control mb-2" required id="nombre_form" th:field="*{nombreForm}">
 
                                             <label for="email_form" class="mb-2">Correo electronico</label>
-                                            <input type="email" class="form-control mb-2" id="email_form" name="email_form">
+                                            <input type="email" class="form-control mb-2" required id="email_form" th:field="*{emailForm}">
 
                                             <label for="num_form" class="mb-2">Telefono</label>
-                                            <input type="number" class="form-control" id="num_form" name="num_form">
+                                            <input type="number" class="form-control" required id="num_form" th:field="*{numForm}">
                                         </div>
                                         <div class="col-md-6">
                                             <label for="dni_form" class="mb-2">Documento</label>
-                                            <input type="number" class="form-control mb-2" id="dni_form" name="dni_form">
+                                            <input type="number" class="form-control mb-2" required id="dni_form" th:field="*{dniForm}">
 
                                             <label for="fecha_form" class="mb-2">Fecha</label>
-                                            <input type="date" class="form-control mb-2" id="fecha_form" name="fecha_form">
+                                            <input type="date" class="form-control mb-2" required id="fecha_form" th:field="*{fechaForm}">
 
                                             <label for="cant_personas_form" class="mb-2">Cantidad de personas</label>
-                                            <select id="cant_personas_form" class="form-control" name="cant_personas_form">
+                                            <select id="cant_personas_form" class="form-control" th:field="*{cantPersonas}">
+
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
