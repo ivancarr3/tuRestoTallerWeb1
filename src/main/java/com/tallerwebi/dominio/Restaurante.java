@@ -28,7 +28,7 @@ public class Restaurante {
     @Column(nullable = false)
     private Integer espacioDisponible;
 
-    @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Reserva> reservas;
 
     @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -65,5 +65,11 @@ public class Restaurante {
     }
     public void setEspacioDisponible(Integer espacioDisponible) {
         this.espacioDisponible = espacioDisponible;
+    }
+    public List<Plato> getPlatos() {
+        return platos;
+    }
+    public void setPlatos(List<Plato> platos) {
+        this.platos = platos;
     }
 }

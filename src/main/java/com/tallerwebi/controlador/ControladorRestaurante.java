@@ -7,7 +7,6 @@ import com.tallerwebi.dominio.excepcion.NoHayPlatos;
 import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
 import com.tallerwebi.dominio.excepcion.PlatoNoEncontrado;
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
-import com.tallerwebi.servicio.ServicioCategoria;
 import com.tallerwebi.servicio.ServicioPlato;
 import com.tallerwebi.servicio.ServicioRestaurante;
 import org.springframework.stereotype.Controller;
@@ -32,8 +31,7 @@ public class ControladorRestaurante {
         this.servicioPlato = servicioPlato;
     }
 
-
-    @RequestMapping(path = "/restaurante/{id}", method = RequestMethod.GET)
+    @GetMapping(path = "/restaurante/{id}")
     public ModelAndView mostrarRestaurante(@PathVariable("id") Long id) throws RestauranteNoEncontrado, NoHayRestaurantes, NoHayPlatos {
         ModelMap model = new ModelMap();
         try {
@@ -47,18 +45,21 @@ public class ControladorRestaurante {
 
             model.put("platosPorCategoria", platosPorCategoria);
             model.put("platosRecomendados", platosRecomendados);
-            model.put("restaurante", restaurante);
-            return new ModelAndView("restaurante", model);
+            model.put("datosReserva", new DatosReserva());
+            model.put(MODEL_NAME_SINGULAR, restaurante);
+            return new ModelAndView(MODEL_NAME_SINGULAR, model);
         } catch (RestauranteNoEncontrado error) {
             model.put("errorId", "No se encontró el restaurante" );
             model.put(MODEL_NAME_SINGULAR, servicioRestaurante.get());
+            model.put("datosReserva", new DatosReserva());
             return new ModelAndView("home", model);
         } catch (NoHayPlatos error) {
-            model.put("error", "No hay platos en este restaurante");
-            return new ModelAndView("restaurante", model);
+            model.put(ERROR_NAME, "No hay platos en este restaurante");
+            model.put("datosReserva", new DatosReserva());
+            return new ModelAndView(MODEL_NAME_SINGULAR, model);
         } catch (Exception e) {
             model.put(ERROR_NAME, "Error del servidor" + e.getMessage());
-            System.out.println(e.getMessage());
+            model.put("datosReserva", new DatosReserva());
             return new ModelAndView("home", model);
         }
     }
@@ -69,23 +70,34 @@ public class ControladorRestaurante {
         List<Plato> platos;
         ModelMap model = new ModelMap();
         try {
-            platos = servicioPlato.consultarPlatoPorPrecio(precio);
-            model.put("platos", platos);
-
             Restaurante restaurante = servicioRestaurante.consultar(idRestaurante);
-            model.put(MODEL_NAME_SINGULAR, restaurante);
+            platos = servicioPlato.consultarPlatoPorPrecio(precio);
 
+            Map<Categoria, List<Plato>> platosPorCategoria = platos.stream()
+                    .collect(Collectors.groupingBy(Plato::getCategoria));
+
+            List<Plato> platosRecomendados = platos.stream()
+                    .filter(Plato::isEsRecomendado)
+                    .collect(Collectors.toList());
+
+            model.put("platosPorCategoria", platosPorCategoria);
+            model.put("platosRecomendados", platosRecomendados);
+            model.put(MODEL_NAME_SINGULAR, restaurante);
+            model.put("datosReserva", new DatosReserva());
             return new ModelAndView(MODEL_NAME_SINGULAR, model);
         } catch (PlatoNoEncontrado e) {
             model.put(ERROR_NAME, "No existen platos");
+            model.put("datosReserva", new DatosReserva());
             model.put(MODEL_NAME_SINGULAR, servicioRestaurante.consultar(idRestaurante));
             return new ModelAndView(MODEL_NAME_SINGULAR, model);
         } catch (RestauranteNoEncontrado e) {
             model.put(ERROR_NAME, "No existe el restaurante");
+            model.put("datosReserva", new DatosReserva());
             model.put(MODEL_NAME_SINGULAR, servicioRestaurante.consultar(idRestaurante));
             return new ModelAndView(MODEL_NAME_SINGULAR, model);
         } catch (Exception e) {
             model.put(ERROR_NAME, "Error del servidor" + e.getMessage());
+            model.put("datosReserva", new DatosReserva());
             return new ModelAndView(MODEL_NAME_SINGULAR, model);
         }
     }
