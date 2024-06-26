@@ -66,4 +66,12 @@ public class Restaurante {
     public void setEspacioDisponible(Integer espacioDisponible) {
         this.espacioDisponible = espacioDisponible;
     }
+
+    public List<Plato> getPlatos() {
+        return platos;
+    }
+
+    public void setPlatos(List<Plato> platos) {
+        this.platos = platos;
+    }
 }
