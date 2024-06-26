@@ -5,6 +5,7 @@ import com.tallerwebi.dominio.Reserva;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -37,32 +38,27 @@ public class RepositorioReservaImpl implements RepositorioReserva {
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         return query.getResultList();
     }
-    
 
     @Override
     public Reserva buscarReserva(Long id) {
-        String hql = "FROM Reserva WHERE id = :id";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("id", id);
-        return (Reserva) query.getSingleResult();
+        try {
+            String hql = "FROM Reserva WHERE id = :id";
+            Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+            query.setParameter("id", id);
+            return (Reserva) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
     public void actualizar(Reserva reserva) {
-        String hql = "UPDATE Reserva SET fecha = :fecha, cantidadPersonas = :cantidadPersonas WHERE id = :id";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("fecha", reserva.getFechaFormateada());
-        query.setParameter("cantidadPersonas", reserva.getCantidadPersonas());
-        query.setParameter("id", reserva.getId());
-        query.executeUpdate();
+        this.sessionFactory.getCurrentSession().update(reserva);
     }
 
     @Override
     public void eliminar(Reserva reserva) {
-        String hql = "DELETE FROM Reserva WHERE id = :id";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("id", reserva.getId());
-        query.executeUpdate();
+        this.sessionFactory.getCurrentSession().delete(reserva);
     }
 
     @Override

@@ -28,7 +28,7 @@ public class Restaurante {
     @Column(nullable = false)
     private Integer espacioDisponible;
 
-    @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Reserva> reservas;
 
     @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

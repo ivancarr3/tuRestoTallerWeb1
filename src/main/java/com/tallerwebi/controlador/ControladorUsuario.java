@@ -2,6 +2,7 @@ package com.tallerwebi.controlador;
 
 import java.util.List;
 
+import com.tallerwebi.dominio.excepcion.NoHayReservas;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,7 +29,7 @@ public class ControladorUsuario {
             return new ModelAndView("usuario_perfil");
         }
 	@GetMapping(path = "/misReservas")
-    public ModelAndView mostrarMisReservas() {
+    public ModelAndView mostrarMisReservas() throws NoHayReservas {
         ModelMap model = new ModelMap();
         List<Reserva> reservas = servicioReserva.buscarTodasLasReservas();
 		model.put(MODEL_NAME, reservas);
