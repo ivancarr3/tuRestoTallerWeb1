@@ -20,8 +20,9 @@ public class ServicioReservaTest {
     private RepositorioRestaurante repositorioRestaurante;
     private ServicioReserva servicioReserva;
     private RepositorioReserva repositorioReserva;
+    private ServicioGeocoding servicioGeocoding;
     private Email emailSender = new Email();
-    private final Restaurante restauranteInit = new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 7);
+    private final Restaurante restauranteInit = new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 7, -34.610000, -58.400000);
     private final List<Reserva> reservasMock = new ArrayList<>();
     private final Date fecha = new Date();
     private Date tomorrow = new Date();
@@ -34,7 +35,8 @@ public class ServicioReservaTest {
         this.repositorioRestaurante = mock(RepositorioRestaurante.class);
         this.repositorioReserva = mock(RepositorioReserva.class);
         this.emailSender = mock(Email.class);
-        this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante, this.servicioReserva);
+        this.servicioGeocoding = mock(ServicioGeocoding.class);
+        this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante, this.servicioReserva, this.servicioGeocoding);
         this.servicioReserva = new ServicioReservaImpl(this.repositorioReserva, this.repositorioRestaurante, this.emailSender);
         this.reservasMock.add(new Reserva(1L, this.restauranteInit, "Pepe", "test@mail.com", 1234, 1234, 5, this.fecha));
         this.reservasMock.add(new Reserva(2L, this.restauranteInit, "Pepe", "test@mail.com", 1234, 1234, 5, this.fecha));
@@ -85,12 +87,13 @@ public class ServicioReservaTest {
 
     @Test
     public void queLanceExcepcionSiQuiereCrearUnaReservaYNoHayEspacioDisponible() throws EspacioNoDisponible, DatosInvalidosReserva {
-        Restaurante restaurante = new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 2);
+        Restaurante restaurante = new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 2, -34.610000, -58.400000);
         Reserva nuevaReserva = new Reserva(10L, restaurante, "Pepe", "test@mail.com", 1234, 1234, 5, this.tomorrow);
 
         assertThrows(EspacioNoDisponible.class, () -> servicioReserva.crearReserva(nuevaReserva.getRestaurante(), nuevaReserva.getNombre(), nuevaReserva.getEmail(), nuevaReserva.getNumeroCelular(), nuevaReserva.getDni(), nuevaReserva.getCantidadPersonas(), nuevaReserva.getFecha()));
         verify(repositorioReserva, never()).guardar(nuevaReserva);
     }
+
 
     @Test
     public void queSeActualizeReservaCorrectamente() throws ReservaNoEncontrada {

@@ -38,7 +38,7 @@ public class ControladorReservaTest {
 	@Test
 	public void laReservaSeRealizaExitosamente()
 			throws EspacioNoDisponible, DatosInvalidosReserva, RestauranteNoEncontrado {
-		Restaurante restaurante = new Restaurante(1L, "restaurante", 2.2, "direccion", "imagen", 3);
+		Restaurante restaurante = new Restaurante(1L, "restaurante", 2.2, "direccion", "imagen", 3, -34.610000, -58.400000);
 		DatosReserva datosReserva = new DatosReserva();
 		datosReserva.setIdRestaurante(1L);
 		datosReserva.setNombreForm("nombre");
@@ -79,7 +79,7 @@ public class ControladorReservaTest {
 
 	@Test
 	public void espacioNoDisponible() throws RestauranteNoEncontrado, EspacioNoDisponible, DatosInvalidosReserva {
-		Restaurante restaurante = new Restaurante(1L, "nombre", 2.2, "direccion", "imagen", 3);
+		Restaurante restaurante = new Restaurante(1L, "nombre", 2.2, "direccion", "imagen", 3, -34.610000, -58.400000);
 		DatosReserva datosReserva = new DatosReserva();
 		datosReserva.setIdRestaurante(1L);
 		datosReserva.setNombreForm("nombre");
@@ -102,7 +102,7 @@ public class ControladorReservaTest {
 
 	@Test
 	public void datosInvalidos() throws EspacioNoDisponible, DatosInvalidosReserva, RestauranteNoEncontrado {
-		Restaurante restaurante = new Restaurante(1L, "nombre", 2.2, "direccion", "imagen", 3);
+		Restaurante restaurante = new Restaurante(1L, "nombre", 2.2, "direccion", "imagen", 3, -34.610000, -58.400000);
 		DatosReserva datosReserva = new DatosReserva();
 		datosReserva.setIdRestaurante(1L);
 		datosReserva.setNombreForm("nombre");

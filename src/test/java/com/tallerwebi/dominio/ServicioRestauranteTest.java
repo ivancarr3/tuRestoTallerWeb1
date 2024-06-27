@@ -25,15 +25,17 @@ public class ServicioRestauranteTest {
     private RepositorioRestaurante repositorioRestaurante;
     private ServicioReserva servicioReserva;
     private List<Restaurante> restaurantesMock;
+    private ServicioGeocoding servicioGeocoding;
 
     @BeforeEach
     public void init(){
         this.repositorioRestaurante = mock(RepositorioRestaurante.class);
-        this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante, this.servicioReserva);
+        this.servicioReserva = mock(ServicioReserva.class);
+        this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante, this.servicioReserva, this.servicioGeocoding);
         this.restaurantesMock = new ArrayList<>();
-        this.restaurantesMock.add(new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 2));
-        this.restaurantesMock.add(new Restaurante(2L, "La Farola", 4.0, "Almafuerte 3344", "restaurant.jpg", 100));
-        this.restaurantesMock.add(new Restaurante(3L, "Benjamin", 4.5, "Arieta 3344", "restaurant.jpg", 100));
+        this.restaurantesMock.add(new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 2, -34.610000, -58.400000));
+        this.restaurantesMock.add(new Restaurante(2L, "La Farola", 4.0, "Almafuerte 3344", "restaurant.jpg", 100, -34.610000, -58.400000));
+        this.restaurantesMock.add(new Restaurante(3L, "Benjamin", 4.5, "Arieta 3344", "restaurant.jpg", 100, -34.610000, -58.400000));
     }
 
     @Test
@@ -87,7 +89,7 @@ public class ServicioRestauranteTest {
     }
 
     @Test
-    public void queAlBuscarRestaurantesPorDireccionDevuelvaLosCorrespondientes() throws RestauranteNoEncontrado {
+    public void queAlBuscarRestaurantesPorDireccionDevuelvaLosCorrespondientes() throws NoHayRestaurantes {
         List<Restaurante> restaurantesPorDireccion = List.of(this.restaurantesMock.get(1));
 
         when(this.repositorioRestaurante.buscarPorDireccion("Almafuerte 3344")).thenReturn(restaurantesPorDireccion);
@@ -98,10 +100,10 @@ public class ServicioRestauranteTest {
     }
 
     @Test
-    public void queAlNoEncontrarRestaurantesPorDireccionLanceExcepcion() throws RestauranteNoEncontrado {
+    public void queAlNoEncontrarRestaurantesPorDireccionLanceExcepcion() throws NoHayRestaurantes {
         when(this.repositorioRestaurante.buscarPorDireccion("Arieta 5000")).thenReturn(this.restaurantesMock);
 
-        assertThrows(RestauranteNoEncontrado.class, () -> {
+        assertThrows(NoHayRestaurantes.class, () -> {
             this.servicioRestaurante.consultarRestaurantePorDireccion("otra direccion");
         });
     }
@@ -173,7 +175,7 @@ public class ServicioRestauranteTest {
     @Test
     public void queSeCreeRestauranteCorrectamente() throws RestauranteExistente {
         when(repositorioRestaurante.buscar(anyLong())).thenReturn(null);
-        Restaurante nuevoRestaurante = new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 100);
+        Restaurante nuevoRestaurante = new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 100, -34.610000, -58.400000);
 
         servicioRestaurante.crearRestaurante(nuevoRestaurante);
 
@@ -182,10 +184,10 @@ public class ServicioRestauranteTest {
 
     @Test
     public void queLanceExcepcionSiSeCreaUnRestauranteConElMismoId() throws RestauranteExistente {
-        Restaurante restauranteExistente = new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 100);
+        Restaurante restauranteExistente = new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 100, -34.610000, -58.400000);
         when(repositorioRestaurante.buscar(1L)).thenReturn(restauranteExistente);
 
-        Restaurante nuevoRestaurante = new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 100);
+        Restaurante nuevoRestaurante = new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 100, -34.610000, -58.400000);
 
         assertThrows(RestauranteExistente.class, () -> servicioRestaurante.crearRestaurante(nuevoRestaurante));
 
@@ -205,7 +207,7 @@ public class ServicioRestauranteTest {
 
     @Test
     public void queLanceExcepcionSiQuiereActualizarUnRestauranteQueNoExiste() throws RestauranteNoEncontrado {
-        Restaurante restaurante = new Restaurante(67L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 100);
+        Restaurante restaurante = new Restaurante(67L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 100, -34.610000, -58.400000);
 
         assertThrows(RestauranteNoEncontrado.class, () -> servicioRestaurante.actualizarRestaurante(restaurante));
         verify(repositorioRestaurante, never()).actualizar(restaurante);
