@@ -1,6 +1,9 @@
 package com.tallerwebi.controlador;
 
+
 import com.tallerwebi.dominio.Restaurante;
+import com.tallerwebi.dominio.ServicioGeocoding;
+import com.tallerwebi.dominio.excepcion.NoExisteDireccion;
 import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 
@@ -21,14 +24,16 @@ public class ControladorHome {
 
 	private final ServicioRestaurante servicioRestaurante;
 	private final ServicioPlato servicioPlato;
+	private final ServicioGeocoding servicioGeocoding;
 	private static final String MODEL_NAME = "restaurantes";
 	private static final String ERROR_NAME = "error";
 	private static final String VIEW_NAME = "home";
 
 	@Autowired
-    public ControladorHome(ServicioRestaurante servicioRestaurante, ServicioPlato servicioPlato){
+    public ControladorHome(ServicioRestaurante servicioRestaurante, ServicioPlato servicioPlato, ServicioGeocoding servicioGeocoding){
         this.servicioRestaurante = servicioRestaurante;
 		this.servicioPlato = servicioPlato;
+		this.servicioGeocoding = servicioGeocoding;
     }
 
 	@GetMapping(path = "/")
@@ -93,6 +98,32 @@ public class ControladorHome {
 		} catch (Exception e) {
 			model.put(ERROR_NAME, "Error del servidor" + e.getMessage());
 			return new ModelAndView(VIEW_NAME);
+		}
+	}
+
+	@GetMapping(path = "/buscar_direccion")
+	public ModelAndView buscarPorDireccion(@RequestParam("direccion") String direccion,
+										   @RequestParam(value = "distanciaMaxima", required = false, defaultValue = "5.0") Double distanciaMaxima) throws NoHayRestaurantes, NoExisteDireccion {
+		ModelMap model = new ModelMap();
+		try {
+			List<Restaurante> restaurantes = servicioRestaurante.filtrarPorDireccion(direccion, distanciaMaxima);
+			model.put(MODEL_NAME, restaurantes);
+			return new ModelAndView(VIEW_NAME, model);
+		} catch (NoHayRestaurantes error) {
+			model.put("errorFiltro", error.getMessage() + " en esa direccion");
+			try {
+				model.put(MODEL_NAME, servicioRestaurante.get());
+			} catch (NoHayRestaurantes e) {
+				model.put(ERROR_NAME, "No hay restaurantes disponibles.");
+			}
+			return new ModelAndView(VIEW_NAME, model);
+		}catch(NoExisteDireccion error){
+			model.put("errorFiltro", error.getMessage());
+			model.put(MODEL_NAME, servicioRestaurante.get());
+			return new ModelAndView(VIEW_NAME, model);
+		} catch (Exception e) {
+			model.put(ERROR_NAME, "Error del servidor: " + e.getMessage());
+			return new ModelAndView(VIEW_NAME, model);
 		}
 	}
 

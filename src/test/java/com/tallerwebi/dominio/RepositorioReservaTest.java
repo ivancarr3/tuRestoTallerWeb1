@@ -39,7 +39,7 @@ public class RepositorioReservaTest {
     private SessionFactory sessionFactory;
 
     private final List<Reserva> reservas = new ArrayList<>();
-    private final Restaurante restauranteInit = new Restaurante(null, "Restaurante Mock", 4.5, "Direccion Mock", "imagenMock.jpg", 50);
+    private final Restaurante restauranteInit = new Restaurante(null, "Restaurante Mock", 4.5, "Direccion Mock", "imagenMock.jpg", 50, -34.598940, -58.415550);
     private final Date fecha = new Date();
 
     @BeforeEach

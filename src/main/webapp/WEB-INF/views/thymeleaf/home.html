@@ -163,15 +163,28 @@
         <input type="hidden" th:value="DESC" name="filtro_orden" />
       </form>
     </div>
-    <form class="row row-cols-lg-auto g-3 align-items-center" action="#" th:action="@{/filtrar_capacidad}" method="POST">
-      <div class="col-12">
-        <label class="mb-2">Buscar por espacio disponible <i class="fas fa-user"></i></label>
-        <div class="input-group mb-3">
-          <input type="number" placeholder="Número de comensales" class="form-control" id="capacidadPersonas" name="capacidadPersonas" />
-          <button type="submit" class="btn btn-dark">Filtrar</button>
+
+    <div class="d-flex align-items-center mb-3 justify-content-evenly">
+      <form class="row row-cols-lg-auto g-3 align-items-center" action="#" th:action="@{/filtrar_capacidad}" method="POST">
+        <div class="col-12">
+          <label class="mb-2">Buscar por espacio disponible <i class="fas fa-user"></i></label>
+          <div class="input-group mb-3">
+            <input type="number" placeholder="Número de comensales" class="form-control" id="capacidadPersonas" name="capacidadPersonas" />
+            <button type="submit" class="btn btn-dark">Filtrar</button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+      <form action="#" th:action="@{/buscar_direccion}" method="GET" class="row row-cols-lg-auto g-3 align-items-center">
+        <div class="col-12">
+          <label class="mb-2">Buscar por dirrecion</label>
+          <div class="input-group mb-3">
+            <input type="text" placeholder="Dirección" class="form-control" name="direccion" required />
+            <button type="submit" class="btn btn-dark">Filtrar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
     <p
             th:if="${errorFiltro != null}"
             class="alert alert-danger"
