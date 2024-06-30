@@ -12,8 +12,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.sql.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -26,10 +24,10 @@ public class ControladorHome {
 	private static final String VIEW_NAME = "home";
 
 	@Autowired
-    public ControladorHome(ServicioRestaurante servicioRestaurante, ServicioPlato servicioPlato){
-        this.servicioRestaurante = servicioRestaurante;
+	public ControladorHome(ServicioRestaurante servicioRestaurante, ServicioPlato servicioPlato) {
+		this.servicioRestaurante = servicioRestaurante;
 		this.servicioPlato = servicioPlato;
-    }
+	}
 
 	@GetMapping(path = "/")
 	public ModelAndView inicio() {
@@ -45,7 +43,8 @@ public class ControladorHome {
 	}
 
 	@PostMapping(path = "/home")
-	public ModelAndView buscar(@ModelAttribute("busqueda") String busqueda) throws RestauranteNoEncontrado, NoHayRestaurantes {
+	public ModelAndView buscar(@ModelAttribute("busqueda") String busqueda)
+			throws RestauranteNoEncontrado, NoHayRestaurantes {
 		ModelMap model = new ModelMap();
 		try {
 			List<Restaurante> restaurantes = servicioRestaurante.consultarRestaurantePorNombre(busqueda);
@@ -55,27 +54,28 @@ public class ControladorHome {
 			model.put("errorBusqueda", "No se encontraron restaurantes con el nombre " + busqueda);
 			model.put(MODEL_NAME, servicioRestaurante.get());
 			return new ModelAndView(VIEW_NAME, model);
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			model.put(ERROR_NAME, "Error del servidor" + e.getMessage());
-			return new ModelAndView(VIEW_NAME);
+			return new ModelAndView(VIEW_NAME, model);
 		}
 	}
 
 	@PostMapping(path = "/filtrar")
 	public ModelAndView filtrar(@RequestParam(value = "filtrado", required = false) Double estrella,
-								@RequestParam(value = "filtro_orden", required = false) String tipoDeOrden) throws RestauranteNoEncontrado, NoHayRestaurantes {
+			@RequestParam(value = "filtro_orden", required = false) String tipoDeOrden)
+			throws RestauranteNoEncontrado, NoHayRestaurantes {
 		ModelMap model = new ModelMap();
 		try {
 			List<Restaurante> restaurantes = servicioRestaurante.consultarRestaurantePorFiltros(estrella, tipoDeOrden);
 			model.put(MODEL_NAME, restaurantes);
 			return new ModelAndView(VIEW_NAME, model);
 		} catch (RestauranteNoEncontrado error) {
-			model.put("errorFiltro", "No se encontraron restaurantes" );
+			model.put("errorFiltro", "No se encontraron restaurantes");
 			model.put(MODEL_NAME, servicioRestaurante.get());
 			return new ModelAndView(VIEW_NAME, model);
-		} catch (Exception e) {
-			model.put(ERROR_NAME, "Error del servidor" + e.getMessage());
-			return new ModelAndView(VIEW_NAME);
+		} catch (RuntimeException e) {
+			model.put(ERROR_NAME, "Error del servidor " + e.getMessage());
+			return new ModelAndView(VIEW_NAME, model);
 		}
 	}
 
@@ -87,12 +87,12 @@ public class ControladorHome {
 			model.put(MODEL_NAME, restaurantes);
 			return new ModelAndView(VIEW_NAME, model);
 		} catch (NoHayRestaurantes error) {
-			model.put("errorFiltro", "No se encontraron restaurantes" );
+			model.put("errorFiltro", "No se encontraron restaurantes");
 			model.put(MODEL_NAME, servicioRestaurante.get());
 			return new ModelAndView(VIEW_NAME, model);
-		} catch (Exception e) {
-			model.put(ERROR_NAME, "Error del servidor" + e.getMessage());
-			return new ModelAndView(VIEW_NAME);
+		} catch (RuntimeException e) {
+			model.put(ERROR_NAME, "Error del servidor " + e.getMessage());
+			return new ModelAndView(VIEW_NAME, model);
 		}
 	}
 
