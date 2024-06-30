@@ -34,13 +34,6 @@ public class ControladorHome {
 		return new ModelAndView("redirect:/home");
 	}
 
-	@GetMapping(path = "/home_test")
-	public ModelAndView test() throws NoHayRestaurantes {
-		ModelMap model = new ModelMap();
-		List<Restaurante> restaurantes = servicioRestaurante.get();
-		model.put(MODEL_NAME, restaurantes);
-		return new ModelAndView("home_test", model);
-	}
 
 	@PostMapping(path = "/home")
 	public ModelAndView buscar(@ModelAttribute("busqueda") String busqueda)
