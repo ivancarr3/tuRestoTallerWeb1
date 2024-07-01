@@ -18,6 +18,8 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ServicioRestauranteTest {
 
@@ -27,11 +29,12 @@ public class ServicioRestauranteTest {
     private List<Restaurante> restaurantesMock;
 
     @BeforeEach
-    public void init(){
+    public void init() {
         this.repositorioRestaurante = mock(RepositorioRestaurante.class);
         this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante, this.servicioReserva);
         this.restaurantesMock = new ArrayList<>();
-        this.restaurantesMock.add(new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 2));
+        this.restaurantesMock
+                .add(new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 2));
         this.restaurantesMock.add(new Restaurante(2L, "La Farola", 4.0, "Almafuerte 3344", "restaurant.jpg", 100));
         this.restaurantesMock.add(new Restaurante(3L, "Benjamin", 4.5, "Arieta 3344", "restaurant.jpg", 100));
     }
@@ -72,9 +75,28 @@ public class ServicioRestauranteTest {
         List<Restaurante> restaurantesPorNombre = List.of(this.restaurantesMock.get(0));
         when(this.repositorioRestaurante.buscarPorNombre("El Club de la milanesa")).thenReturn(restaurantesPorNombre);
 
-        List<Restaurante> restaurantes = this.servicioRestaurante.consultarRestaurantePorNombre("El Club de la milanesa");
+        List<Restaurante> restaurantes = this.servicioRestaurante
+                .consultarRestaurantePorNombre("El Club de la milanesa");
 
         assertThat(restaurantes.size(), equalTo(1));
+    }
+
+    @Test
+    public void alBuscarRestaurantePorNombreSiElNumbreEsNullDevuelveLaListaDeRestaurantes()
+            throws RestauranteNoEncontrado {
+
+        ArrayList<Restaurante> listaResto = new ArrayList<>();
+        Restaurante restoMock = mock(Restaurante.class);
+        listaResto.add(restoMock);
+
+        when(repositorioRestaurante.get()).thenReturn(listaResto);
+
+        String nombreResto = null;
+
+        ArrayList<Restaurante> listaDevuelta = (ArrayList<Restaurante>) servicioRestaurante
+                .consultarRestaurantePorNombre(nombreResto);
+
+        assertThat(listaDevuelta, containsInAnyOrder(listaResto.toArray()));
     }
 
     @Test
@@ -166,14 +188,31 @@ public class ServicioRestauranteTest {
 
         assertThat(restaurantes.size(), equalTo(3));
         for (int i = 0; i < restaurantes.size() - 1; i++) {
-            assertThat(restaurantes.get(i).getEstrellas(), greaterThanOrEqualTo(restaurantes.get(i + 1).getEstrellas()));
+            assertThat(restaurantes.get(i).getEstrellas(),
+                    greaterThanOrEqualTo(restaurantes.get(i + 1).getEstrellas()));
+        }
+    }
+
+    @Test
+    public void queAlConsultarOrdenPorEstrellasNoHayaRestaurantes() {
+
+        when(repositorioRestaurante.ordenarPorEstrellas(anyString())).thenReturn(new ArrayList<Restaurante>());
+
+        try {
+            ArrayList<Restaurante> listaDevuelta = (ArrayList<Restaurante>) servicioRestaurante
+                    .consultarOrdenPorEstrellas(anyString());
+        } catch (NoHayRestaurantes e) {
+            assertTrue(true);
+        } catch (Exception e) {
+            fail();
         }
     }
 
     @Test
     public void queSeCreeRestauranteCorrectamente() throws RestauranteExistente {
         when(repositorioRestaurante.buscar(anyLong())).thenReturn(null);
-        Restaurante nuevoRestaurante = new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 100);
+        Restaurante nuevoRestaurante = new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000",
+                "restaurant.jpg", 100);
 
         servicioRestaurante.crearRestaurante(nuevoRestaurante);
 
@@ -182,10 +221,12 @@ public class ServicioRestauranteTest {
 
     @Test
     public void queLanceExcepcionSiSeCreaUnRestauranteConElMismoId() throws RestauranteExistente {
-        Restaurante restauranteExistente = new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 100);
+        Restaurante restauranteExistente = new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000",
+                "restaurant.jpg", 100);
         when(repositorioRestaurante.buscar(1L)).thenReturn(restauranteExistente);
 
-        Restaurante nuevoRestaurante = new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 100);
+        Restaurante nuevoRestaurante = new Restaurante(1L, "El Club de la milanesa", 4.0, "Arieta 5000",
+                "restaurant.jpg", 100);
 
         assertThrows(RestauranteExistente.class, () -> servicioRestaurante.crearRestaurante(nuevoRestaurante));
 
@@ -205,7 +246,8 @@ public class ServicioRestauranteTest {
 
     @Test
     public void queLanceExcepcionSiQuiereActualizarUnRestauranteQueNoExiste() throws RestauranteNoEncontrado {
-        Restaurante restaurante = new Restaurante(67L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg", 100);
+        Restaurante restaurante = new Restaurante(67L, "El Club de la milanesa", 4.0, "Arieta 5000", "restaurant.jpg",
+                100);
 
         assertThrows(RestauranteNoEncontrado.class, () -> servicioRestaurante.actualizarRestaurante(restaurante));
         verify(repositorioRestaurante, never()).actualizar(restaurante);
@@ -229,4 +271,92 @@ public class ServicioRestauranteTest {
         assertThrows(RestauranteNoEncontrado.class, () -> servicioRestaurante.eliminarRestaurante(restaurante));
         verify(repositorioRestaurante, never()).eliminar(restaurante);
     }
+
+    @Test
+    public void queAlConsultarRestaurantePorFiltroTeniendoEstrellasYTipoDevuelvaUnaListaDeRestaurante()
+            throws RestauranteNoEncontrado {
+
+        ArrayList<Restaurante> listaResto = new ArrayList<>();
+
+        Restaurante restauranteMock1 = mock(Restaurante.class);
+        Restaurante restauranteMock2 = mock(Restaurante.class);
+        Restaurante restauranteMock3 = mock(Restaurante.class);
+
+        listaResto.add(restauranteMock1);
+        listaResto.add(restauranteMock2);
+        listaResto.add(restauranteMock3);
+
+        when(repositorioRestaurante.buscarPorEstrellasYOrdenar(anyDouble(), anyString())).thenReturn(listaResto);
+
+        ArrayList<Restaurante> lista = (ArrayList<Restaurante>) servicioRestaurante.consultarRestaurantePorFiltros(
+                anyDouble(),
+                anyString());
+
+        assertThat(lista, containsInAnyOrder(listaResto.toArray()));
+    }
+
+    @Test
+    public void queAlConsultarRestaurantePorFiltroTeniendoSoloEstrellasDevuelvaUnaListaDeRestaurante()
+            throws RestauranteNoEncontrado {
+
+        ArrayList<Restaurante> listaResto = new ArrayList<>();
+
+        Restaurante restauranteMock1 = mock(Restaurante.class);
+        Restaurante restauranteMock2 = mock(Restaurante.class);
+        Restaurante restauranteMock3 = mock(Restaurante.class);
+
+        listaResto.add(restauranteMock1);
+        listaResto.add(restauranteMock2);
+        listaResto.add(restauranteMock3);
+
+        when(repositorioRestaurante.buscarPorEstrellas(anyDouble())).thenReturn(listaResto);
+
+        String tipoOrden = null;
+        ArrayList<Restaurante> lista = (ArrayList<Restaurante>) servicioRestaurante.consultarRestaurantePorFiltros(
+                anyDouble(), tipoOrden);
+
+        assertThat(lista, containsInAnyOrder(listaResto.toArray()));
+    }
+
+    @Test
+    public void queAlConsultarRestaurantePorFiltroTeniendoSoloTipoDevuelvaUnaListaDeRestaurante()
+            throws RestauranteNoEncontrado {
+
+        ArrayList<Restaurante> listaResto = new ArrayList<>();
+
+        Restaurante restauranteMock1 = mock(Restaurante.class);
+        Restaurante restauranteMock2 = mock(Restaurante.class);
+        Restaurante restauranteMock3 = mock(Restaurante.class);
+
+        listaResto.add(restauranteMock1);
+        listaResto.add(restauranteMock2);
+        listaResto.add(restauranteMock3);
+
+        when(repositorioRestaurante.ordenarPorEstrellas(anyString())).thenReturn(listaResto);
+
+        Double estrellas = null;
+        ArrayList<Restaurante> lista = (ArrayList<Restaurante>) servicioRestaurante.consultarRestaurantePorFiltros(
+                estrellas,
+                anyString());
+
+        assertThat(lista, containsInAnyOrder(listaResto.toArray()));
+    }
+
+    @Test
+    public void consultarRestaurantePorFiltroNoEncuentraNingunRestaurante() {
+
+        when(repositorioRestaurante.buscarPorEstrellasYOrdenar(anyDouble(), anyString())).thenReturn(new ArrayList<>());
+
+        try {
+            ArrayList<Restaurante> lista = (ArrayList<Restaurante>) servicioRestaurante.consultarRestaurantePorFiltros(
+                    anyDouble(),
+                    anyString());
+        } catch (RestauranteNoEncontrado e) {
+            assertTrue(true);
+        } catch (Exception e) {
+            fail();
+        }
+
+    }
+
 }
