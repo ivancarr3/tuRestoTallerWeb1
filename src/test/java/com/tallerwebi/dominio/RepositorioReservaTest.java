@@ -36,22 +36,27 @@ public class RepositorioReservaTest {
     private RepositorioRestaurante repositorioRestaurante;
 
     @Autowired
+    private RepositorioUsuario repositorioUsuario;
+
+    @Autowired
     private SessionFactory sessionFactory;
 
-    private final List<Reserva> reservas = new ArrayList<>();
-    private final Restaurante restauranteInit = new Restaurante(null, "Restaurante Mock", 4.5, "Direccion Mock", "imagenMock.jpg", 50, -34.598940, -58.415550);
     private final Date fecha = new Date();
+    private final Restaurante restauranteInit = new Restaurante(null, "Restaurante Mock", 4.5, "Direccion Mock", "imagenMock.jpg", 50, -34.598940, -58.415550);
+    private final Usuario usuarioInit = new Usuario(null, "test@test.com", "123", "USER");
+    private List<Reserva> reservas = new ArrayList<Reserva>();
 
     @BeforeEach
     public void init() {
         this.repositorioRestaurante.guardar(this.restauranteInit);
+        this.repositorioUsuario.guardar(this.usuarioInit);
         this.reservas.add(crearYGuardarReserva("Mateo",5));
         this.reservas.add(crearYGuardarReserva("Benjamin",5));
         this.reservas.add(crearYGuardarReserva("Juan",5));
     }
 
     private Reserva crearYGuardarReserva(String nombre, Integer cantidadPersonas) {
-        Reserva reserva = new Reserva(null, this.restauranteInit, nombre, "test@mail.com", 1234, 1234, cantidadPersonas, this.fecha);
+        Reserva reserva = new Reserva(null, restauranteInit, nombre, "test@mail.com", 1234, 1234, cantidadPersonas, this.fecha, this.usuarioInit);
         repositorioReserva.guardar(reserva);
         return reserva;
     }

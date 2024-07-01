@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class ControladorHomeTest {
 
 
@@ -24,12 +26,14 @@ public class ControladorHomeTest {
 	private ServicioRestaurante servicioRestauranteMock;
 	private ServicioPlato servicioPlato;
 	private ServicioGeocoding servicioGeocoding;
+	private HttpServletRequest request;
 
 
 	@BeforeEach
 	public void init() {
 		servicioRestauranteMock = mock(ServicioRestaurante.class);
 		this.controladorHome = new ControladorHome(this.servicioRestauranteMock, this.servicioPlato, this.servicioGeocoding);
+		this.request = mock(HttpServletRequest.class);
 	}
 
 	@Test
@@ -46,7 +50,7 @@ public class ControladorHomeTest {
 		when(servicioRestauranteMock.get()).thenReturn(restaurantesMockeados);
 
 		// ejecucion
-		ModelAndView modelAndView = controladorHome.mostrarHome();
+		ModelAndView modelAndView = controladorHome.mostrarHome(this.request);
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("Home"));
@@ -65,7 +69,7 @@ public class ControladorHomeTest {
 		when(servicioRestauranteMock.consultarRestaurantePorNombre(anyString())).thenReturn(restaurantesMockeados);
 
 		// ejecucion
-		ModelAndView modelAndView = controladorHome.buscar("La Farola");
+		ModelAndView modelAndView = controladorHome.buscar("La Farola", request);
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("Home"));
@@ -91,7 +95,7 @@ public class ControladorHomeTest {
 		when(this.servicioRestauranteMock.get()).thenReturn(restaurantesMock);
 
 		// ejecucion
-		ModelAndView mav = this.controladorHome.mostrarHome();
+		ModelAndView mav = this.controladorHome.mostrarHome(this.request);
 
 		// verificacion
 		List<Restaurante> restaurantes = (List<Restaurante>) mav.getModel().get("restaurantes");

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 public class ServicioGeocoding {
-    private final String apiKey = "AAIzaSyCDpFxYmSO5R8H2llYsC_G97wfILowgNBo";
+    private final String apiKey = "AIzaSyCDpFxYmSO5R8H2llYsC_G97wfILowgNBo";
 
     public Coordenadas obtenerCoordenadas(String direccion) {
         RestTemplate restTemplate = new RestTemplate();

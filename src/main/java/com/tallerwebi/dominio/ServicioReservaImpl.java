@@ -7,7 +7,7 @@ import java.util.Locale;
 
 import javax.transaction.Transactional;
 
-import com.tallerwebi.dominio.excepcion.DatosInvalidosReserva;
+import com.tallerwebi.dominio.excepcion.NoExisteUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,20 +22,34 @@ public class ServicioReservaImpl implements ServicioReserva {
 
 	private final RepositorioReserva repositorioReserva;
 	private final RepositorioRestaurante repositorioRestaurante;
+	private final RepositorioUsuario repositorioUsuario;
 	private final Email emailSender;
 
 	@Autowired
 	public ServicioReservaImpl(RepositorioReserva repositorioReserva, RepositorioRestaurante repositorioRestaurante,
-			Email emailSender) {
+			Email emailSender, RepositorioUsuario repositorioUsuario) {
 		this.repositorioReserva = repositorioReserva;
 		this.repositorioRestaurante = repositorioRestaurante;
 		this.emailSender = emailSender;
+		this.repositorioUsuario = repositorioUsuario;
 	}
 
 	@Override
-	public List<Reserva> buscarReservasDelUsuario(Long idUsuario) {
-		return repositorioReserva.buscarReservasDelUsuario(idUsuario);
+	public List<Reserva> buscarReservasDelUsuario(Long idUsuario) throws NoHayReservas {
+		List<Reserva> reservas;
+		try {
+			reservas = repositorioReserva.buscarReservasDelUsuario(idUsuario);
+			if (reservas.isEmpty()) {
+				throw new NoHayReservas();
+			}
+		} catch (NoHayReservas e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException("Error al buscar reservas del usuario", e);
+		}
+		return reservas;
 	}
+
 
 	@Override
 	public List<Reserva> buscarTodasLasReservas() throws NoHayReservas {
@@ -77,17 +91,20 @@ public class ServicioReservaImpl implements ServicioReserva {
 
 	@Override
 	public Reserva crearReserva(Restaurante restauranteEncontrado, String nombre_form, String email_form,
-			Integer num_form, Integer dni_form, Integer cant_personas, Date fecha_form) throws EspacioNoDisponible {
+								Integer num_form, Integer dni_form, Integer cant_personas, Date fecha_form, Usuario usuario) throws EspacioNoDisponible, NoExisteUsuario {
+		if (usuario == null) {
+			throw new NoExisteUsuario();
+		}
+
 		Reserva reserva = new Reserva(null, restauranteEncontrado, nombre_form, email_form, num_form, dni_form,
-				cant_personas, fecha_form);
+				cant_personas, fecha_form, usuario);
 
 		if (!verificarEspacioDisponible(reserva)) {
 			throw new EspacioNoDisponible();
 		}
 
 		repositorioReserva.guardar(reserva);
-		restauranteEncontrado
-				.setEspacioDisponible(restauranteEncontrado.getCapacidadMaxima() - reserva.getCantidadPersonas());
+		restauranteEncontrado.setEspacioDisponible(restauranteEncontrado.getCapacidadMaxima() - reserva.getCantidadPersonas());
 		repositorioRestaurante.actualizar(restauranteEncontrado);
 		this.sendMail(nombre_form, restauranteEncontrado.getNombre(), cant_personas, fecha_form, email_form);
 		return reserva;

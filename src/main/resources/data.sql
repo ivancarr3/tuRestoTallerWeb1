@@ -1,7 +1,11 @@
-INSERT INTO usuario (email, password, rol) VALUES ('test@unlam.edu.ar', 'test', 'ADMIN');
+INSERT INTO usuario (email, password, rol, activo, confirmationToken) VALUES ('admin@admin.com', 'admin', 'ADMIN', TRUE, '');
+SET @idUsuario1 = LAST_INSERT_ID();
+
+INSERT INTO usuario (email, password, rol, activo, confirmationToken) VALUES ('user@user.com', 'user', 'USER', TRUE, '');
+SET @idUsuario2 = LAST_INSERT_ID();
 
 INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud) VALUES
-    ('El club de la Milanesa', 5.0, 'Pres. Juan Domingo Perón 2700', 'restaurant.jpg', 2, 2, -34.671958, -58.562666);
+    ('El club de la Milanesa', 5.0, 'Pres. Juan Domingo Perón 2700', 'restaurant.jpg', 2, 0, -34.671958, -58.562666);
 SET @idResto1 = LAST_INSERT_ID();
 
 INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud) VALUES
@@ -152,7 +156,7 @@ INSERT INTO plato (nombre, precio, descripcion, imagen, id_restaurante, id_categ
                                                                                                          ('Pizza de Salami', 15500, 'Pizza con salami picante y mozzarella', 'pizza.jpeg', @idResto6, @idCategoria9, true),
                                                                                                          ('Solomillo de Cerdo', 27000, 'Solomillo de cerdo a la parrilla con puré de manzana', 'asado.jpg', @idResto6, @idCategoria10, true);
 
-INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha) VALUES (@idResto1, "mateo", "mateo", 1234, 4321, 2, "2024-09-10");
-INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha) VALUES (@idResto1, "gene", "gene", 1234, 4321, 2, "2024-06-11");
+INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha, idUsuario) VALUES (@idResto1, "mateo", "mateo", 1234, 4321, 2, "2024-09-10", @idUsuario1);
+INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha, idUsuario) VALUES (@idResto1, "gene", "gene", 1234, 4321, 2, "2024-06-11", @idUsuario2);
 
 

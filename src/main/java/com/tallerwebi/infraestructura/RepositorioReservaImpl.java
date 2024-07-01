@@ -29,14 +29,14 @@ public class RepositorioReservaImpl implements RepositorioReserva {
         String hql = "FROM Reserva WHERE idUsuario = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("id", idUsuario);
-        return query.getResultList();
+        return (List<Reserva>) query.getResultList();
     }
     
     @Override
     public List<Reserva> buscarTodasLasReservas() {
         String hql = "FROM Reserva";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        return query.getResultList();
+        return (List<Reserva>) query.getResultList();
     }
 
     @Override
@@ -66,6 +66,6 @@ public class RepositorioReservaImpl implements RepositorioReserva {
         String hql = "FROM Reserva WHERE restaurante.id = :idRestaurante";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("idRestaurante", idRestaurante);
-        return query.getResultList();
+        return (List<Reserva>) query.getResultList();
     }
 }
