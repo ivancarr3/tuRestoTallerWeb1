@@ -21,7 +21,7 @@ public class ServicioPlatoImpl implements ServicioPlato {
     private final RepositorioPlato repositorioPlato;
 
     @Autowired
-    public ServicioPlatoImpl(RepositorioPlato repositorioPlato){
+    public ServicioPlatoImpl(RepositorioPlato repositorioPlato) {
         this.repositorioPlato = repositorioPlato;
     }
 
@@ -61,7 +61,7 @@ public class ServicioPlatoImpl implements ServicioPlato {
     @Override
     public List<Plato> consultarPlatoPorNombre(String nombre) throws PlatoNoEncontrado {
         List<Plato> platos = repositorioPlato.buscarPlatoPorNombre(nombre);
-        if(platos.isEmpty()){
+        if (platos.isEmpty()) {
             throw new PlatoNoEncontrado();
         }
         return repositorioPlato.buscarPlatoPorNombre(nombre);
@@ -70,7 +70,7 @@ public class ServicioPlatoImpl implements ServicioPlato {
     @Override
     public List<Plato> consultarPlatoPorPrecio(Double precio) throws PlatoNoEncontrado {
         List<Plato> platos = repositorioPlato.buscarPlatoPorPrecio(precio);
-        if(platos.isEmpty()){
+        if (platos.isEmpty()) {
             throw new PlatoNoEncontrado();
         }
         return repositorioPlato.buscarPlatoPorPrecio(precio);
@@ -88,7 +88,7 @@ public class ServicioPlatoImpl implements ServicioPlato {
     @Override
     public void crearPlato(Plato plato) throws PlatoExistente {
         Plato platoEncontrado = repositorioPlato.buscar(plato.getId());
-        if(platoEncontrado != null){
+        if (platoEncontrado != null) {
             throw new PlatoExistente();
         }
         repositorioPlato.guardarPlato(plato);
@@ -97,7 +97,7 @@ public class ServicioPlatoImpl implements ServicioPlato {
     @Override
     public void actualizarPlato(Plato plato) throws PlatoNoEncontrado {
         Plato platoEncontrado = repositorioPlato.buscar(plato.getId());
-        if(platoEncontrado == null){
+        if (platoEncontrado == null) {
             throw new PlatoNoEncontrado();
         }
         repositorioPlato.modificarPlato(plato);
@@ -106,12 +106,10 @@ public class ServicioPlatoImpl implements ServicioPlato {
     @Override
     public void eliminarPlato(Plato plato) throws PlatoNoEncontrado {
         Plato platoEncontrado = repositorioPlato.buscar(plato.getId());
-        if(platoEncontrado == null){
+        if (platoEncontrado == null) {
             throw new PlatoNoEncontrado();
         }
         repositorioPlato.eliminarPlato(plato);
     }
 
-
 }
-

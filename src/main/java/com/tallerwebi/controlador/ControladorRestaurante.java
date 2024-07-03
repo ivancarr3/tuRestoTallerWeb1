@@ -57,7 +57,7 @@ public class ControladorRestaurante {
             model.put(ERROR_NAME, "No hay platos en este restaurante");
             model.put("datosReserva", new DatosReserva());
             return new ModelAndView(MODEL_NAME_SINGULAR, model);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             model.put(ERROR_NAME, "Error del servidor" + e.getMessage());
             model.put("datosReserva", new DatosReserva());
             return new ModelAndView("home", model);
@@ -93,10 +93,9 @@ public class ControladorRestaurante {
         } catch (RestauranteNoEncontrado e) {
             model.put(ERROR_NAME, "No existe el restaurante");
             model.put("datosReserva", new DatosReserva());
-            model.put(MODEL_NAME_SINGULAR, servicioRestaurante.consultar(idRestaurante));
             return new ModelAndView(MODEL_NAME_SINGULAR, model);
-        } catch (Exception e) {
-            model.put(ERROR_NAME, "Error del servidor" + e.getMessage());
+        } catch (RuntimeException e) {
+            model.put(ERROR_NAME, "Error del servidor " + e.getMessage());
             model.put("datosReserva", new DatosReserva());
             return new ModelAndView(MODEL_NAME_SINGULAR, model);
         }

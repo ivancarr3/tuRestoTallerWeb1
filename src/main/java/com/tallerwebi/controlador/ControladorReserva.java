@@ -42,7 +42,7 @@ public class ControladorReserva {
 
 	@PostMapping(path = "/reservar")
 	public ModelAndView reservar(@ModelAttribute DatosReserva datosReserva)
-			throws RestauranteNoEncontrado, DatosInvalidosReserva, EspacioNoDisponible {
+			throws RestauranteNoEncontrado, DatosInvalidosReserva, EspacioNoDisponible, MPException, MPApiException {
 
 		ModelMap model = new ModelMap();
 
@@ -51,6 +51,7 @@ public class ControladorReserva {
 					datosReserva.getDniForm(), datosReserva.getCantPersonas(), datosReserva.getFechaForm());
 
 			Restaurante restauranteEncontrado = servicioRestaurante.consultar(datosReserva.getIdRestaurante());
+
 			Reserva reserva = servicioReserva.crearReserva(restauranteEncontrado, datosReserva.getNombreForm(),
 					datosReserva.getEmailForm(), datosReserva.getNumForm(), datosReserva.getDniForm(),
 					datosReserva.getCantPersonas(), datosReserva.getFechaForm());
@@ -62,7 +63,7 @@ public class ControladorReserva {
 		} catch (RestauranteNoEncontrado | DatosInvalidosReserva | EspacioNoDisponible e) {
 			model.put(ERROR_NAME, e.getMessage());
 			return new ModelAndView(VIEW_NAME, model);
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			model.put(ERROR_NAME, "Error del servidor: " + e.getMessage());
 			return new ModelAndView(VIEW_NAME, model);
 		}
@@ -76,6 +77,7 @@ public class ControladorReserva {
 
 	private void validarDatosReserva(String nombreForm, String emailForm, Integer numForm, Integer dniForm,
 			Integer cantPersonas, Date fechaForm) throws DatosInvalidosReserva {
+
 		if (nombreForm == null || nombreForm.isEmpty() || emailForm == null || emailForm.isEmpty() || numForm == null
 				|| dniForm == null || cantPersonas == null || fechaForm == null) {
 			throw new DatosInvalidosReserva();
