@@ -50,8 +50,8 @@ public class ControladorReservaTest {
 
 		when(servicioRestauranteMock.consultar(1L)).thenReturn(restaurante);
 
-		doNothing().when(servicioReservaMock).crearReserva(restaurante, "nombre", "test@test.com", 1, 1, 1,
-				datosReserva.getFechaForm());
+		when(servicioReservaMock.crearReserva(restaurante, "nombre", "test@test.com", 1, 1, 1,
+				datosReserva.getFechaForm())).thenReturn(null);
 
 		ModelAndView modelAndView = controladorReserva.reservar(datosReserva);
 
