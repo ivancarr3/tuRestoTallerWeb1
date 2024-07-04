@@ -1,22 +1,22 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.RepositorioReserva;
+import com.tallerwebi.dominio.Reserva;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
-import org.hibernate.SessionFactory;
-import org.springframework.stereotype.Repository;
-
-import com.tallerwebi.dominio.RepositorioReserva;
-import com.tallerwebi.dominio.Reserva;
-
 @Repository("repositorioReserva")
 @Transactional
 public class RepositorioReservaImpl implements RepositorioReserva {
     private final SessionFactory sessionFactory;
 
+    @Autowired
     public RepositorioReservaImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -28,12 +28,20 @@ public class RepositorioReservaImpl implements RepositorioReserva {
 
     @Override
     public List<Reserva> buscarReservasDelUsuario(Long idUsuario) {
-        String hql = "FROM Reserva WHERE idUsuario = :id";
+        String hql = "FROM Reserva WHERE idUsuario = :idUsuario AND fecha >= CURRENT_DATE";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("id", idUsuario);
+        query.setParameter("idUsuario", idUsuario);
         return (List<Reserva>) query.getResultList();
     }
-    
+
+    @Override
+    public List<Reserva> buscarReservasDelUsuarioPasadas(Long idUsuario) {
+        String hql = "FROM Reserva WHERE idUsuario = :idUsuario AND fecha <= CURRENT_DATE";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("idUsuario", idUsuario);
+        return (List<Reserva>) query.getResultList();
+    }
+
     @Override
     public List<Reserva> buscarReservasDelRestaurante(Long idRestaurante) {
         String hql = "FROM Reserva WHERE idRestaurante = :id";

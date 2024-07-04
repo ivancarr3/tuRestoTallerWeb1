@@ -64,7 +64,7 @@ public class ControladorLogin {
         } catch (UsuarioExistente e) {
             model.put(ERROR, "El usuario ya existe");
         } catch (Exception e) {
-            model.put(ERROR, "Error al registrar el nuevo usuario: " + e.getMessage());
+            model.put(ERROR, "Error al registrar el nuevo usuario.");
         }
         return new ModelAndView(VIEW_NAME, model);
     }

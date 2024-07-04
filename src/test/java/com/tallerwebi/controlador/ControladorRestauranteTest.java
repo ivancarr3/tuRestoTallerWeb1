@@ -168,7 +168,7 @@ public class ControladorRestauranteTest {
         assertThat((String) modelAndView.getViewName(), equalToIgnoringCase("home"));
 
         assertThat((String) modelAndView.getModel().get("error"),
-                equalToIgnoringCase("Error del servidor error"));
+                equalToIgnoringCase("Error del servidor: error"));
 
     }
 
@@ -205,13 +205,13 @@ public class ControladorRestauranteTest {
     @Test
     public void filtrarLanzaUnErrorDeServidor() throws RestauranteNoEncontrado, PlatoNoEncontrado {
 
-        when(servicioRestauranteMock.consultar(1L)).thenThrow(new RuntimeException("error"));
+        when(servicioRestauranteMock.consultar(1L)).thenThrow(new RestauranteNoEncontrado());
 
         ModelAndView modelAndView = controladorRestaurante.filtrarPlato(1L, "3", this.request);
 
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("restaurante"));
 
-        assertThat((String) modelAndView.getModel().get("error"), equalToIgnoringCase("Error del servidor error"));
+        assertThat((String) modelAndView.getModel().get("error"), equalToIgnoringCase("No existe el restaurante"));
     }
 
 }

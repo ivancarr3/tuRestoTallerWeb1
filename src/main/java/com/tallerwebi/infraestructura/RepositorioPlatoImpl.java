@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.Plato;
 import com.tallerwebi.dominio.RepositorioPlato;
 
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
@@ -17,6 +18,7 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
 
     private final SessionFactory sessionFactory;
 
+    @Autowired
     public RepositorioPlatoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -91,19 +93,11 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
 
     @Override
     public void modificarPlato(Plato plato) {
-        String hql = "UPDATE Plato SET nombre = :nombre, precio = :precio WHERE id = :id";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("nombre", plato.getNombre());
-        query.setParameter("precio", plato.getPrecio());
-        query.setParameter("id", plato.getId());
-        query.executeUpdate();
+        sessionFactory.getCurrentSession().update(plato);
     }
 
     @Override
     public void eliminarPlato(Plato plato) {
-        String hql = "DELETE FROM Plato WHERE id = :id";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("id", plato.getId());
-        query.executeUpdate();
+        sessionFactory.getCurrentSession().delete(plato);
     }
 }

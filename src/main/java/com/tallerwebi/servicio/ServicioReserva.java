@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface ServicioReserva {
     List<Reserva> buscarReservasDelUsuario(Long idUsuario) throws NoHayReservas;
+    List<Reserva> buscarReservasDelUsuarioPasadas(Long idUsuario) throws NoHayReservas;
     Reserva buscarReserva(Long id) throws ReservaNoEncontrada;
     void actualizar(Reserva reserva) throws ReservaNoEncontrada;
     void cancelarReserva(Reserva reserva) throws ReservaNoEncontrada;

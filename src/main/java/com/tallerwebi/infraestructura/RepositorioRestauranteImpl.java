@@ -1,9 +1,9 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.Plato;
 import com.tallerwebi.dominio.RepositorioRestaurante;
 import com.tallerwebi.dominio.Restaurante;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
@@ -17,6 +17,7 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
 
     private final SessionFactory sessionFactory;
 
+    @Autowired
     public RepositorioRestauranteImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }

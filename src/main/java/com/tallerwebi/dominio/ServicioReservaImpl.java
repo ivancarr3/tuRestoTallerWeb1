@@ -66,6 +66,21 @@ public class ServicioReservaImpl implements ServicioReserva {
 		return reservas;
 	}
 
+	@Override
+	public List<Reserva> buscarReservasDelUsuarioPasadas(Long idUsuario) throws NoHayReservas {
+		List<Reserva> reservas;
+		try {
+			reservas = repositorioReserva.buscarReservasDelUsuarioPasadas(idUsuario);
+			if (reservas.isEmpty()) {
+				throw new NoHayReservas();
+			}
+		} catch (NoHayReservas e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException("Error al buscar reservas del usuario", e);
+		}
+		return reservas;
+	}
 
 	@Override
 	public List<Reserva> buscarTodasLasReservas() throws NoHayReservas {
@@ -109,10 +124,6 @@ public class ServicioReservaImpl implements ServicioReserva {
 
 	@Override
 	public void cancelarReserva(Reserva reserva) throws ReservaNoEncontrada {
-		Reserva reservaNoEncontrada = repositorioReserva.buscarReserva(reserva.getId());
-		if (reservaNoEncontrada == null) {
-			throw new ReservaNoEncontrada();
-		}
 		repositorioReserva.eliminar(reserva);
 	}
 

@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -25,18 +26,30 @@ public class Usuario {
     @Column(nullable = false)
     private String confirmationToken;
 
+    @Column(nullable = false)
+    private String nombre;
+
+    @Column(nullable = false)
+    private String apellido;
+
+    @Column(nullable = false)
+    private Date fecha_nac;
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Reserva> reservas;
 
     public Usuario() {}
 
-    public Usuario(Long id, String email, String password, String rol) {
+    public Usuario(Long id, String email, String password, String rol, String nombre, String apellido, Date fecha_nac) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.rol = rol;
         this.activo = false;
         this.confirmationToken = "";
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.fecha_nac = fecha_nac;
     }
 
     public Long getId() {
@@ -75,7 +88,24 @@ public class Usuario {
     public void setConfirmationToken(String confirmationToken) {
         this.confirmationToken = confirmationToken;
     }
-
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    public String getApellido() {
+        return apellido;
+    }
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+    public Date getFecha_nac() {
+        return fecha_nac;
+    }
+    public void setFecha_nac(Date fecha_nac) {
+        this.fecha_nac = fecha_nac;
+    }
     public List<Reserva> getReservas() {
         return reservas;
     }
