@@ -37,14 +37,20 @@
 
 <body>
 <header class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid d-flex align-items-center justify-content-between">
-    <a class="header-titulo mb-0" style="text-decoration: none; color: black;" th:href="@{/home}">TuResto</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarUserMenu"
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/home}" style="text-decoration: none; color: black;">TuResto</a>
+    <form class="d-none d-lg-flex mx-auto" action="#" th:action="@{/buscar_direccion}" method="GET">
+      <div class="input-group">
+        <input type="text" placeholder="Buscar por dirección" class="form-control" name="direccion" required />
+        <button type="submit" class="btn btn-dark">Filtrar</button>
+      </div>
+    </form>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarUserMenu"
             aria-controls="navbarUserMenu" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarUserMenu">
-      <ul class="navbar-nav ml-auto pr-3">
+      <ul class="navbar-nav">
         <li th:if="${usuarioLogueado}" class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
              data-bs-toggle="dropdown" aria-expanded="false">
@@ -60,6 +66,12 @@
         </li>
       </ul>
     </div>
+    <form class="d-lg-none my-2 w-100" action="#" th:action="@{/buscar_direccion}" method="GET">
+      <div class="input-group">
+        <input type="text" placeholder="Buscar por dirección" class="form-control" name="direccion" required />
+        <button type="submit" class="btn btn-dark">Filtrar</button>
+      </div>
+    </form>
   </div>
 </header>
 <main>
@@ -194,15 +206,6 @@
           </div>
         </div>
       </form>
-      <form action="#" th:action="@{/buscar_direccion}" method="GET" class="row row-cols-lg-auto g-3 align-items-center">
-        <div class="col-12">
-          <label class="mb-2">Buscar por dirrecion <i class="fas fa-map-pin"></i></label>
-          <div class="input-group mb-3">
-            <input type="text" placeholder="Dirección" class="form-control" name="direccion" required />
-            <button type="submit" class="btn btn-dark">Filtrar</button>
-          </div>
-        </div>
-      </form>
     </div>
 
     <p
@@ -249,6 +252,7 @@
                   th:text="${error}"
           ></p>
         </div>
+        <p class="mb-0 mt-3 text-primary">A 0.7km de tu ubicación</p>
       </div>
     </div>
   </div>

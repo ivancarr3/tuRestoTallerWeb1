@@ -67,7 +67,7 @@
                         th:text="${reserva.restaurante.nombre}"></h2>
                     <p class="fw-light" th:text="'Fecha: ' + ${reserva.fecha}"></p>
                     <p class="fw-light" th:text="'Para ' + ${reserva.cantidadPersonas} + ' personas'"></p>
-                    <a class="btn btn-info" th:href="@{/restaurante/{id}(id=${reserva.restaurante.id})}">Ver restaurante</a>
+                    <a class="btn btn-info" th:href="@{/restaurante/{id}(id=${reserva.restaurante.id})}">Ver restaurante <i class="fas fa-eye"></i></a>
                     <form action="#" th:action="@{/cancelar_reserva}" method="POST">
                         <button class="btn btn-danger mt-3" type="submit">Cancelar reserva <i class="fas fa-trash"></i></button>
                         <input type="hidden" name="id_reserva" th:value="${reserva.id}">

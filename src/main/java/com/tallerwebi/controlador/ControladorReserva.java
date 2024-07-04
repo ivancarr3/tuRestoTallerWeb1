@@ -41,8 +41,20 @@ public class ControladorReserva {
 		this.servicioUsuario = servicioUsuario;
 	}
 
-	@PostMapping(path = "/reservar")
+	private void addUserInfoToModel(ModelMap model, HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		if (session != null && session.getAttribute("ROL") != null) {
+			String rolUsuario = (String) session.getAttribute("ROL");
+			model.put("usuarioLogueado", true);
+			model.put("rolUsuario", rolUsuario);
+		} else {
+			model.put("usuarioLogueado", false);
+			model.put("rolUsuario", null);
+		}
 
+	}
+
+	@PostMapping(path = "/reservar")
 	public ModelAndView reservar(@ModelAttribute DatosReserva datosReserva, HttpServletRequest request) {
 
 		ModelMap model = new ModelMap();
@@ -63,6 +75,7 @@ public class ControladorReserva {
 			String idPago = servicioMercadoPago.armarPago(restauranteEncontrado, reserva, 5000);
 
 			model.put("urlpago", "https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=" + idPago);
+			addUserInfoToModel(model, request);
 			return new ModelAndView(RESERVA_EXITOSA_VIEW, model);
 		} catch (RestauranteNoEncontrado | DatosInvalidosReserva | EspacioNoDisponible e) {
 			model.put(ERROR_NAME, e.getMessage());
