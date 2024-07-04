@@ -6,19 +6,26 @@ import com.tallerwebi.dominio.excepcion.PlatoNoEncontrado;
 import com.tallerwebi.servicio.ServicioPlato;
 import com.tallerwebi.servicio.ServicioReserva;
 import com.tallerwebi.servicio.ServicioRestaurante;
+
+import net.bytebuddy.dynamic.scaffold.MethodGraph.Linked;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ServicioPlatoTest {
 
@@ -31,9 +38,8 @@ public class ServicioPlatoTest {
     private Categoria categoriaMock;
     private ServicioGeocoding servicioGeocoding;
 
-
     @BeforeEach
-    public void init(){
+    public void init() {
         this.repositorioPlato = mock(RepositorioPlato.class);
         this.servicioPlato = new ServicioPlatoImpl(this.repositorioPlato);
         this.servicioReserva = mock(ServicioReserva.class);
@@ -46,14 +52,14 @@ public class ServicioPlatoTest {
         Restaurante resto2 = new Restaurante(2L, "Mundo Milanesa", 3.0, "", "", 2, -34.610000, -58.400000);
 
         this.platosMock = new ArrayList<>();
-        this.platosMock.add(new Plato(1L, "milanesa de carne", 20000.0, "napolitana", "",resto1, categoriaMock, true));
-        this.platosMock.add(new Plato(2L, "pollo", 10000.0, "a la mostaza", "",resto1, categoriaMock, true));
+        this.platosMock.add(new Plato(1L, "milanesa de carne", 20000.0, "napolitana", "", resto1, categoriaMock, true));
+        this.platosMock.add(new Plato(2L, "pollo", 10000.0, "a la mostaza", "", resto1, categoriaMock, true));
         this.platosMock.add(new Plato(3L, "asado", 17000.0, "con hueso", "", resto2, categoriaMock, true));
         this.platosMock.add(new Plato(4L, "milanesa de pollo", 17000.0, "con queso", "", resto2, categoriaMock, true));
     }
 
     @Test
-    public void queSePuedanObtenerTodosLosPlatos() throws NoHayPlatos{
+    public void queSePuedanObtenerTodosLosPlatos() throws NoHayPlatos {
         when(this.repositorioPlato.get()).thenReturn(this.platosMock);
 
         List<Plato> platos = this.servicioPlato.get();
@@ -89,8 +95,8 @@ public class ServicioPlatoTest {
     @Test
     public void queAlBuscarPlatosPorNombreDevuelvaLosCorrespondientes() throws PlatoNoEncontrado {
         List<Plato> platosPorNombre = List.of(
-                this.platosMock.get(0),  // Primer elemento
-                this.platosMock.get(this.platosMock.size() - 1)  // Último elemento
+                this.platosMock.get(0), // Primer elemento
+                this.platosMock.get(this.platosMock.size() - 1) // Último elemento
         );
         when(this.repositorioPlato.buscarPlatoPorNombre("milanesa")).thenReturn(platosPorNombre);
 
@@ -128,7 +134,7 @@ public class ServicioPlatoTest {
     }
 
     @Test
-    public void queOrdenePlatosPorPrecioAscendente() throws NoHayPlatos{
+    public void queOrdenePlatosPorPrecioAscendente() throws NoHayPlatos {
         Collections.sort(this.platosMock, Comparator.comparingDouble(Plato::getPrecio));
         when(this.repositorioPlato.ordenarPorPrecio("ASC")).thenReturn(this.platosMock);
 
@@ -141,7 +147,7 @@ public class ServicioPlatoTest {
     }
 
     @Test
-    public void queOrdenePlatosPorPrecioDescendente() throws NoHayPlatos{
+    public void queOrdenePlatosPorPrecioDescendente() throws NoHayPlatos {
         Collections.sort(this.platosMock, Comparator.comparingDouble(Plato::getPrecio).reversed());
         when(this.repositorioPlato.ordenarPorPrecio("DESC")).thenReturn(this.platosMock);
 
@@ -165,7 +171,8 @@ public class ServicioPlatoTest {
 
     @Test
     public void queLanceExcepcionSiSeCreaUnPlatoConElMismoId() throws PlatoExistente {
-        Plato platoExistente = new Plato(5L, "sopa", 9000.0, "con lentejas", "", new Restaurante(), new Categoria(), true);
+        Plato platoExistente = new Plato(5L, "sopa", 9000.0, "con lentejas", "", new Restaurante(), new Categoria(),
+                true);
         when(repositorioPlato.buscar(5L)).thenReturn(platoExistente);
 
         Plato nuevoPlato = new Plato(5L, "sopa", 9000.0, "con lentejas", "", new Restaurante(), new Categoria(), true);
@@ -212,4 +219,76 @@ public class ServicioPlatoTest {
         assertThrows(PlatoNoEncontrado.class, () -> servicioPlato.eliminarPlato(plato));
         verify(repositorioPlato, never()).eliminarPlato(plato);
     }
+
+    @Test
+    public void queAlObtenerPlatosDeRestauranteLoConsiga() throws NoHayPlatos {
+
+        List<Plato> listaDePlatos = new ArrayList<>();
+
+        Plato plato1 = mock(Plato.class);
+        Plato plato2 = mock(Plato.class);
+        Plato plato3 = mock(Plato.class);
+
+        listaDePlatos.add(plato3);
+        listaDePlatos.add(plato2);
+        listaDePlatos.add(plato1);
+
+        when(repositorioPlato.getPlatosDeRestaurante(anyLong())).thenReturn(listaDePlatos);
+
+        ArrayList<Plato> platos = (ArrayList<Plato>) servicioPlato.getPlatosDeRestaurante(anyLong());
+
+        assertThat(platos, containsInAnyOrder(listaDePlatos.toArray()));
+
+    }
+
+    @Test
+    public void queAlObtenerPlatosDeRestauranteNoExistanPlatos() {
+
+        when(repositorioPlato.getPlatosDeRestaurante(anyLong())).thenReturn(null);
+
+        try {
+            servicioPlato.getPlatosDeRestaurante(anyLong());
+        } catch (NoHayPlatos e) {
+            assertTrue(true);
+        } catch (Exception e) {
+            fail();
+        }
+
+    }
+
+    @Test
+    public void queAlAgruparPorCategoriaMeDevuelvaUnArray() {
+
+        List<Plato> listaDePlatos = new ArrayList<>();
+
+        Plato plato1 = mock(Plato.class);
+        Plato plato2 = mock(Plato.class);
+        Plato plato3 = mock(Plato.class);
+
+        listaDePlatos.add(plato3);
+        listaDePlatos.add(plato2);
+        listaDePlatos.add(plato1);
+
+        when(repositorioPlato.getPlatosAgrupadosPorCategoria()).thenReturn(listaDePlatos);
+
+        ArrayList<Plato> platos = (ArrayList<Plato>) servicioPlato.getPlatosAgrupadosPorCategoria();
+
+        assertThat(platos, containsInAnyOrder(listaDePlatos.toArray()));
+    }
+
+    @Test
+    public void queAlOrdenarPorPrecioNoExistanPlatos() {
+
+        when(repositorioPlato.ordenarPorPrecio(anyString())).thenReturn(null);
+
+        try {
+            servicioPlato.ordenarPorPrecio(anyString());
+        } catch (NoHayPlatos e) {
+            assertTrue(true);
+        } catch (Exception e) {
+            fail();
+        }
+
+    }
+
 }

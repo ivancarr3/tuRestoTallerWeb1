@@ -131,7 +131,6 @@ public class ControladorRestaurante {
 		ModelMap model = new ModelMap();
 		long ganancia = 0;
 		try {
-
 			Restaurante restaurante = servicioRestaurante.consultar(id);
 			List<Reserva> reservas = servicioReserva.buscarReservasDelRestaurante(restaurante.getId());
 			ganancia = reservas.size()*5000;
@@ -146,4 +145,5 @@ public class ControladorRestaurante {
 		addUserInfoToModel(model, request);
 		return new ModelAndView("perfil_restaurante", model);
 	}
+
 }

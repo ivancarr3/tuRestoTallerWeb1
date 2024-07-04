@@ -2,6 +2,7 @@ package com.tallerwebi.controlador;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -15,8 +16,12 @@ import com.tallerwebi.dominio.excepcion.NoExisteUsuario;
 import com.tallerwebi.servicio.ServicioUsuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mercadopago.exceptions.MPApiException;
+import com.mercadopago.exceptions.MPException;
+import com.tallerwebi.dominio.Reserva;
 import com.tallerwebi.dominio.Restaurante;
 import com.tallerwebi.dominio.excepcion.DatosInvalidosReserva;
 import com.tallerwebi.dominio.excepcion.EspacioNoDisponible;
@@ -43,7 +48,7 @@ public class ControladorReservaTest {
 		servicioReservaMock = mock(ServicioReserva.class);
 		servicioRestauranteMock = mock(ServicioRestaurante.class);
 		servicioMercadoPago = mock(ServicioMercadoPago.class);
-		servicioUsuario = mock(ServicioUsuario.class);
+    servicioUsuario = mock(ServicioUsuario.class);
 		request = mock(HttpServletRequest.class);
 		session = mock(HttpSession.class);
 		usuarioInit = mock(Usuario.class);
@@ -74,10 +79,49 @@ public class ControladorReservaTest {
 
 		ModelAndView modelAndView = controladorReserva.reservar(datosReserva, this.request);
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("reserva_exitosa"));
+
+		assertThat((String) modelAndView.getModel().get("urlpago"),
+				equalToIgnoringCase("https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=12345"));
 	}
 
 	@Test
-	public void noSeEncontroRestaurante() throws RestauranteNoEncontrado, DatosInvalidosReserva, EspacioNoDisponible {
+	public void errorDeServidorAlIntentarReservar()
+			throws RestauranteNoEncontrado, EspacioNoDisponible, MPException, MPApiException, DatosInvalidosReserva {
+		Restaurante restoMock = mock(Restaurante.class);
+		Reserva reservaMock = mock(Reserva.class);
+
+		DatosReserva datosReserva = new DatosReserva();
+		datosReserva.setIdRestaurante(1L);
+		datosReserva.setNombreForm("Nombre");
+		datosReserva.setEmailForm("email@example.com");
+		datosReserva.setNumForm(123456789);
+		datosReserva.setDniForm(12345678);
+		datosReserva.setCantPersonas(2);
+		datosReserva.setFechaForm(new Date(System.currentTimeMillis() + 86400000));
+
+		when(servicioRestauranteMock.consultar(anyLong())).thenThrow(new RuntimeException("error"));
+
+		ModelAndView modelAndView = controladorReserva.reservar(datosReserva);
+
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("errReserva"));
+
+		assertThat((String) modelAndView.getModel().get("error"),
+				equalToIgnoringCase("Error del servidor: error"));
+	}
+
+	@Test
+	public void alEntrarAReservarDevuelveLaVistaCorrecta() {
+
+		ModelMap modelo = mock(ModelMap.class);
+
+		ModelAndView modelAndView = controladorReserva.getRequest(modelo);
+
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
+	}
+
+	@Test
+	public void noSeEncontroRestaurante()
+			throws RestauranteNoEncontrado, DatosInvalidosReserva, EspacioNoDisponible, MPException, MPApiException {
 		DatosReserva datosReserva = new DatosReserva();
 		datosReserva.setIdRestaurante(1L);
 		datosReserva.setNombreForm("nombre");
@@ -98,6 +142,7 @@ public class ControladorReservaTest {
 	@Test
 	public void espacioNoDisponible() throws RestauranteNoEncontrado, EspacioNoDisponible, DatosInvalidosReserva, NoExisteUsuario {
 		Restaurante restaurante = new Restaurante(1L, "nombre", 2.2, "direccion", "imagen", 3, -34.610000, -58.400000);
+
 		DatosReserva datosReserva = new DatosReserva();
 		datosReserva.setIdRestaurante(1L);
 		datosReserva.setNombreForm("nombre");
@@ -125,6 +170,7 @@ public class ControladorReservaTest {
 	@Test
 	public void datosInvalidos() throws EspacioNoDisponible, DatosInvalidosReserva, RestauranteNoEncontrado {
 		Restaurante restaurante = new Restaurante(1L, "nombre", 2.2, "direccion", "imagen", 3, -34.610000, -58.400000);
+
 		DatosReserva datosReserva = new DatosReserva();
 		datosReserva.setIdRestaurante(1L);
 		datosReserva.setNombreForm("nombre");
