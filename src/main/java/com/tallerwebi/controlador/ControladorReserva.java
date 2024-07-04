@@ -42,7 +42,9 @@ public class ControladorReserva {
 	}
 
 	@PostMapping(path = "/reservar")
+
 	public ModelAndView reservar(@ModelAttribute DatosReserva datosReserva, HttpServletRequest request) {
+
 		ModelMap model = new ModelMap();
 		try {
 			validarDatosReserva(datosReserva.getNombreForm(), datosReserva.getEmailForm(), datosReserva.getNumForm(),
@@ -50,7 +52,9 @@ public class ControladorReserva {
 
 			Restaurante restauranteEncontrado = servicioRestaurante.consultar(datosReserva.getIdRestaurante());
 
+
 			Usuario usuario = obtenerIdUsuarioAutenticado(request);
+
 
 			Reserva reserva = servicioReserva.crearReserva(restauranteEncontrado, datosReserva.getNombreForm(),
 					datosReserva.getEmailForm(), datosReserva.getNumForm(), datosReserva.getDniForm(),
@@ -62,7 +66,9 @@ public class ControladorReserva {
 			return new ModelAndView(RESERVA_EXITOSA_VIEW, model);
 		} catch (RestauranteNoEncontrado | DatosInvalidosReserva | EspacioNoDisponible e) {
 			model.put(ERROR_NAME, e.getMessage());
+
 		} catch (Exception e) {
+
 			model.put(ERROR_NAME, "Error del servidor: " + e.getMessage());
 		}
 		return new ModelAndView(VIEW_NAME, model);
@@ -82,7 +88,9 @@ public class ControladorReserva {
 	}
 
 	private void validarDatosReserva(String nombreForm, String emailForm, Integer numForm, Integer dniForm,
+
 									 Integer cantPersonas, Date fechaForm) throws DatosInvalidosReserva {
+
 		if (nombreForm == null || nombreForm.isEmpty() || emailForm == null || emailForm.isEmpty() || numForm == null
 				|| dniForm == null || cantPersonas == null || fechaForm == null) {
 			throw new DatosInvalidosReserva();

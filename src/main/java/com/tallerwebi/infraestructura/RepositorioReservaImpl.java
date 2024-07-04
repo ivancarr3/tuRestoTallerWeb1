@@ -5,11 +5,11 @@ import com.tallerwebi.dominio.Reserva;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Repository("repositorioReserva")
 @Transactional
@@ -42,6 +42,14 @@ public class RepositorioReservaImpl implements RepositorioReserva {
         return (List<Reserva>) query.getResultList();
     }
 
+    @Override
+    public List<Reserva> buscarReservasDelRestaurante(Long idRestaurante) {
+        String hql = "FROM Reserva WHERE idRestaurante = :id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("id", idRestaurante);
+        return (List<Reserva>) query.getResultList();
+    }
+    
     @Override
     public List<Reserva> buscarTodasLasReservas() {
         String hql = "FROM Reserva";
