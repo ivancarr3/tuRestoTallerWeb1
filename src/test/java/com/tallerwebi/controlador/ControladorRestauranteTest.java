@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.tallerwebi.dominio.Email;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MockMvc;
@@ -44,6 +45,7 @@ public class ControladorRestauranteTest {
     private ServicioRestaurante servicioRestauranteMock;
     private ServicioPlato servicioPlatoMock;
     private ServicioReserva servicioReservaMock;
+    private Email emailMock;
 	private HttpServletRequest request;
     private MockMvc mockMvc;
 
@@ -52,9 +54,10 @@ public class ControladorRestauranteTest {
         servicioRestauranteMock = mock(ServicioRestaurante.class);
         servicioPlatoMock = mock(ServicioPlato.class);
         servicioReservaMock = mock(ServicioReserva.class);
+        emailMock = mock(Email.class);
 		request = mock(HttpServletRequest.class);
 
-        this.controladorRestaurante = new ControladorRestaurante(servicioRestauranteMock, servicioPlatoMock, servicioReservaMock);
+        this.controladorRestaurante = new ControladorRestaurante(servicioRestauranteMock, servicioPlatoMock, servicioReservaMock, emailMock);
         this.mockMvc = MockMvcBuilders.standaloneSetup(controladorRestaurante).build();
     }
 

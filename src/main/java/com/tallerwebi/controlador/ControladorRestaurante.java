@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.tallerwebi.dominio.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.tallerwebi.dominio.Categoria;
-import com.tallerwebi.dominio.Plato;
-import com.tallerwebi.dominio.Reserva;
-import com.tallerwebi.dominio.Restaurante;
 import com.tallerwebi.dominio.excepcion.NoHayPlatos;
 import com.tallerwebi.dominio.excepcion.NoHayReservas;
 import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
@@ -34,6 +31,7 @@ public class ControladorRestaurante {
 	private final ServicioRestaurante servicioRestaurante;
 	private final ServicioPlato servicioPlato;
 	private final ServicioReserva servicioReserva;
+	private final Email servicioEmail;
 	private static final String MODEL_NAME_SINGULAR = "restaurante";
 	private static final String ERROR_NAME = "error";
 	private static final String DATOS_RESERVA = "datosReserva";
@@ -41,11 +39,12 @@ public class ControladorRestaurante {
 	private static final String MODEL_NAME_GANANCIAS = "ganancias";
 
 	public ControladorRestaurante(ServicioRestaurante servicioRestaurante, ServicioPlato servicioPlato,
-			ServicioReserva servicioReserva) {
+                                  ServicioReserva servicioReserva, Email servicioEmail) {
 		this.servicioRestaurante = servicioRestaurante;
 		this.servicioPlato = servicioPlato;
 		this.servicioReserva = servicioReserva;
-	}
+        this.servicioEmail = servicioEmail;
+    }
 
 	private void addUserInfoToModel(ModelMap model, HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
@@ -136,6 +135,8 @@ public class ControladorRestaurante {
 			ganancia = reservas.size()*5000;
 			model.put(MODEL_NAME_RESERVAS, reservas);
 			model.put("username", restaurante.getId());
+			model.put("restaurantId", id);
+			model.put("restauranteNombre", restaurante.getNombre());
 		} catch (NoHayReservas e) {
 			model.put(ERROR_NAME, "Todavía no tenes ninguna reserva.");
 		} catch (Exception e) {
@@ -146,4 +147,40 @@ public class ControladorRestaurante {
 		return new ModelAndView("perfil_restaurante", model);
 	}
 
+	@GetMapping(path = "/perfilRestaurante/{id}/crearPromocion")
+	public ModelAndView cargarFormPromocion(@PathVariable("id") Long id,
+											HttpServletRequest request){
+		ModelMap model = new ModelMap();
+		try {
+			Restaurante restaurante = servicioRestaurante.consultar(id);
+			model.addAttribute("idRestaurante", id);
+			model.put("restaurantId", id);
+			model.put("restauranteNombre", restaurante.getNombre());
+		} catch (RestauranteNoEncontrado e) {
+			model.put(ERROR_NAME, "No existe el restaurante");
+		} catch (Exception e) {
+			model.put(ERROR_NAME, "Error del servidor: " + e.getMessage());
+		}
+        return new ModelAndView("crear_promocion", model);
+	}
+
+	@PostMapping(path = "/perfilRestaurante/{id}/crearPromocion")
+	public ModelAndView enviarPromocion(@PathVariable("id") Long id,
+										@RequestParam("subject") String subject,
+										@RequestParam("text") String text) {
+		ModelMap model = new ModelMap();
+		try {
+			List<String> emails = servicioReserva.obtenerEmailsUsuariosPorRestaurante(id);
+			for (String email : emails) {
+				servicioEmail.sendPromotionalEmail(email, subject, text);
+			}
+			model.addAttribute("message", "Promoción enviada con éxito");
+			model.put("restaurantId", id);
+		} catch (NoHayReservas e) {
+			model.addAttribute("error", "No hay reservas para este restaurante");
+		} catch (Exception e) {
+			model.addAttribute("error", "Error al enviar la promoción: " + e.getMessage());
+		}
+		return new ModelAndView("promocion_enviada", model);
+	}
 }

@@ -156,7 +156,7 @@ INSERT INTO plato (nombre, precio, descripcion, imagen, id_restaurante, id_categ
                                                                                                          ('Pizza de Salami', 15500, 'Pizza con salami picante y mozzarella', 'pizza.jpeg', @idResto6, @idCategoria9, true),
                                                                                                          ('Solomillo de Cerdo', 27000, 'Solomillo de cerdo a la parrilla con puré de manzana', 'asado.jpg', @idResto6, @idCategoria10, true);
 
-INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha, idUsuario) VALUES (@idResto1, "mateo", "mateo", 1234, 4321, 2, "2024-09-10", @idUsuario1);
-INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha, idUsuario) VALUES (@idResto1, "gene", "gene", 1234, 4321, 2, "2024-06-11", @idUsuario2);
+INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha, idUsuario) VALUES (@idResto1, "mateo", "ivancarr03@gmail.com", 1234, 4321, 2, "2024-09-10", @idUsuario1);
+INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha, idUsuario) VALUES (@idResto1, "gene", "mateo.fortu@gmail.com", 1234, 4321, 2, "2024-06-11", @idUsuario2);
 
 

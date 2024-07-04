@@ -11,4 +11,5 @@ public interface RepositorioReserva {
     void eliminar(Reserva reserva);
 	List<Reserva> buscarTodasLasReservas();
 	List<Reserva> buscarReservasDelRestaurante(Long idRestaurante);
+    List<String> buscarEmailDeUsuariosPorRestaurante(Long idRestaurante);
 }
