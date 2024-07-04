@@ -2,7 +2,6 @@ package com.tallerwebi.controlador;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -120,7 +119,6 @@ public class ControladorReservaTest {
 		assertThat(modelAndView.getModel().get("error").toString(),
 				equalToIgnoringCase("No hay suficiente espacio disponible en el restaurante."));
 	}
-
 
 	@Test
 	public void datosInvalidos() throws EspacioNoDisponible, DatosInvalidosReserva, RestauranteNoEncontrado {

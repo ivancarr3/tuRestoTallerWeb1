@@ -43,7 +43,7 @@ public class RepositorioReservaTest {
 
     private final Date fecha = new Date();
     private final Restaurante restauranteInit = new Restaurante(null, "Restaurante Mock", 4.5, "Direccion Mock", "imagenMock.jpg", 50, -34.598940, -58.415550);
-    private final Usuario usuarioInit = new Usuario(null, "test@test.com", "123", "USER");
+    private final Usuario usuarioInit = new Usuario(null, "test@test.com", "123", "USER", "mateo", "fortuna", this.fecha);
     private List<Reserva> reservas = new ArrayList<Reserva>();
 
     @BeforeEach

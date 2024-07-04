@@ -9,10 +9,7 @@ import com.tallerwebi.servicio.ServicioRestaurante;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -21,6 +18,17 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ServicioPlatoTest {
+
+    private static final Long EXISTING_ID = 1L;
+    private static final String MILANESA = "milanesa";
+    private static final String MILANESA_CARNE = "milanesa de carne";
+    private static final String POLLO = "pollo";
+    private static final String ASADO = "asado";
+    private static final String MILANESA_POLLO = "milanesa de pollo";
+    private static final double PRICE_20000 = 20000.0;
+    private static final double PRICE_10000 = 10000.0;
+    private static final double PRICE_17000 = 17000.0;
+    private static final double PRICE_9000 = 9000.0;
 
     private ServicioPlato servicioPlato;
     private RepositorioPlato repositorioPlato;
@@ -31,29 +39,35 @@ public class ServicioPlatoTest {
     private Categoria categoriaMock;
     private ServicioGeocoding servicioGeocoding;
 
-
     @BeforeEach
     public void init(){
-        this.repositorioPlato = mock(RepositorioPlato.class);
+        initializeMocks();
+        initializePlatosMock();
         this.servicioPlato = new ServicioPlatoImpl(this.repositorioPlato);
+        this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante, this.servicioReserva, this.servicioGeocoding);
+    }
+
+    private void initializeMocks() {
+        this.repositorioPlato = mock(RepositorioPlato.class);
         this.servicioReserva = mock(ServicioReserva.class);
         this.repositorioRestaurante = mock(RepositorioRestaurante.class);
         this.servicioGeocoding = mock(ServicioGeocoding.class);
-        this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante, this.servicioReserva, this.servicioGeocoding);
-        categoriaMock = mock(Categoria.class);
+        this.categoriaMock = mock(Categoria.class);
+    }
 
+    private void initializePlatosMock() {
         Restaurante resto1 = new Restaurante(1L, "El club de la milanesa", 4.0, "", "", 2, -34.610000, -58.400000);
         Restaurante resto2 = new Restaurante(2L, "Mundo Milanesa", 3.0, "", "", 2, -34.610000, -58.400000);
 
         this.platosMock = new ArrayList<>();
-        this.platosMock.add(new Plato(1L, "milanesa de carne", 20000.0, "napolitana", "",resto1, categoriaMock, true));
-        this.platosMock.add(new Plato(2L, "pollo", 10000.0, "a la mostaza", "",resto1, categoriaMock, true));
-        this.platosMock.add(new Plato(3L, "asado", 17000.0, "con hueso", "", resto2, categoriaMock, true));
-        this.platosMock.add(new Plato(4L, "milanesa de pollo", 17000.0, "con queso", "", resto2, categoriaMock, true));
+        this.platosMock.add(new Plato(1L, MILANESA_CARNE, PRICE_20000, "napolitana", "", resto1, categoriaMock, true));
+        this.platosMock.add(new Plato(2L, POLLO, PRICE_10000, "a la mostaza", "", resto1, categoriaMock, true));
+        this.platosMock.add(new Plato(3L, ASADO, PRICE_17000, "con hueso", "", resto2, categoriaMock, true));
+        this.platosMock.add(new Plato(4L, MILANESA_POLLO, PRICE_17000, "con queso", "", resto2, categoriaMock, true));
     }
 
     @Test
-    public void queSePuedanObtenerTodosLosPlatos() throws NoHayPlatos{
+    public void queSePuedanObtenerTodosLosPlatos() throws NoHayPlatos {
         when(this.repositorioPlato.get()).thenReturn(this.platosMock);
 
         List<Plato> platos = this.servicioPlato.get();
@@ -69,21 +83,19 @@ public class ServicioPlatoTest {
     }
 
     @Test
-    public void queSePuedanObtenerUnPlatoPorId() throws PlatoNoEncontrado {
-        when(this.repositorioPlato.buscar(1L)).thenReturn(this.platosMock.get(0));
+    public void queSePuedaObtenerUnPlatoPorId() throws PlatoNoEncontrado {
+        when(this.repositorioPlato.buscar(EXISTING_ID)).thenReturn(this.platosMock.get(0));
 
-        Plato plato = this.servicioPlato.consultar(1L);
+        Plato plato = this.servicioPlato.consultar(EXISTING_ID);
 
         assertEquals(plato.getNombre(), this.platosMock.get(0).getNombre());
     }
 
     @Test
     public void queAlNoEncontrarPlatoPorIdLanceExcepcion() throws PlatoNoEncontrado {
-        when(this.repositorioPlato.buscar(1L)).thenReturn(null);
+        when(this.repositorioPlato.buscar(EXISTING_ID)).thenReturn(null);
 
-        assertThrows(PlatoNoEncontrado.class, () -> {
-            this.servicioPlato.consultar(1L);
-        });
+        assertThrows(PlatoNoEncontrado.class, () -> this.servicioPlato.consultar(EXISTING_ID));
     }
 
     @Test
@@ -92,43 +104,39 @@ public class ServicioPlatoTest {
                 this.platosMock.get(0),  // Primer elemento
                 this.platosMock.get(this.platosMock.size() - 1)  // Último elemento
         );
-        when(this.repositorioPlato.buscarPlatoPorNombre("milanesa")).thenReturn(platosPorNombre);
+        when(this.repositorioPlato.buscarPlatoPorNombre(MILANESA)).thenReturn(platosPorNombre);
 
-        List<Plato> platos = this.servicioPlato.consultarPlatoPorNombre("milanesa");
+        List<Plato> platos = this.servicioPlato.consultarPlatoPorNombre(MILANESA);
 
         assertThat(platos.size(), equalTo(2));
     }
 
     @Test
     public void queAlNoEncontrarPlatosPorNombreLanceExcepcion() throws PlatoNoEncontrado {
-        when(this.repositorioPlato.buscarPlatoPorNombre("milanesa")).thenReturn(this.platosMock);
+        when(this.repositorioPlato.buscarPlatoPorNombre(MILANESA)).thenReturn(this.platosMock);
 
-        assertThrows(PlatoNoEncontrado.class, () -> {
-            this.servicioPlato.consultarPlatoPorNombre("asado");
-        });
+        assertThrows(PlatoNoEncontrado.class, () -> this.servicioPlato.consultarPlatoPorNombre(ASADO));
     }
 
     @Test
     public void queAlBuscarPlatosPorPrecioDevuelvaLosCorrespondientes() throws PlatoNoEncontrado {
         List<Plato> platoPorPrecio = List.of(this.platosMock.get(0));
-        when(this.repositorioPlato.buscarPlatoPorPrecio(20000.0)).thenReturn(platoPorPrecio);
+        when(this.repositorioPlato.buscarPlatoPorPrecio(PRICE_20000)).thenReturn(platoPorPrecio);
 
-        List<Plato> platos = this.servicioPlato.consultarPlatoPorPrecio(20000.0);
+        List<Plato> platos = this.servicioPlato.consultarPlatoPorPrecio(PRICE_20000);
 
         assertThat(platos.size(), equalTo(1));
     }
 
     @Test
     public void queAlNoEncontrarPlatosPorPrecioLanceExcepcion() throws PlatoNoEncontrado {
-        when(this.repositorioPlato.buscarPlatoPorPrecio(20000.0)).thenReturn(this.platosMock);
+        when(this.repositorioPlato.buscarPlatoPorPrecio(PRICE_20000)).thenReturn(this.platosMock);
 
-        assertThrows(PlatoNoEncontrado.class, () -> {
-            this.servicioPlato.consultarPlatoPorPrecio(15000.0);
-        });
+        assertThrows(PlatoNoEncontrado.class, () -> this.servicioPlato.consultarPlatoPorPrecio(15000.0));
     }
 
     @Test
-    public void queOrdenePlatosPorPrecioAscendente() throws NoHayPlatos{
+    public void queOrdenePlatosPorPrecioAscendente() throws NoHayPlatos {
         Collections.sort(this.platosMock, Comparator.comparingDouble(Plato::getPrecio));
         when(this.repositorioPlato.ordenarPorPrecio("ASC")).thenReturn(this.platosMock);
 
@@ -141,7 +149,7 @@ public class ServicioPlatoTest {
     }
 
     @Test
-    public void queOrdenePlatosPorPrecioDescendente() throws NoHayPlatos{
+    public void queOrdenePlatosPorPrecioDescendente() throws NoHayPlatos {
         Collections.sort(this.platosMock, Comparator.comparingDouble(Plato::getPrecio).reversed());
         when(this.repositorioPlato.ordenarPorPrecio("DESC")).thenReturn(this.platosMock);
 
@@ -156,7 +164,7 @@ public class ServicioPlatoTest {
     @Test
     public void queSeCreePlatoCorrectamente() throws PlatoExistente {
         when(repositorioPlato.buscar(anyLong())).thenReturn(null);
-        Plato nuevoPlato = new Plato(5L, "sopa", 9000.0, "con lentejas", "", new Restaurante(), new Categoria(), true);
+        Plato nuevoPlato = new Plato(5L, "sopa", PRICE_9000, "con lentejas", "", new Restaurante(), new Categoria(), true);
 
         servicioPlato.crearPlato(nuevoPlato);
 
@@ -165,10 +173,10 @@ public class ServicioPlatoTest {
 
     @Test
     public void queLanceExcepcionSiSeCreaUnPlatoConElMismoId() throws PlatoExistente {
-        Plato platoExistente = new Plato(5L, "sopa", 9000.0, "con lentejas", "", new Restaurante(), new Categoria(), true);
+        Plato platoExistente = new Plato(5L, "sopa", PRICE_9000, "con lentejas", "", new Restaurante(), new Categoria(), true);
         when(repositorioPlato.buscar(5L)).thenReturn(platoExistente);
 
-        Plato nuevoPlato = new Plato(5L, "sopa", 9000.0, "con lentejas", "", new Restaurante(), new Categoria(), true);
+        Plato nuevoPlato = new Plato(5L, "sopa", PRICE_9000, "con lentejas", "", new Restaurante(), new Categoria(), true);
 
         assertThrows(PlatoExistente.class, () -> servicioPlato.crearPlato(nuevoPlato));
 
@@ -188,7 +196,7 @@ public class ServicioPlatoTest {
 
     @Test
     public void queLanceExcepcionSiQuiereActualizarUnPlatoQueNoExiste() throws PlatoNoEncontrado {
-        Plato plato = new Plato(56L, "sopa", 9000.0, "con lentejas", "", new Restaurante(), new Categoria(), true);
+        Plato plato = new Plato(56L, "sopa", PRICE_9000, "con lentejas", "", new Restaurante(), new Categoria(), true);
 
         assertThrows(PlatoNoEncontrado.class, () -> servicioPlato.actualizarPlato(plato));
         verify(repositorioPlato, never()).modificarPlato(plato);
