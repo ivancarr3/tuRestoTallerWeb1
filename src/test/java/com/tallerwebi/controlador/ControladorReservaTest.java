@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Date;
 
+import com.tallerwebi.dominio.Reserva;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,6 +32,7 @@ public class ControladorReservaTest {
 	public void init() {
 		servicioReservaMock = mock(ServicioReserva.class);
 		servicioRestauranteMock = mock(ServicioRestaurante.class);
+		servicioMercadoPago = mock(ServicioMercadoPago.class);
 		this.controladorReserva = new ControladorReserva(this.servicioRestauranteMock, this.servicioReservaMock,
 				this.servicioMercadoPago);
 	}
@@ -41,20 +43,20 @@ public class ControladorReservaTest {
 		Restaurante restaurante = new Restaurante(1L, "restaurante", 2.2, "direccion", "imagen", 3, -34.610000, -58.400000);
 		DatosReserva datosReserva = new DatosReserva();
 		datosReserva.setIdRestaurante(1L);
-		datosReserva.setNombreForm("nombre");
-		datosReserva.setEmailForm("test@test.com");
-		datosReserva.setNumForm(1);
-		datosReserva.setDniForm(1);
+		datosReserva.setNombreForm("mateo");
+		datosReserva.setEmailForm("mateo.fortu@gmail.com");
+		datosReserva.setNumForm(4523434);
+		datosReserva.setDniForm(543534);
 		datosReserva.setCantPersonas(1);
 		datosReserva.setFechaForm(new Date(System.currentTimeMillis() + 86400000)); // fecha futura
 
 		when(servicioRestauranteMock.consultar(1L)).thenReturn(restaurante);
 
-		doNothing().when(servicioReservaMock).crearReserva(restaurante, "nombre", "test@test.com", 1, 1, 1,
-				datosReserva.getFechaForm());
+		Reserva reserva = new Reserva(null, restaurante, "nombre", "test@test.com", 1, 1, 1, datosReserva.getFechaForm());
+		when(servicioReservaMock.crearReserva(restaurante, "nombre", "test@test.com", 1, 1, 1, datosReserva.getFechaForm()))
+				.thenReturn(reserva);
 
 		ModelAndView modelAndView = controladorReserva.reservar(datosReserva);
-
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("reserva_exitosa"));
 	}
 
