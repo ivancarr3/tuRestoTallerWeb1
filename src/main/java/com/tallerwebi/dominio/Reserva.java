@@ -12,6 +12,10 @@ public class Reserva {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "idUsuario", nullable = false)
+    private Usuario usuario;
+
+    @ManyToOne
     @JoinColumn(name = "idRestaurante", nullable = false)
     private Restaurante restaurante;
 
@@ -35,65 +39,40 @@ public class Reserva {
 
     public Reserva() {}
 
-    public Reserva (Long id, Restaurante restaurante, String nombre, String email, Integer numCel,
-            Integer dni, Integer cantidadPersonas, Date fecha) {
+    public Reserva(Long id, Restaurante restaurante, String nombre, String email, Integer numeroCelular,
+                   Integer dni, Integer cantidadPersonas, Date fecha, Usuario usuario) {
         this.id = id;
         this.restaurante = restaurante;
         this.nombre = nombre;
         this.email = email;
-        this.numeroCelular = numCel;
+        this.numeroCelular = numeroCelular;
         this.dni = dni;
         this.cantidadPersonas = cantidadPersonas;
         this.fecha = fecha;
+        this.usuario = usuario;
     }
 
-    public Long getId() {return id;}
-    public void setId(Long id) {this.id = id;}
-    public Integer getCantidadPersonas() {return cantidadPersonas;}
-    public void setCantidadPersonas(Integer cantidadPersonas) {this.cantidadPersonas = cantidadPersonas;}
-    public Date getFecha() {return fecha;}
-    public void setFecha(Date fecha) {this.fecha = fecha;}
-    public Restaurante getRestaurante() {
-        return restaurante;
-    }
-    public void setRestaurante(Restaurante restaurante) {
-        this.restaurante = restaurante;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public Integer getCantidadPersonas() { return cantidadPersonas; }
+    public void setCantidadPersonas(Integer cantidadPersonas) { this.cantidadPersonas = cantidadPersonas; }
+    public Date getFecha() { return fecha; }
+    public void setFecha(Date fecha) { this.fecha = fecha; }
+    public Restaurante getRestaurante() { return restaurante; }
+    public void setRestaurante(Restaurante restaurante) { this.restaurante = restaurante; }
+    public Usuario getUsuario() { return usuario; }
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public Integer getNumeroCelular() { return numeroCelular; }
+    public void setNumeroCelular(Integer numeroCelular) { this.numeroCelular = numeroCelular; }
+    public Integer getDni() { return dni; }
+    public void setDni(Integer dni) { this.dni = dni; }
 
     public String getFechaFormateada() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return formatter.format(this.fecha);
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Integer getNumeroCelular() {
-        return numeroCelular;
-    }
-
-    public void setNumeroCelular(Integer numeroCelular) {
-        this.numeroCelular = numeroCelular;
-    }
-
-    public Integer getDni() {
-        return dni;
-    }
-
-    public void setDni(Integer dni) {
-        this.dni = dni;
     }
 }

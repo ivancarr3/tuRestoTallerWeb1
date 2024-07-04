@@ -1,6 +1,7 @@
 package com.tallerwebi.controlador;
 
 import com.tallerwebi.dominio.Restaurante;
+import com.tallerwebi.dominio.ServicioGeocoding;
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 import com.tallerwebi.servicio.ServicioPlato;
 import com.tallerwebi.servicio.ServicioRestaurante;
@@ -22,16 +23,21 @@ import java.util.ArrayList;
 import java.util.List;
 import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class ControladorHomeTest {
 
 	private ControladorHome controladorHome;
 	private ServicioRestaurante servicioRestauranteMock;
 	private ServicioPlato servicioPlato;
+	private ServicioGeocoding servicioGeocoding;
+	private HttpServletRequest request;
 
 	@BeforeEach
 	public void init() {
 		servicioRestauranteMock = mock(ServicioRestaurante.class);
-		this.controladorHome = new ControladorHome(this.servicioRestauranteMock, this.servicioPlato);
+		this.controladorHome = new ControladorHome(this.servicioRestauranteMock, this.servicioPlato, this.servicioGeocoding);
+		this.request = mock(HttpServletRequest.class);
 	}
 
 	@Test
@@ -48,16 +54,16 @@ public class ControladorHomeTest {
 		// preparacion
 		List<Restaurante> restaurantesMockeados = new ArrayList<>();
 		Restaurante restauranteMockeado1 = new Restaurante(null, "La Farola", 4.0, "Santa Maria 3500",
-				"restaurant.jpg", 100);
+				"restaurant.jpg", 100, -34.598940, -58.415550);
 		Restaurante restauranteMockeado2 = new Restaurante(null, "El Club de la Milanesa", 5.0, "Arieta 5000",
-				"restaurant2.jpg", 100);
+				"restaurant2.jpg", 100, -34.598940, -58.415550);
 		restaurantesMockeados.add(restauranteMockeado1);
 		restaurantesMockeados.add(restauranteMockeado2);
 
 		when(servicioRestauranteMock.get()).thenReturn(restaurantesMockeados);
 
 		// ejecucion
-		ModelAndView modelAndView = controladorHome.mostrarHome();
+		ModelAndView modelAndView = controladorHome.mostrarHome(this.request);
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("Home"));
@@ -72,13 +78,13 @@ public class ControladorHomeTest {
 		// preparacion
 		List<Restaurante> restaurantesMockeados = new ArrayList<>();
 		Restaurante restauranteMockeado1 = new Restaurante(null, "La Farola", 4.0, "Santa Maria 3500",
-				"restaurant.jpg", 100);
+				"restaurant.jpg", 100, -34.598940, -58.415550);
 		restaurantesMockeados.add(restauranteMockeado1);
 
 		when(servicioRestauranteMock.consultarRestaurantePorNombre(anyString())).thenReturn(restaurantesMockeados);
 
 		// ejecucion
-		ModelAndView modelAndView = controladorHome.buscar("La Farola");
+		ModelAndView modelAndView = controladorHome.buscar("La Farola", request);
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("Home"));
@@ -93,17 +99,18 @@ public class ControladorHomeTest {
 	public void queAlIngresarALaPantallaHomeMuestreTodosLosRestaurantesExistentes() throws NoHayRestaurantes {
 		// preparacion
 		List<Restaurante> restaurantesMock = new ArrayList<Restaurante>();
-		restaurantesMock.add(new Restaurante(null, "El club de la Milanesa",
-				5.0, "Arieta 5000", "restaurant.jpg", 100));
-		restaurantesMock.add(new Restaurante(null, "La Trattoria Bella Italia",
-				3.0, "Avenida Libertador 789", "restaurant2.jpg", 100));
-		restaurantesMock.add(new Restaurante(null, "La Parrilla de Don Juan",
-				4.0, "Avenida Central 456", "restaurant3.jpg", 100));
+
+    restaurantesMock.add(new Restaurante(null, "El club de la Milanesa",
+            5.0, "Arieta 5000", "restaurant.jpg", 100, -34.598940, -58.415550));
+    restaurantesMock.add(new Restaurante(null, "La Trattoria Bella Italia",
+            3.0, "Avenida Libertador 789", "restaurant2.jpg", 100, -34.598940, -58.415550));
+    restaurantesMock.add(new Restaurante(null, "La Parrilla de Don Juan",
+            4.0, "Avenida Central 456", "restaurant3.jpg", 100, -34.598940, -58.415550));
 
 		when(this.servicioRestauranteMock.get()).thenReturn(restaurantesMock);
 
 		// ejecucion
-		ModelAndView mav = this.controladorHome.mostrarHome();
+		ModelAndView mav = this.controladorHome.mostrarHome(this.request);
 
 		// verificacion
 		List<Restaurante> restaurantes = (List<Restaurante>) mav.getModel().get("restaurantes");

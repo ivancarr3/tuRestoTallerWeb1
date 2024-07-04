@@ -36,6 +36,7 @@ public class ServicioPlatoTest {
     private List<Plato> platosMock;
     private ServicioReserva servicioReserva;
     private Categoria categoriaMock;
+    private ServicioGeocoding servicioGeocoding;
 
     @BeforeEach
     public void init() {
@@ -43,11 +44,12 @@ public class ServicioPlatoTest {
         this.servicioPlato = new ServicioPlatoImpl(this.repositorioPlato);
         this.servicioReserva = mock(ServicioReserva.class);
         this.repositorioRestaurante = mock(RepositorioRestaurante.class);
-        this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante, this.servicioReserva);
+        this.servicioGeocoding = mock(ServicioGeocoding.class);
+        this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante, this.servicioReserva, this.servicioGeocoding);
         categoriaMock = mock(Categoria.class);
 
-        Restaurante resto1 = new Restaurante(1L, "El club de la milanesa", 4.0, "", "", 2);
-        Restaurante resto2 = new Restaurante(2L, "Mundo Milanesa", 3.0, "", "", 2);
+        Restaurante resto1 = new Restaurante(1L, "El club de la milanesa", 4.0, "", "", 2, -34.610000, -58.400000);
+        Restaurante resto2 = new Restaurante(2L, "Mundo Milanesa", 3.0, "", "", 2, -34.610000, -58.400000);
 
         this.platosMock = new ArrayList<>();
         this.platosMock.add(new Plato(1L, "milanesa de carne", 20000.0, "napolitana", "", resto1, categoriaMock, true));

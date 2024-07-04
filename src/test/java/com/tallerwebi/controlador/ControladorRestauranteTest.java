@@ -1,45 +1,49 @@
 package com.tallerwebi.controlador;
 
-import com.tallerwebi.dominio.Categoria;
-import com.tallerwebi.dominio.Plato;
-import com.tallerwebi.dominio.Restaurante;
-import com.tallerwebi.dominio.excepcion.NoHayPlatos;
-import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
-import com.tallerwebi.dominio.excepcion.PlatoNoEncontrado;
-import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
-import com.tallerwebi.servicio.ServicioPlato;
-import com.tallerwebi.servicio.ServicioRestaurante;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.servlet.ModelAndView;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
+
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import com.tallerwebi.dominio.Categoria;
+import com.tallerwebi.dominio.Plato;
+import com.tallerwebi.dominio.Restaurante;
+import com.tallerwebi.servicio.ServicioPlato;
+import com.tallerwebi.servicio.ServicioReserva;
+import com.tallerwebi.servicio.ServicioRestaurante;
 
 public class ControladorRestauranteTest {
 
     private ControladorRestaurante controladorRestaurante;
     private ServicioRestaurante servicioRestauranteMock;
     private ServicioPlato servicioPlatoMock;
+    private ServicioReserva servicioReservaMock;
     private MockMvc mockMvc;
 
     @BeforeEach
     public void init() {
         servicioRestauranteMock = mock(ServicioRestaurante.class);
         servicioPlatoMock = mock(ServicioPlato.class);
-        this.controladorRestaurante = new ControladorRestaurante(servicioRestauranteMock, servicioPlatoMock);
+        servicioReservaMock = mock(ServicioReserva.class);
+        
+        this.controladorRestaurante = new ControladorRestaurante(servicioRestauranteMock, servicioPlatoMock, servicioReservaMock);
         this.mockMvc = MockMvcBuilders.standaloneSetup(controladorRestaurante).build();
     }
 

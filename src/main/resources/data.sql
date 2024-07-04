@@ -1,27 +1,31 @@
-INSERT INTO usuario (email, password, rol) VALUES ('test@unlam.edu.ar', 'test', 'ADMIN');
+INSERT INTO usuario (email, password, rol, activo, confirmationToken) VALUES ('admin@admin.com', 'admin', 'ADMIN', TRUE, '');
+SET @idUsuario1 = LAST_INSERT_ID();
 
-INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible) VALUES
-    ('El club de la Milanesa', 5.0, 'Arieta 5000', 'restaurant.jpg', 2, 2);
+INSERT INTO usuario (email, password, rol, activo, confirmationToken) VALUES ('user@user.com', 'user', 'USER', TRUE, '');
+SET @idUsuario2 = LAST_INSERT_ID();
+
+INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud) VALUES
+    ('El club de la Milanesa', 5.0, 'Pres. Juan Domingo Perón 2700', 'restaurant.jpg', 2, 0, -34.671958, -58.562666);
 SET @idResto1 = LAST_INSERT_ID();
 
-INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible) VALUES
-    ('Mundo Milanesa', 3.0, 'Avenida Libertador 789', 'restaurant1.jpg', 100, 100);
+INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud) VALUES
+    ('Mundo Milanesa', 3.0, 'Mármol 2498', 'restaurant1.jpg', 100, 100, -34.674521, -58.564940);
 SET @idResto2 = LAST_INSERT_ID();
 
-INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible) VALUES
-    ('La Trattoria Bella Italia', 3.0, 'Avenida Libertador 789', 'restaurant2.jpg', 100, 100);
+INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud) VALUES
+    ('La Trattoria Bella Italia', 3.0, 'Almafuerte 2550', 'restaurant2.jpg', 100, 100, -34.672880, -58.566442);
 SET @idResto3 = LAST_INSERT_ID();
 
-INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible) VALUES
-    ('La Parrilla de Don Juan', 4.0, 'Avenida Central 456', 'restaurant3.jpg', 100, 100);
+INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud) VALUES
+    ('La Parrilla de Don Juan', 4.0, 'Avenida Central 456', 'restaurant3.jpg', 100, 100, -34.610000, -58.400000);
 SET @idResto4 = LAST_INSERT_ID();
 
-INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible) VALUES
-    ('El Sabor del Mar', 2.0, 'Calle Principal 123', 'restaurant4.jpg', 100, 100);
+INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud) VALUES
+    ('El Sabor del Mar', 2.0, 'Calle Principal 123', 'restaurant4.jpg', 100, 100, -34.599000, -58.430000);
 SET @idResto5 = LAST_INSERT_ID();
 
-INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible) VALUES
-    ('Café Parisien', 4.0, 'Paseo de las Flores 15', 'restaurant5.jpg', 100, 100);
+INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud) VALUES
+    ('Café Parisien', 4.0, 'Paseo de las Flores 15', 'restaurant5.jpg', 100, 100, -34.600000, -58.410000);
 SET @idResto6 = LAST_INSERT_ID();
 
 INSERT INTO categoria (descripcion) VALUES ('Ensaladas');
@@ -152,7 +156,7 @@ INSERT INTO plato (nombre, precio, descripcion, imagen, id_restaurante, id_categ
                                                                                                          ('Pizza de Salami', 15500, 'Pizza con salami picante y mozzarella', 'pizza.jpeg', @idResto6, @idCategoria9, true),
                                                                                                          ('Solomillo de Cerdo', 27000, 'Solomillo de cerdo a la parrilla con puré de manzana', 'asado.jpg', @idResto6, @idCategoria10, true);
 
-INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha) VALUES (@idResto1, "mateo", "mateo", 1234, 4321, 2, "2024-09-10");
-INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha) VALUES (@idResto1, "gene", "gene", 1234, 4321, 2, "2024-06-11");
+INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha, idUsuario) VALUES (@idResto1, "mateo", "mateo", 1234, 4321, 2, "2024-09-10", @idUsuario1);
+INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha, idUsuario) VALUES (@idResto1, "gene", "gene", 1234, 4321, 2, "2024-06-11", @idUsuario2);
 
 
