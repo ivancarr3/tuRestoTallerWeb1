@@ -7,11 +7,11 @@ import java.util.Locale;
 
 import javax.transaction.Transactional;
 
-import com.tallerwebi.dominio.excepcion.NoExisteUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tallerwebi.dominio.excepcion.EspacioNoDisponible;
+import com.tallerwebi.dominio.excepcion.NoExisteUsuario;
 import com.tallerwebi.dominio.excepcion.NoHayReservas;
 import com.tallerwebi.dominio.excepcion.ReservaNoEncontrada;
 import com.tallerwebi.servicio.ServicioReserva;
@@ -46,6 +46,22 @@ public class ServicioReservaImpl implements ServicioReserva {
 			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException("Error al buscar reservas del usuario", e);
+		}
+		return reservas;
+	}
+	
+	@Override
+	public List<Reserva> buscarReservasDelRestaurante(Long idRestaurante) throws NoHayReservas {
+		List<Reserva> reservas;
+		try {
+			reservas = repositorioReserva.buscarReservasDelRestaurante(idRestaurante);
+			if (reservas.isEmpty()) {
+				throw new NoHayReservas();
+			}
+		} catch (NoHayReservas e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException("Error al buscar reservas del Restaurante", e);
 		}
 		return reservas;
 	}

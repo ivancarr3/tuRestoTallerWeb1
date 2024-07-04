@@ -1,14 +1,16 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.RepositorioReserva;
-import com.tallerwebi.dominio.Reserva;
-import org.hibernate.SessionFactory;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
-import java.util.List;
+
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
+
+import com.tallerwebi.dominio.RepositorioReserva;
+import com.tallerwebi.dominio.Reserva;
 
 @Repository("repositorioReserva")
 @Transactional
@@ -29,6 +31,14 @@ public class RepositorioReservaImpl implements RepositorioReserva {
         String hql = "FROM Reserva WHERE idUsuario = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("id", idUsuario);
+        return (List<Reserva>) query.getResultList();
+    }
+    
+    @Override
+    public List<Reserva> buscarReservasDelRestaurante(Long idRestaurante) {
+        String hql = "FROM Reserva WHERE idRestaurante = :id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("id", idRestaurante);
         return (List<Reserva>) query.getResultList();
     }
     
