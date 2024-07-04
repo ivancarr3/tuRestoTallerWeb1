@@ -87,6 +87,8 @@
                         <th>Nombre</th>
                         <th>Precio</th>
                         <th>Descripción</th>
+                        <th>Categoría</th>
+                        <th>Es Recomendado</th>
                         <th>Acciones</th>
                       </tr>
                     </thead>
@@ -96,6 +98,12 @@
                         <td th:text="${plato.precio}">Precio del Plato</td>
                         <td th:text="${plato.descripcion}">
                           Descripción del Plato
+                        </td>
+                        <td th:text="${plato.categoria.descripcion}">
+                          Categoría del Plato
+                        </td>
+                        <td th:text="${plato.esRecomendado ? 'Sí' : 'No'}">
+                          Es Recomendado
                         </td>
                         <td>
                           <a href="#" class="btn btn-sm btn-primary">Editar</a>
