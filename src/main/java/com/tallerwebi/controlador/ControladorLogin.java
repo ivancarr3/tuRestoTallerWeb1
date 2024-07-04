@@ -1,5 +1,6 @@
 package com.tallerwebi.controlador;
 
+import com.tallerwebi.dominio.AdministradorDeRestaurante;
 import com.tallerwebi.dominio.Usuario;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import com.tallerwebi.servicio.ServicioLogin;
@@ -7,9 +8,12 @@ import com.tallerwebi.servicio.ServicioLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +24,7 @@ public class ControladorLogin {
     private ServicioLogin servicioLogin;
 
     @Autowired
-    public ControladorLogin(ServicioLogin servicioLogin){
+    public ControladorLogin(ServicioLogin servicioLogin) {
         this.servicioLogin = servicioLogin;
     }
 
@@ -48,12 +52,12 @@ public class ControladorLogin {
     @RequestMapping(path = "/registrarme", method = RequestMethod.POST)
     public ModelAndView registrarme(@ModelAttribute("usuario") Usuario usuario) {
         ModelMap model = new ModelMap();
-        try{
+        try {
             servicioLogin.registrar(usuario);
-        } catch (UsuarioExistente e){
+        } catch (UsuarioExistente e) {
             model.put("error", "El usuario ya existe");
             return new ModelAndView("nuevo-usuario", model);
-        } catch (Exception e){
+        } catch (Exception e) {
             model.put("error", "Error al registrar el nuevo usuario");
             return new ModelAndView("nuevo-usuario", model);
         }
@@ -66,5 +70,8 @@ public class ControladorLogin {
         model.put("usuario", new Usuario());
         return new ModelAndView("nuevo-usuario", model);
     }
-}
 
+
+
+    
+}
