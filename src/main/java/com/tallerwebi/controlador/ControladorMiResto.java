@@ -15,21 +15,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tallerwebi.dominio.AdministradorDeRestaurante;
+import com.tallerwebi.dominio.Categoria;
 import com.tallerwebi.dominio.Plato;
+import com.tallerwebi.dominio.Restaurante;
+import com.tallerwebi.dominio.excepcion.PlatoExistente;
+import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 import com.tallerwebi.servicio.ServicioAdministradorRestaurante;
+import com.tallerwebi.servicio.ServicioCategoria;
 import com.tallerwebi.servicio.ServicioLogin;
 import com.tallerwebi.servicio.ServicioPlato;
+import com.tallerwebi.servicio.ServicioRestaurante;
 
 @Controller
 public class ControladorMiResto {
     private final ServicioPlato servicioPlato;
     private final ServicioAdministradorRestaurante servicioAdministradorRestaurante;
+    private final ServicioCategoria servicioCategoria;
+    private final ServicioRestaurante servicioRestaurante;
 
     @Autowired
     public ControladorMiResto(ServicioPlato servicioPlato,
-            ServicioAdministradorRestaurante servicioAdministradorRestaurante) {
+            ServicioAdministradorRestaurante servicioAdministradorRestaurante, ServicioCategoria servicioCategoria,
+            ServicioRestaurante servicioRestaurante) {
         this.servicioPlato = servicioPlato;
         this.servicioAdministradorRestaurante = servicioAdministradorRestaurante;
+        this.servicioCategoria = servicioCategoria;
+        this.servicioRestaurante = servicioRestaurante;
     };
 
     @GetMapping(path = "/mi-resto")
@@ -48,8 +59,12 @@ public class ControladorMiResto {
         ModelMap model = new ModelMap();
 
         List<Plato> listaDePlatos = administradorDeRestaurante.getRestaurante().getPlatos();
-
         model.addAttribute("platos", listaDePlatos);
+
+        List<Categoria> listaDCategorias = servicioCategoria.obtenerTodasLasCategorias();
+        model.addAttribute("categorias", listaDCategorias);
+
+        model.addAttribute("idResto", administradorDeRestaurante.getRestaurante().getId());
 
         return new ModelAndView("mi-resto", model);
     }
@@ -67,6 +82,40 @@ public class ControladorMiResto {
         } catch (Exception e) {
             model.addAttribute("error", e.getStackTrace());
             return new ModelAndView("mi-resto", model);
+        }
+
+        return new ModelAndView("redirect:/mi-resto");
+    }
+
+    @PostMapping(path = "/mi-resto/agregarPlato")
+    public ModelAndView agregarPlato(
+            @RequestParam("nombre") String nombre,
+            @RequestParam("precio") Double precio,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("categoriaId") Long categoriaId,
+            @RequestParam("idResto") Long idResto,
+            @RequestParam("esRecomendado") String esRecomendado) {
+
+        ModelMap modelo = new ModelMap();
+
+        Restaurante restaurante;
+        try {
+            restaurante = servicioRestaurante.consultar(idResto);
+        } catch (RestauranteNoEncontrado e) {
+            modelo.addAttribute("error ", e.getStackTrace());
+            return new ModelAndView("redirect:/mi-resto", modelo);
+
+        }
+        Categoria categoria = servicioCategoria.getCategoriaDePlato(categoriaId);
+        boolean recomendado = esRecomendado == "si" ? true : false;
+
+        Plato plato = new Plato(nombre, precio, descripcion, "ensalada.jpg", restaurante, categoria, recomendado);
+
+        try {
+            servicioPlato.crearPlato(plato);
+        } catch (PlatoExistente e) {
+            modelo.addAttribute("error ", e.getStackTrace());
+            return new ModelAndView("redirect:/mi-resto", modelo);
         }
 
         return new ModelAndView("redirect:/mi-resto");

@@ -17,11 +17,13 @@ public class RepositorioCategoriaImpl implements RepositorioCategoria {
 
     private final SessionFactory sessionFactory;
 
-    public RepositorioCategoriaImpl(SessionFactory sessionFactory) {this.sessionFactory = sessionFactory;}
+    public RepositorioCategoriaImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public Categoria buscarCategoria(Long id) {
-        try{
+        try {
             String hql = "FROM Categoria c WHERE c.id = :id";
             Query query = sessionFactory.getCurrentSession().createQuery(hql);
             query.setParameter("id", id);
@@ -34,5 +36,13 @@ public class RepositorioCategoriaImpl implements RepositorioCategoria {
     @Override
     public void guardar(Categoria categoria) {
         this.sessionFactory.getCurrentSession().save(categoria);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Categoria> obtenCategorias() {
+        String hql = "FROM Categoria";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        return (List<Categoria>) query.list();
     }
 }
