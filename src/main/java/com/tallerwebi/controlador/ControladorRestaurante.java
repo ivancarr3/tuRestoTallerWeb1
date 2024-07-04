@@ -80,7 +80,7 @@ public class ControladorRestaurante {
 			return new ModelAndView(MODEL_NAME_SINGULAR, model);
 		} catch (RestauranteNoEncontrado e) {
 			model.put("errorId", "No se encontró el restaurante");
-			model.put(MODEL_NAME_SINGULAR, servicioRestaurante.get());
+			model.put("restaurantes", servicioRestaurante.get());
 		} catch (NoHayPlatos e) {
 			model.put(ERROR_NAME, "No hay platos en este restaurante");
 			model.put(MODEL_NAME_SINGULAR, restaurante);
