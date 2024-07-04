@@ -1,29 +1,32 @@
 package com.tallerwebi.controlador;
 
-import com.tallerwebi.dominio.Restaurante;
-import com.tallerwebi.dominio.ServicioGeocoding;
-import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
-import com.tallerwebi.servicio.ServicioPlato;
-import com.tallerwebi.servicio.ServicioRestaurante;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.web.servlet.ModelAndView;
-
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.List;
-import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.tallerwebi.dominio.Restaurante;
+import com.tallerwebi.dominio.ServicioGeocoding;
+import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
+import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
+import com.tallerwebi.servicio.ServicioPlato;
+import com.tallerwebi.servicio.ServicioRestaurante;
 
 public class ControladorHomeTest {
 
@@ -36,7 +39,8 @@ public class ControladorHomeTest {
 	@BeforeEach
 	public void init() {
 		servicioRestauranteMock = mock(ServicioRestaurante.class);
-		this.controladorHome = new ControladorHome(this.servicioRestauranteMock, this.servicioPlato, this.servicioGeocoding);
+		this.controladorHome = new ControladorHome(this.servicioRestauranteMock, this.servicioPlato,
+				this.servicioGeocoding);
 		this.request = mock(HttpServletRequest.class);
 	}
 
@@ -53,8 +57,8 @@ public class ControladorHomeTest {
 			throws RestauranteNoEncontrado, NoHayRestaurantes {
 		// preparacion
 		List<Restaurante> restaurantesMockeados = new ArrayList<>();
-		Restaurante restauranteMockeado1 = new Restaurante(null, "La Farola", 4.0, "Santa Maria 3500",
-				"restaurant.jpg", 100, -34.598940, -58.415550);
+		Restaurante restauranteMockeado1 = new Restaurante(null, "La Farola", 4.0, "Santa Maria 3500", "restaurant.jpg",
+				100, -34.598940, -58.415550);
 		Restaurante restauranteMockeado2 = new Restaurante(null, "El Club de la Milanesa", 5.0, "Arieta 5000",
 				"restaurant2.jpg", 100, -34.598940, -58.415550);
 		restaurantesMockeados.add(restauranteMockeado1);
@@ -77,8 +81,8 @@ public class ControladorHomeTest {
 			throws RestauranteNoEncontrado, NoHayRestaurantes {
 		// preparacion
 		List<Restaurante> restaurantesMockeados = new ArrayList<>();
-		Restaurante restauranteMockeado1 = new Restaurante(null, "La Farola", 4.0, "Santa Maria 3500",
-				"restaurant.jpg", 100, -34.598940, -58.415550);
+		Restaurante restauranteMockeado1 = new Restaurante(null, "La Farola", 4.0, "Santa Maria 3500", "restaurant.jpg",
+				100, -34.598940, -58.415550);
 		restaurantesMockeados.add(restauranteMockeado1);
 
 		when(servicioRestauranteMock.consultarRestaurantePorNombre(anyString())).thenReturn(restaurantesMockeados);
@@ -100,12 +104,12 @@ public class ControladorHomeTest {
 		// preparacion
 		List<Restaurante> restaurantesMock = new ArrayList<Restaurante>();
 
-    restaurantesMock.add(new Restaurante(null, "El club de la Milanesa",
-            5.0, "Arieta 5000", "restaurant.jpg", 100, -34.598940, -58.415550));
-    restaurantesMock.add(new Restaurante(null, "La Trattoria Bella Italia",
-            3.0, "Avenida Libertador 789", "restaurant2.jpg", 100, -34.598940, -58.415550));
-    restaurantesMock.add(new Restaurante(null, "La Parrilla de Don Juan",
-            4.0, "Avenida Central 456", "restaurant3.jpg", 100, -34.598940, -58.415550));
+		restaurantesMock.add(new Restaurante(null, "El club de la Milanesa", 5.0, "Arieta 5000", "restaurant.jpg", 100,
+				-34.598940, -58.415550));
+		restaurantesMock.add(new Restaurante(null, "La Trattoria Bella Italia", 3.0, "Avenida Libertador 789",
+				"restaurant2.jpg", 100, -34.598940, -58.415550));
+		restaurantesMock.add(new Restaurante(null, "La Parrilla de Don Juan", 4.0, "Avenida Central 456",
+				"restaurant3.jpg", 100, -34.598940, -58.415550));
 
 		when(this.servicioRestauranteMock.get()).thenReturn(restaurantesMock);
 
@@ -129,7 +133,7 @@ public class ControladorHomeTest {
 		when(servicioRestauranteMock.get()).thenReturn(listaRestoVacia);
 
 		// ejecución
-		ModelAndView modelAndView = controladorHome.buscar(nombreRestaurante);
+		ModelAndView modelAndView = controladorHome.buscar(nombreRestaurante, this.request);
 
 		// validación
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("home"));
@@ -147,12 +151,11 @@ public class ControladorHomeTest {
 		when(servicioRestauranteMock.consultarRestaurantePorNombre(anyString()))
 				.thenThrow(new RuntimeException("error"));
 
-		ModelAndView modelAndView = controladorHome.buscar(anyString());
+		ModelAndView modelAndView = controladorHome.buscar(anyString(), any());
 
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("home"));
 
-		assertThat((String) modelAndView.getModel().get("error"),
-				equalToIgnoringCase("Error del servidor error"));
+		assertThat((String) modelAndView.getModel().get("error"), equalToIgnoringCase("Error del servidor error"));
 	}
 
 	@Test
@@ -167,7 +170,7 @@ public class ControladorHomeTest {
 			fail("No se esperaba una excepción al llamar al método: " + e.getMessage());
 		}
 
-		ModelAndView modelAndView = controladorHome.filtrar(anyDouble(), anyString());
+		ModelAndView modelAndView = controladorHome.filtrar(anyDouble(), anyString(), any());
 
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("home"));
 
@@ -177,8 +180,7 @@ public class ControladorHomeTest {
 	}
 
 	@Test
-	public void elFiltroDeFiltrarNoEncuentraRestaurante()
-			throws RestauranteNoEncontrado, NoHayRestaurantes {
+	public void elFiltroDeFiltrarNoEncuentraRestaurante() throws RestauranteNoEncontrado, NoHayRestaurantes {
 
 		List<Restaurante> listaRestaurante = new ArrayList<>();
 
@@ -187,7 +189,7 @@ public class ControladorHomeTest {
 
 		when(servicioRestauranteMock.get()).thenReturn(listaRestaurante);
 
-		ModelAndView modelAndView = controladorHome.filtrar(anyDouble(), anyString());
+		ModelAndView modelAndView = controladorHome.filtrar(any(), anyString(), any());
 
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("home"));
 
@@ -200,20 +202,18 @@ public class ControladorHomeTest {
 	}
 
 	@Test
-	public void elFiltroFallaPorUnErrorDeServidor()
-			throws RestauranteNoEncontrado, NoHayRestaurantes {
+	public void elFiltroFallaPorUnErrorDeServidor() throws RestauranteNoEncontrado, NoHayRestaurantes {
 
 		List<Restaurante> listaRestaurante = new ArrayList<>();
 
 		when(servicioRestauranteMock.consultarRestaurantePorFiltros(anyDouble(), anyString()))
 				.thenThrow(new RuntimeException("error"));
 
-		ModelAndView modelAndView = controladorHome.filtrar(anyDouble(), anyString());
+		ModelAndView modelAndView = controladorHome.filtrar(anyDouble(), anyString(), any());
 
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("home"));
 
-		assertThat((String) modelAndView.getModel().get("error"),
-				equalToIgnoringCase("Error del servidor error"));
+		assertThat((String) modelAndView.getModel().get("error"), equalToIgnoringCase("Error del servidor error"));
 
 	}
 
@@ -231,10 +231,9 @@ public class ControladorHomeTest {
 		listaRestaurante.add(restauranteMock2);
 		listaRestaurante.add(restauranteMock3);
 
-		when(servicioRestauranteMock.consultarRestaurantePorEspacio(anyInt()))
-				.thenReturn(listaRestaurante);
+		when(servicioRestauranteMock.consultarRestaurantePorEspacio(anyInt())).thenReturn(listaRestaurante);
 
-		ModelAndView modelAndView = controladorHome.filtrar(anyInt());
+		ModelAndView modelAndView = controladorHome.filtrar(any(), anyString(), any());
 
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("home"));
 
@@ -244,13 +243,11 @@ public class ControladorHomeTest {
 	}
 
 	@Test
-	public void elFiltroDeFiltrarPorCapacidadDePersonasNoEncuentraResstaurantes()
-			throws NoHayRestaurantes {
+	public void elFiltroDeFiltrarPorCapacidadDePersonasNoEncuentraResstaurantes() throws NoHayRestaurantes {
 
-		when(servicioRestauranteMock.consultarRestaurantePorEspacio(anyInt()))
-				.thenThrow(new NoHayRestaurantes());
+		when(servicioRestauranteMock.consultarRestaurantePorEspacio(anyInt())).thenThrow(new NoHayRestaurantes());
 
-		ModelAndView modelAndView = controladorHome.filtrar(anyInt());
+		ModelAndView modelAndView = controladorHome.filtrar(any(), anyString(), any());
 
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("home"));
 
@@ -263,15 +260,13 @@ public class ControladorHomeTest {
 	public void elFiltroPorCapacidadDePersonasFallaPorUnErrorDeServidor()
 			throws RestauranteNoEncontrado, NoHayRestaurantes {
 
-		when(servicioRestauranteMock.consultarRestaurantePorEspacio(anyInt()))
-				.thenThrow(new RuntimeException("error"));
+		when(servicioRestauranteMock.consultarRestaurantePorEspacio(anyInt())).thenThrow(new RuntimeException("error"));
 
-		ModelAndView modelAndView = controladorHome.filtrar(anyInt());
+		ModelAndView modelAndView = controladorHome.filtrar(any(), anyString(), any());
 
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("home"));
 
-		assertThat((String) modelAndView.getModel().get("error"),
-				equalToIgnoringCase("Error del servidor error"));
+		assertThat((String) modelAndView.getModel().get("error"), equalToIgnoringCase("Error del servidor error"));
 
 	}
 

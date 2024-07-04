@@ -1,9 +1,11 @@
 package com.tallerwebi.controlador;
 
 
-
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -17,14 +19,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.tallerwebi.dominio.Categoria;
 import com.tallerwebi.dominio.Plato;
 import com.tallerwebi.dominio.Restaurante;
+import com.tallerwebi.dominio.excepcion.NoHayPlatos;
+import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
+import com.tallerwebi.dominio.excepcion.PlatoNoEncontrado;
+import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 import com.tallerwebi.servicio.ServicioPlato;
 import com.tallerwebi.servicio.ServicioReserva;
 import com.tallerwebi.servicio.ServicioRestaurante;
@@ -35,6 +44,7 @@ public class ControladorRestauranteTest {
     private ServicioRestaurante servicioRestauranteMock;
     private ServicioPlato servicioPlatoMock;
     private ServicioReserva servicioReservaMock;
+	private HttpServletRequest request;
     private MockMvc mockMvc;
 
     @BeforeEach
@@ -42,7 +52,8 @@ public class ControladorRestauranteTest {
         servicioRestauranteMock = mock(ServicioRestaurante.class);
         servicioPlatoMock = mock(ServicioPlato.class);
         servicioReservaMock = mock(ServicioReserva.class);
-        
+		request = mock(HttpServletRequest.class);
+
         this.controladorRestaurante = new ControladorRestaurante(servicioRestauranteMock, servicioPlatoMock, servicioReservaMock);
         this.mockMvc = MockMvcBuilders.standaloneSetup(controladorRestaurante).build();
     }
@@ -116,7 +127,7 @@ public class ControladorRestauranteTest {
 
         when(servicioRestauranteMock.consultar(1L)).thenThrow(new RestauranteNoEncontrado());
 
-        ModelAndView modelAndView = this.controladorRestaurante.mostrarRestaurante(1L);
+        ModelAndView modelAndView = this.controladorRestaurante.mostrarRestaurante(1L, this.request);
 
         assertThat((String) modelAndView.getViewName(), equalToIgnoringCase("home"));
 
@@ -134,7 +145,7 @@ public class ControladorRestauranteTest {
 
         when(servicioRestauranteMock.consultar(1L)).thenReturn(resto);
 
-        ModelAndView modelAndView = this.controladorRestaurante.mostrarRestaurante(1L);
+        ModelAndView modelAndView = this.controladorRestaurante.mostrarRestaurante(1L, this.request);
 
         assertThat((String) modelAndView.getViewName(), equalToIgnoringCase("restaurante"));
 
@@ -149,7 +160,7 @@ public class ControladorRestauranteTest {
 
         when(servicioRestauranteMock.consultar(1L)).thenThrow(new RuntimeException("error"));
 
-        ModelAndView modelAndView = this.controladorRestaurante.mostrarRestaurante(1L);
+        ModelAndView modelAndView = this.controladorRestaurante.mostrarRestaurante(1L, this.request);
 
         assertThat((String) modelAndView.getViewName(), equalToIgnoringCase("home"));
 
@@ -167,7 +178,7 @@ public class ControladorRestauranteTest {
 
         when(servicioPlatoMock.consultarPlatoPorPrecio(anyDouble())).thenThrow(new PlatoNoEncontrado());
 
-        ModelAndView modelAndView = controladorRestaurante.filtrarPlato(1L, "3");
+        ModelAndView modelAndView = controladorRestaurante.filtrarPlato(1L, "3", this.request);
 
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("restaurante"));
 
@@ -180,7 +191,7 @@ public class ControladorRestauranteTest {
 
         when(servicioRestauranteMock.consultar(1L)).thenThrow(new RestauranteNoEncontrado());
 
-        ModelAndView modelAndView = controladorRestaurante.filtrarPlato(1L, "3");
+        ModelAndView modelAndView = controladorRestaurante.filtrarPlato(1L, "3", this.request);
 
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("restaurante"));
 
@@ -193,7 +204,7 @@ public class ControladorRestauranteTest {
 
         when(servicioRestauranteMock.consultar(1L)).thenThrow(new RuntimeException("error"));
 
-        ModelAndView modelAndView = controladorRestaurante.filtrarPlato(1L, "3");
+        ModelAndView modelAndView = controladorRestaurante.filtrarPlato(1L, "3", this.request);
 
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("restaurante"));
 

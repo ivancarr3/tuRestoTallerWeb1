@@ -3,35 +3,32 @@ package com.tallerwebi.controlador;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.Date;
 
-import com.tallerwebi.dominio.Reserva;
-import com.tallerwebi.dominio.Usuario;
-import com.tallerwebi.dominio.excepcion.NoExisteUsuario;
-import com.tallerwebi.servicio.ServicioUsuario;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.tallerwebi.dominio.Reserva;
 import com.tallerwebi.dominio.Restaurante;
+import com.tallerwebi.dominio.Usuario;
 import com.tallerwebi.dominio.excepcion.DatosInvalidosReserva;
 import com.tallerwebi.dominio.excepcion.EspacioNoDisponible;
+import com.tallerwebi.dominio.excepcion.NoExisteUsuario;
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 import com.tallerwebi.servicio.ServicioMercadoPago;
 import com.tallerwebi.servicio.ServicioReserva;
 import com.tallerwebi.servicio.ServicioRestaurante;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import com.tallerwebi.servicio.ServicioUsuario;
 
 public class ControladorReservaTest {
 	private ControladorReserva controladorReserva;
@@ -49,7 +46,7 @@ public class ControladorReservaTest {
 		servicioRestauranteMock = mock(ServicioRestaurante.class);
 		servicioMercadoPago = mock(ServicioMercadoPago.class);
     servicioUsuario = mock(ServicioUsuario.class);
-		request = mock(HttpServletRequest.class);
+	request = mock(HttpServletRequest.class);
 		session = mock(HttpSession.class);
 		usuarioInit = mock(Usuario.class);
 		this.controladorReserva = new ControladorReserva(this.servicioUsuario, this.servicioRestauranteMock, this.servicioReservaMock,
@@ -101,7 +98,7 @@ public class ControladorReservaTest {
 
 		when(servicioRestauranteMock.consultar(anyLong())).thenThrow(new RuntimeException("error"));
 
-		ModelAndView modelAndView = controladorReserva.reservar(datosReserva);
+		ModelAndView modelAndView = controladorReserva.reservar(datosReserva, this.request);
 
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("errReserva"));
 
@@ -112,9 +109,7 @@ public class ControladorReservaTest {
 	@Test
 	public void alEntrarAReservarDevuelveLaVistaCorrecta() {
 
-		ModelMap modelo = mock(ModelMap.class);
-
-		ModelAndView modelAndView = controladorReserva.getRequest(modelo);
+		ModelAndView modelAndView = controladorReserva.getRequest();
 
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
 	}
