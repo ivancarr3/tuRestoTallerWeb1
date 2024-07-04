@@ -54,8 +54,10 @@
 </header>
 <main>
     <div class="container">
-        <h1 class="my-3" th:text="'Hola de nuevo ' + ${username}"></h1>
+        <h1 class="my-3" th:text="'Estas viendo las reservas del id ' + ${id}"></h1>
         <hr>
+        <h1 class="my-3" th:text="'Lleva $' + ${ganancias} +' en ganancias con sus reservas!'"></h1>
+        <hr>        
         <h2 class="mt-3">Estas son tus reservas: </h2>
         <div
                 class="mt-3 d-flex align-items-center justify-content-start flex-wrap" style="gap: 3em">
@@ -63,10 +65,11 @@
                  style="width: 18rem">
                 <div class="card-body">
                     <h2 style="font-size: 1.5em"
-                        th:text="${reserva.restaurante.nombre}"></h2>
+                        th:text="${reserva.nombre}"></h2>
                     <p class="fw-light" th:text="'Fecha: ' + ${reserva.fecha}"></p>
+                    <p class="fw-light" th:text="'Telefono: ' + ${reserva.numeroCelular}"></p>
                     <p class="fw-light" th:text="'Para ' + ${reserva.cantidadPersonas} + ' personas'"></p>
-                    <a class="btn btn-info" th:href="@{/restaurante/{id}(id=${reserva.restaurante.id})}">Ver restaurante</a>
+                    
                 </div>
             </div>
         </div>

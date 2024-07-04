@@ -40,7 +40,6 @@ public class Restaurante {
     @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Plato> platos;
 
-
     public Restaurante() {}
 
     public Restaurante (Long id, String nombre, Double estrellas, String direccion, String imagen, Integer capacidadMaxima, Double latitud, Double longitud) {
@@ -75,27 +74,21 @@ public class Restaurante {
     public void setEspacioDisponible(Integer espacioDisponible) {
         this.espacioDisponible = espacioDisponible;
     }
-
     public List<Plato> getPlatos() {
         return platos;
     }
-
     public void setPlatos(List<Plato> platos) {
         this.platos = platos;
     }
-
     public Double getLongitud() {
         return longitud;
     }
-
     public void setLongitud(Double longitud) {
         this.longitud = longitud;
     }
-
     public Double getLatitud() {
         return latitud;
     }
-
     public void setLatitud(Double latitud) {
         this.latitud = latitud;
     }
