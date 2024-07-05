@@ -20,11 +20,11 @@ public class ServicioCategoriaImpl implements ServicioCategoria {
 
     @Override
     public Categoria getCategoriaDePlato(Long id) {
-        return repositorioCategoria.buscarCategoria(id);
+        return null;
     }
 
     @Override
     public List<Categoria> obtenerTodasLasCategorias() {
-        return this.repositorioCategoria.obtenCategorias();
+        return List.of();
     }
 }
