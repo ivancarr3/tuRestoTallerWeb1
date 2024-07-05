@@ -76,7 +76,7 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
 
         String hql = "FROM Plato WHERE LOWER(nombre) LIKE LOWER(:nombre)";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("nombre", "%" + nombre.toLowerCase() + "%");
+        query.setParameter("nombre", "%"+nombre.toLowerCase()+"%");
 
         return query.getResultList();
     }
@@ -84,22 +84,17 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
     @Override
     public List<Plato> ordenarPorPrecio(String tipoDeOrden) {
 
-        String hql = "FROM Plato ORDER BY precio " + tipoDeOrden;
+        String hql = "FROM Plato ORDER BY precio "+ tipoDeOrden;
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         return query.getResultList();
     }
 
     @Override
     public void modificarPlato(Plato plato) {
-        String hql = "UPDATE Plato SET nombre = :nombre, precio = :precio, descripcion = :descripcion, imagen = :imagen, categoria = :categoria, restaurante = :restaurante, esRecomendado = :esRecomendado WHERE id = :id";
+        String hql = "UPDATE Plato SET nombre = :nombre, precio = :precio WHERE id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("nombre", plato.getNombre());
         query.setParameter("precio", plato.getPrecio());
-        query.setParameter("descripcion", plato.getDescripcion());
-        query.setParameter("imagen", plato.getImagen());
-        query.setParameter("categoria", plato.getCategoria());
-        query.setParameter("restaurante", plato.getRestaurante());
-        query.setParameter("esRecomendado", plato.isEsRecomendado());
         query.setParameter("id", plato.getId());
         query.executeUpdate();
     }
