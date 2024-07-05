@@ -16,8 +16,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.tallerwebi.dominio.AdministradorDeRestaurante;
-import com.tallerwebi.dominio.Restaurante;
 import com.tallerwebi.dominio.Usuario;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import com.tallerwebi.servicio.ServicioLogin;
@@ -32,7 +30,7 @@ public class ControladorLoginTest {
 	private ServicioLogin servicioLoginMock;
 
 	@BeforeEach
-	public void init() {
+	public void init(){
 		datosLoginMock = new DatosLogin("dami@unlam.com", "123");
 		usuarioMock = mock(Usuario.class);
 		when(usuarioMock.getEmail()).thenReturn("dami@unlam.com");
@@ -43,7 +41,7 @@ public class ControladorLoginTest {
 	}
 
 	@Test
-	public void loginConUsuarioYPasswordInorrectosDeberiaLlevarALoginNuevamente() {
+	public void loginConUsuarioYPasswordInorrectosDeberiaLlevarALoginNuevamente(){
 		// preparacion
 		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(null);
 
@@ -57,7 +55,7 @@ public class ControladorLoginTest {
 	}
 
 	@Test
-	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome() {
+	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome(){
 		// preparacion
 		Usuario usuarioEncontradoMock = mock(Usuario.class);
 		when(usuarioEncontradoMock.getRol()).thenReturn("ADMIN");
@@ -107,12 +105,11 @@ public class ControladorLoginTest {
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
-		assertThat(modelAndView.getModel().get("error").toString(),
-				equalToIgnoringCase("Error al registrar el nuevo usuario"));
+		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Error al registrar el nuevo usuario"));
 	}
 
 	@Test
-	public void nuevoUsuarioDevuelveVistaDeNuevoUsuario() {
+	public void nuevoUsuarioDevuelveVistaDeNuevoUsuario(){
 
 		ModelAndView modelAndView = controladorLogin.nuevoUsuario();
 
@@ -121,11 +118,9 @@ public class ControladorLoginTest {
 	}
 
 	@Test
-	public void irALoginDevuelveLaVistaDelLogin() {
+	public void irALoginDevuelveLaVistaDelLogin(){
 		ModelAndView modelAndView = controladorLogin.irALogin();
 
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
 	}
-
-
 }
