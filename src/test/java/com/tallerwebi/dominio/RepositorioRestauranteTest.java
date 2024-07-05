@@ -43,7 +43,7 @@ public class RepositorioRestauranteTest {
     }
 
     private Restaurante crearYGuardarRestaurante(String nombre, double estrellas, String direccion, Integer capacidad) {
-        Restaurante restaurante = new Restaurante(null, nombre, estrellas, direccion, "restaurant.jpg", capacidad);
+        Restaurante restaurante = new Restaurante(null, nombre, estrellas, direccion, "restaurant.jpg", capacidad, -34.598940, -58.415550);
         repositorioRestaurante.guardar(restaurante);
         return restaurante;
     }

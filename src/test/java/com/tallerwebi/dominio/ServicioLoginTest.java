@@ -11,19 +11,24 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.tallerwebi.dominio.excepcion.UsuarioNoActivado;
+
 public class ServicioLoginTest {
 
     RepositorioUsuario repositorioUsuario;
     ServicioLoginImpl servicioLogin;
+    Email emailSender;
 
+    
     @BeforeEach
     public void init() {
         repositorioUsuario = mock(RepositorioUsuario.class);
-        servicioLogin = new ServicioLoginImpl(repositorioUsuario);
+        emailSender = mock(Email.class);
+        servicioLogin = new ServicioLoginImpl(repositorioUsuario, emailSender);
     }
 
     @Test
-    public void consultarUsuarioDevuelveUnUsuario() {
+    public void consultarUsuarioDevuelveUnUsuario() throws UsuarioNoActivado {
 
         Usuario usr = mock(Usuario.class);
         usr.setPassword("pass");

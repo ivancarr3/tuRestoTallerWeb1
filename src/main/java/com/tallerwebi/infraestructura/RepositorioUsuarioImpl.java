@@ -2,12 +2,12 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.RepositorioUsuario;
 import com.tallerwebi.dominio.Usuario;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 @Repository("repositorioUsuario")
@@ -23,12 +23,15 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
 
     @Override
     public Usuario buscarUsuario(String email, String password) {
-
-        final Session session = sessionFactory.getCurrentSession();
-        return (Usuario) session.createCriteria(Usuario.class)
-                .add(Restrictions.eq("email", email))
-                .add(Restrictions.eq("password", password))
-                .uniqueResult();
+        try {
+            String hql = "FROM Usuario WHERE email = :email AND password = :password";
+            Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+            query.setParameter("email", email);
+            query.setParameter("password", password);
+            return (Usuario) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
@@ -38,9 +41,26 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
 
     @Override
     public Usuario buscar(String email) {
-        return (Usuario) sessionFactory.getCurrentSession().createCriteria(Usuario.class)
-                .add(Restrictions.eq("email", email))
-                .uniqueResult();
+        try {
+            String hql = "FROM Usuario WHERE email = :email";
+            Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+            query.setParameter("email", email);
+            return (Usuario) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Usuario consultar(Long id) {
+        try {
+            String hql = "FROM Usuario WHERE id = :id";
+            Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+            query.setParameter("id", id);
+            return (Usuario) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
@@ -48,4 +68,20 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
         sessionFactory.getCurrentSession().update(usuario);
     }
 
+    @Override
+    public void eliminar(Usuario usuario) {
+        sessionFactory.getCurrentSession().delete(usuario);
+    }
+
+    @Override
+    public Usuario buscarPorToken(String token) {
+        try {
+            String hql = "FROM Usuario WHERE confirmationToken = :token";
+            Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+            query.setParameter("token", token);
+            return (Usuario) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 }
