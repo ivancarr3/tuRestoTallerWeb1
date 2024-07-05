@@ -6,6 +6,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 
@@ -20,8 +22,8 @@ public class RepositorioCategoriaImpl implements RepositorioCategoria {
     }
 
     @Override
-    public Categoria buscarCategoria(Long id){
-        try{
+    public Categoria buscarCategoria(Long id) {
+        try {
             String hql = "FROM Categoria c WHERE c.id = :id";
             Query query = sessionFactory.getCurrentSession().createQuery(hql);
             query.setParameter("id", id);
