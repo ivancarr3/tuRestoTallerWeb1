@@ -24,7 +24,6 @@ public class ServicioMercadoPagoImpl implements ServicioMercadoPago {
 
 		String desc = "Reserva en " + restaurante.getNombre() + ". Direccion: " + restaurante.getDireccion()
 		+ ". Fecha: " + reserva.getFechaFormateada();
-		
 		PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
 				.id("1234")
 				.title(restaurante.getNombre())

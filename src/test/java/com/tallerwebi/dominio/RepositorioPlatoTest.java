@@ -37,7 +37,7 @@ public class RepositorioPlatoTest {
     private SessionFactory sessionFactory;
 
     private final List<Plato> platos = new ArrayList<>();
-    private final Restaurante restauranteInit = new Restaurante(null, "Restaurante Mock", 4.5, "Direccion Mock", "imagenMock.jpg", 50, -34.598940, -58.415550);
+    private final Restaurante restauranteInit = new Restaurante(null, "Restaurante Mock", 4.5, "Direccion Mock", "imagenMock.jpg", 50);
     private final Categoria categoriaInit = new Categoria(null, "Categoria Mock");
 
     @BeforeEach
@@ -148,5 +148,4 @@ public class RepositorioPlatoTest {
 
         assertNull(repositorioPlato.buscar(id));
     }
-
 }

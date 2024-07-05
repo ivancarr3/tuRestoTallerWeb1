@@ -3,11 +3,9 @@ package com.tallerwebi.dominio;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import com.tallerwebi.dominio.excepcion.NoExisteDireccion;
 import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
 import com.tallerwebi.servicio.ServicioReserva;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +21,11 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
 
     private final RepositorioRestaurante repositorioRestaurante;
     private final ServicioReserva servicioReserva;
-    private final ServicioGeocoding servicioGeocoding;
 
     @Autowired
-    public ServicioRestauranteImpl(RepositorioRestaurante repositorioRestaurante, ServicioReserva servicioReserva, ServicioGeocoding servicioGeocoding){
+    public ServicioRestauranteImpl(RepositorioRestaurante repositorioRestaurante, ServicioReserva servicioReserva){
         this.repositorioRestaurante = repositorioRestaurante;
         this.servicioReserva = servicioReserva;
-        this.servicioGeocoding = servicioGeocoding;
     }
 
     @Override
@@ -102,10 +98,10 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
     }
 
     @Override
-    public List<Restaurante> consultarRestaurantePorDireccion(String direccion) throws NoHayRestaurantes {
+    public List<Restaurante> consultarRestaurantePorDireccion(String direccion) throws RestauranteNoEncontrado {
         List<Restaurante> restaurantes = repositorioRestaurante.buscarPorDireccion(direccion);
         if(restaurantes.isEmpty()){
-            throw new NoHayRestaurantes();
+            throw new RestauranteNoEncontrado();
         }
         return restaurantes;
     }
@@ -144,40 +140,6 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
             throw new RestauranteNoEncontrado();
         }
         repositorioRestaurante.eliminar(restaurante);
-    }
-
-    @Override
-    public List<Restaurante> filtrarPorDireccion(String direccion, double radio) throws NoHayRestaurantes, NoExisteDireccion {
-        ServicioGeocoding.Coordenadas coordenadas = servicioGeocoding.obtenerCoordenadas(direccion);
-        if (coordenadas == null) {
-            throw new NoExisteDireccion();
-        }
-
-        double latitud = coordenadas.getLatitud();
-        double longitud = coordenadas.getLongitud();
-
-        List<Restaurante> restaurantes = repositorioRestaurante.get();
-        List<Restaurante>restaurantesEncontrados = restaurantes.stream()
-                .filter(r -> distanciaEntreCoordenadas(latitud, longitud, r.getLatitud(), r.getLongitud()) <= radio)
-                .collect(Collectors.toList());
-        if(restaurantesEncontrados.isEmpty()) {
-            throw new NoHayRestaurantes();
-        }
-        return restaurantesEncontrados;
-    }
-
-    private double distanciaEntreCoordenadas(double lat1, double lon1, double lat2, double lon2) {
-        final int RADIO_TIERRA = 6371;
-
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distancia = RADIO_TIERRA * c;
-
-        return distancia;
     }
 
     /*public void realizarReserva(Reserva reserva) throws Exception {
