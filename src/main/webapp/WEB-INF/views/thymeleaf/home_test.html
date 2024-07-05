@@ -39,7 +39,7 @@
 <body>
 <header>
   <a class="header-titulo mb-0" style="text-decoration: none; color: black;" th:href="@{/home}">TuResto</a>
-  <a th:href="@{/usuarioPerfil}" class="contRestaurant-btnReservar">Mi Perfil</a>
+
 </header>
 <main>
   <div class="contPlatos">
@@ -62,7 +62,7 @@
     <div class="contPlato">
       <img
               class="contPlato-img"
-              th:src="@{/img/platos/pasta.jpeg}"
+              th:src="@{/img/platos/pastas.jpeg}"
               alt="pastas"
       />
       <h2 class="contPlato-txt mb-0">Pastas</h2>
@@ -70,7 +70,7 @@
     <div class="contPlato">
       <img
               class="contPlato-img"
-              th:src="@{/img/platos/ensalada.jpg}"
+              th:src="@{/img/platos/ensaladas.jpg}"
               alt="ensaladas"
       />
       <h2 class="contPlato-txt mb-0">Ensaladas</h2>
@@ -78,7 +78,7 @@
     <div class="contPlato">
       <img
               class="contPlato-img"
-              th:src="@{/img/platos/helado.jpg}"
+              th:src="@{/img/platos/helados.jpg}"
               alt="helados"
       />
       <h2 class="contPlato-txt mb-0">Helados</h2>
@@ -104,7 +104,6 @@
       </div>
     </form>
 
-    <h2>Filtros</h2>
     <div class="d-flex align-items-center justify-content-start mb-3" style="gap: .8em;">
       <form action="#" th:action="@{/filtrar}" method="POST" style="cursor: pointer; border: none; color: white; background-color: #595959; border-radius: 10px; padding: 5px 10px;">
         <button type="submit" style="cursor: pointer; background-color: #595959; border: none; color: white; padding: 5px 10px; border-radius: 10px;">
@@ -149,7 +148,7 @@
       <form action="#" th:action="@{/filtrar}" method="POST" style="cursor: pointer; border: none; color: white; background-color: #595959; border-radius: 10px; padding: 5px 10px;">
         <button type="submit" style="cursor: pointer; background-color: #595959; border: none; color: white; padding: 5px 10px; border-radius: 10px; ">
           <label class="star-rating star">
-            Estrellas Ascendente <i class="fas fa-arrow-up"></i>
+            Estrellas Ascendente <i class="fa-solid fa-arrow-up"></i>
           </label>
         </button>
         <input type="hidden" th:value="ASC" name="filtro_orden" />
@@ -157,21 +156,12 @@
       <form action="#" th:action="@{/filtrar}" method="POST" style="cursor: pointer; border: none; color: white; background-color: #595959; border-radius: 10px; padding: 5px 10px;">
         <button type="submit" style="cursor: pointer; background-color: #595959; border: none; color: white; padding: 5px 10px; border-radius: 10px; ">
           <label class="star-rating star">
-            Estrellas Descendente <i class="fas fa-arrow-down"></i>
+            Estrellas Descendente <i class="fa-solid fa-arrow-down"></i>
           </label>
         </button>
         <input type="hidden" th:value="DESC" name="filtro_orden" />
       </form>
     </div>
-    <form class="row row-cols-lg-auto g-3 align-items-center" action="#" th:action="@{/filtrar_capacidad}" method="POST">
-      <div class="col-12">
-        <label class="mb-2">Buscar por espacio disponible <i class="fas fa-user"></i></label>
-        <div class="input-group mb-3">
-          <input type="number" placeholder="Número de comensales" class="form-control" id="capacidadPersonas" name="capacidadPersonas" />
-          <button type="submit" class="btn btn-dark">Filtrar</button>
-        </div>
-      </div>
-    </form>
     <p
             th:if="${errorFiltro != null}"
             class="alert alert-danger"
@@ -184,7 +174,7 @@
     ></p>
   </div>
   <div
-          class="container d-flex align-items-center justify-content-start flex-wrap"
+          class="container d-flex align-items-center justify-content-center flex-wrap"
           style="gap: 3em"
   >
     <div

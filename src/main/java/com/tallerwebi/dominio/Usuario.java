@@ -1,7 +1,6 @@
 package com.tallerwebi.dominio;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class Usuario {
@@ -18,26 +17,6 @@ public class Usuario {
 
     @Column(nullable = false)
     private String rol;
-
-    @Column(nullable = false)
-    private Boolean activo;
-
-    @Column(nullable = false)
-    private String confirmationToken;
-
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Reserva> reservas;
-
-    public Usuario() {}
-
-    public Usuario(Long id, String email, String password, String rol) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.rol = rol;
-        this.activo = false;
-        this.confirmationToken = "";
-    }
 
     public Long getId() {
         return id;
@@ -62,24 +41,5 @@ public class Usuario {
     }
     public void setRol(String rol) {
         this.rol = rol;
-    }
-    public boolean isActivo() {
-        return activo;
-    }
-    public void setActivo(Boolean activo) {
-        this.activo = activo;
-    }
-    public String getConfirmationToken() {
-        return confirmationToken;
-    }
-    public void setConfirmationToken(String confirmationToken) {
-        this.confirmationToken = confirmationToken;
-    }
-
-    public List<Reserva> getReservas() {
-        return reservas;
-    }
-    public void setReservas(List<Reserva> reservas) {
-        this.reservas = reservas;
     }
 }
