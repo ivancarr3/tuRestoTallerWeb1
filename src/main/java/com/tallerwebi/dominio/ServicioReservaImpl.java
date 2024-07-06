@@ -103,6 +103,15 @@ public class ServicioReservaImpl implements ServicioReserva {
 	}
 
 	@Override
+	public List<String> obtenerEmailsUsuariosPorRestaurante(Long idRestaurante) throws NoHayReservas {
+		List<String> emails = repositorioReserva.buscarEmailDeUsuariosPorRestaurante(idRestaurante);
+		if (emails.isEmpty()) {
+			throw new NoHayReservas();
+		}
+		return emails;
+	}
+
+	@Override
 	public void actualizar(Reserva reserva) throws ReservaNoEncontrada {
 		Reserva reservaNoEncontrada = repositorioReserva.buscarReserva(reserva.getId());
 		if (reservaNoEncontrada == null) {

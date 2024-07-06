@@ -18,4 +18,5 @@ public interface ServicioReserva {
                       Integer dni_form, Integer cant_personas, Date fecha_form, Usuario usuario) throws EspacioNoDisponible, NoExisteUsuario;
 	List<Reserva> buscarTodasLasReservas() throws NoHayReservas;
 	List<Reserva> buscarReservasDelRestaurante(Long idRestaurante) throws NoHayReservas;
+    List<String> obtenerEmailsUsuariosPorRestaurante(Long idRestaurante) throws NoHayReservas;
 }

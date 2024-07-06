@@ -4,14 +4,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.Date;
+import com.tallerwebi.dominio.Reserva;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
-import com.tallerwebi.dominio.Reserva;
 import com.tallerwebi.dominio.Restaurante;
 import com.tallerwebi.dominio.Usuario;
 import com.tallerwebi.dominio.excepcion.DatosInvalidosReserva;
@@ -30,6 +29,7 @@ import com.tallerwebi.servicio.ServicioMercadoPago;
 import com.tallerwebi.servicio.ServicioReserva;
 import com.tallerwebi.servicio.ServicioRestaurante;
 import com.tallerwebi.servicio.ServicioUsuario;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 public class ControladorReservaTest {
 	private ControladorReserva controladorReserva;
@@ -40,14 +40,18 @@ public class ControladorReservaTest {
 	private HttpServletRequest request;
 	private HttpSession session;
 	private Usuario usuarioInit;
+	private RedirectAttributes redirectAttributes;
 
 	@BeforeEach
 	public void init() {
 		servicioReservaMock = mock(ServicioReserva.class);
 		servicioRestauranteMock = mock(ServicioRestaurante.class);
 		servicioMercadoPago = mock(ServicioMercadoPago.class);
-    servicioUsuario = mock(ServicioUsuario.class);
-	request = mock(HttpServletRequest.class);
+		redirectAttributes = mock(RedirectAttributes.class);
+
+		//this.controladorReserva = new ControladorReserva(this.servicioRestauranteMock, this.servicioReservaMock,
+		servicioUsuario = mock(ServicioUsuario.class);
+		request = mock(HttpServletRequest.class);
 		session = mock(HttpSession.class);
 		usuarioInit = mock(Usuario.class);
 		this.controladorReserva = new ControladorReserva(this.servicioUsuario, this.servicioRestauranteMock, this.servicioReservaMock,
@@ -71,21 +75,18 @@ public class ControladorReservaTest {
 		when(servicioRestauranteMock.consultar(1L)).thenReturn(restaurante);
 		when(request.getSession(false)).thenReturn(session);
 
+
 		Reserva reserva = new Reserva(null, restaurante, "nombre", "test@test.com", 1, 1, 1, datosReserva.getFechaForm(), new Usuario());
 		when(servicioReservaMock.crearReserva(restaurante, datosReserva.getNombreForm(), datosReserva.getEmailForm(), datosReserva.getNumForm(), datosReserva.getDniForm(), datosReserva.getCantPersonas(), datosReserva.getFechaForm(), this.usuarioInit))
 				.thenReturn(reserva);
 
-		ModelAndView modelAndView = controladorReserva.reservar(datosReserva, this.request);
+		ModelAndView modelAndView = controladorReserva.reservar(datosReserva, this.request, this.redirectAttributes);
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("reserva_exitosa"));
 
 	}
 
 	@Test
-	public void errorDeServidorAlIntentarReservar()
-			throws RestauranteNoEncontrado, EspacioNoDisponible, MPException, MPApiException, DatosInvalidosReserva {
-		Restaurante restoMock = mock(Restaurante.class);
-		Reserva reservaMock = mock(Reserva.class);
-
+	public void errorDeServidorAlIntentarReservar() throws RestauranteNoEncontrado, EspacioNoDisponible, MPException, MPApiException, DatosInvalidosReserva {
 		DatosReserva datosReserva = new DatosReserva();
 		datosReserva.setIdRestaurante(1L);
 		datosReserva.setNombreForm("Nombre");
@@ -93,16 +94,15 @@ public class ControladorReservaTest {
 		datosReserva.setNumForm(123456789);
 		datosReserva.setDniForm(12345678);
 		datosReserva.setCantPersonas(2);
-		datosReserva.setFechaForm(new Date(System.currentTimeMillis() + 86400000));
+		datosReserva.setFechaForm(new Date(System.currentTimeMillis() + 86400000)); // fecha futura
 
 		when(servicioRestauranteMock.consultar(anyLong())).thenThrow(new RuntimeException("error"));
+		when(request.getSession(false)).thenReturn(session);
 
-		ModelAndView modelAndView = controladorReserva.reservar(datosReserva, this.request);
+		ModelAndView modelAndView = controladorReserva.reservar(datosReserva, this.request, this.redirectAttributes);
 
-		assertThat(modelAndView.getViewName(), equalToIgnoringCase("errReserva"));
-
-		assertThat((String) modelAndView.getModel().get("error"),
-				equalToIgnoringCase("Error del servidor: error"));
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/restaurante/1"));
+		verify(redirectAttributes).addFlashAttribute("errorForm", "Error del servidor: error");
 	}
 
 	@Test
@@ -114,8 +114,7 @@ public class ControladorReservaTest {
 	}
 
 	@Test
-	public void noSeEncontroRestaurante()
-			throws RestauranteNoEncontrado, DatosInvalidosReserva, EspacioNoDisponible, MPException, MPApiException {
+	public void noSeEncontroRestaurante() throws RestauranteNoEncontrado, DatosInvalidosReserva, EspacioNoDisponible, MPException, MPApiException {
 		DatosReserva datosReserva = new DatosReserva();
 		datosReserva.setIdRestaurante(1L);
 		datosReserva.setNombreForm("nombre");
@@ -126,11 +125,12 @@ public class ControladorReservaTest {
 		datosReserva.setFechaForm(new Date(System.currentTimeMillis() + 86400000)); // fecha futura
 
 		doThrow(new RestauranteNoEncontrado()).when(servicioRestauranteMock).consultar(1L);
+		when(request.getSession(false)).thenReturn(session);
 
-		ModelAndView modelAndView = controladorReserva.reservar(datosReserva, this.request);
+		ModelAndView modelAndView = controladorReserva.reservar(datosReserva, this.request, this.redirectAttributes);
 
-		assertThat(modelAndView.getModel().get("error").toString(),
-				equalToIgnoringCase("No se encontró el restaurante."));
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/restaurante/1"));
+		verify(redirectAttributes).addFlashAttribute("errorForm", "No se encontró el restaurante.");
 	}
 
 	@Test
@@ -154,28 +154,29 @@ public class ControladorReservaTest {
 		doThrow(new EspacioNoDisponible()).when(servicioReservaMock).crearReserva(restaurante, datosReserva.getNombreForm(),
 				datosReserva.getEmailForm(), datosReserva.getNumForm(), datosReserva.getDniForm(), datosReserva.getCantPersonas(), datosReserva.getFechaForm(), usuarioInit);
 
-		ModelAndView modelAndView = controladorReserva.reservar(datosReserva, request);
+		ModelAndView modelAndView = controladorReserva.reservar(datosReserva, request, this.redirectAttributes);
 
-		assertThat(modelAndView.getModel().get("error").toString(),
-				equalToIgnoringCase("No hay suficiente espacio disponible en el restaurante."));
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/restaurante/1"));
+		verify(redirectAttributes).addFlashAttribute("errorForm", "No hay suficiente espacio disponible en el restaurante.");
 	}
 
 	@Test
 	public void datosInvalidos() throws EspacioNoDisponible, DatosInvalidosReserva, RestauranteNoEncontrado {
-		Restaurante restaurante = new Restaurante(1L, "nombre", 2.2, "direccion", "imagen", 3, -34.610000, -58.400000);
-
 		DatosReserva datosReserva = new DatosReserva();
 		datosReserva.setIdRestaurante(1L);
 		datosReserva.setNombreForm("nombre");
 		datosReserva.setEmailForm("test@mail.com");
-		datosReserva.setNumForm(null);
+		datosReserva.setNumForm(null); // Dato inválido
 		datosReserva.setDniForm(2);
 		datosReserva.setCantPersonas(2);
 		datosReserva.setFechaForm(new Date(System.currentTimeMillis() + 86400000)); // fecha futura
 
-		ModelAndView modelAndView = controladorReserva.reservar(datosReserva, this.request);
+		when(request.getSession(false)).thenReturn(session);
 
-		assertThat(modelAndView.getModel().get("error").toString(),
-				equalToIgnoringCase("Datos ingresados invalidos para la reserva"));
+		ModelAndView modelAndView = controladorReserva.reservar(datosReserva, this.request, this.redirectAttributes);
+
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/restaurante/1"));
+		verify(redirectAttributes).addFlashAttribute("errorForm", "Datos ingresados invalidos para la reserva");
 	}
+
 }

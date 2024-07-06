@@ -47,9 +47,9 @@ public class Usuario {
         this.rol = rol;
         this.activo = false;
         this.confirmationToken = "";
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.fecha_nac = fecha_nac;
+        this.nombre = "mateo";
+        this.apellido = "fortuna";
+        this.fecha_nac = new Date();
     }
 
     public Long getId() {

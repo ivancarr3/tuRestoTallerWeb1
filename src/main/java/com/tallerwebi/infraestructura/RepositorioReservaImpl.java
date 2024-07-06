@@ -70,6 +70,14 @@ public class RepositorioReservaImpl implements RepositorioReserva {
     }
 
     @Override
+    public List<String> buscarEmailDeUsuariosPorRestaurante(Long idRestaurante){
+        String hql = "SELECT r.email FROM Reserva r WHERE r.restaurante.id = :idRestaurante";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("idRestaurante", idRestaurante);
+        return (List<String>) query.getResultList();
+    }
+
+    @Override
     public void actualizar(Reserva reserva) {
         this.sessionFactory.getCurrentSession().update(reserva);
     }
