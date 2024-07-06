@@ -28,34 +28,34 @@ INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, 
     ('Café Parisien', 4.0, 'Paseo de las Flores 15', 'restaurant5.jpg', 100, 100, -34.600000, -58.410000);
 SET @idResto6 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('Ensaladas');
+INSERT INTO categoria (descripcion) VALUES ('ensaladas');
 SET @idCategoria1 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('Hamburguesas');
+INSERT INTO categoria (descripcion) VALUES ('hamburguesas');
 SET @idCategoria2 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('Milanesas');
+INSERT INTO categoria (descripcion) VALUES ('milanesas');
 SET @idCategoria3 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('Postres');
+INSERT INTO categoria (descripcion) VALUES ('postres');
 SET @idCategoria4 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('Pastas');
+INSERT INTO categoria (descripcion) VALUES ('pastas');
 SET @idCategoria5 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('Tapeos');
+INSERT INTO categoria (descripcion) VALUES ('picadas');
 SET @idCategoria6 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('Sopas');
+INSERT INTO categoria (descripcion) VALUES ('sopas');
 SET @idCategoria7 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('Mariscos');
+INSERT INTO categoria (descripcion) VALUES ('mariscos');
 SET @idCategoria8 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('Pizzas');
+INSERT INTO categoria (descripcion) VALUES ('pizzas');
 SET @idCategoria9 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('Asado');
+INSERT INTO categoria (descripcion) VALUES ('asado');
 SET @idCategoria10 = LAST_INSERT_ID();
 
 --Restaurante 1
@@ -150,7 +150,7 @@ INSERT INTO plato (nombre, precio, descripcion, imagen, id_restaurante, id_categ
                                                                                                          ('Milanesa a la Parmesana', 20000, 'Milanesa de res con salsa de tomate y queso parmesano', 'milanesa.jpg', @idResto6, @idCategoria3, true),
                                                                                                          ('Panna Cotta', 11000, 'Postre italiano de nata con coulis de frutos rojos', 'helado.jpg', @idResto6, @idCategoria4, true),
                                                                                                          ('Tagliatelle al Pesto', 18000, 'Pasta con salsa de albahaca, piñones y parmesano', 'pasta.jpeg', @idResto6, @idCategoria5, true),
-                                                                                                         ('Patatas Bravas', 16500, 'Patatas fritas con salsa picante', 'tapas.jpg', @idResto6, @idCategoria6, true),
+                                                                                                         ('Patatas Bravas', 16500, 'Patatas fritas con salsa picante y aceitunas', 'tapas.jpg', @idResto6, @idCategoria6, true),
                                                                                                          ('Sopa de Tomate', 12500, 'Sopa de tomate con albahaca fresca', 'sopa.jpg', @idResto6, @idCategoria7, false),
                                                                                                          ('Langosta Termidor', 22000, 'Langosta gratinada con salsa de queso', 'mariscos.jpg', @idResto6, @idCategoria8, true),
                                                                                                          ('Pizza de Salami', 15500, 'Pizza con salami picante y mozzarella', 'pizza.jpeg', @idResto6, @idCategoria9, true),

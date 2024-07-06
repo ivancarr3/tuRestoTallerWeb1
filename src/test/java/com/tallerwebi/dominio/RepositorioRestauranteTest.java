@@ -39,7 +39,7 @@ public class RepositorioRestauranteTest {
     public void init() {
         this.restaurantes.add(crearYGuardarRestaurante("La Quintana", 4.5, "Arieta 5000", 1));
         this.restaurantes.add(crearYGuardarRestaurante("Benjamin", 3.9, "Arieta 5446", 2));
-        this.restaurantes.add(crearYGuardarRestaurante("La Capilla", 4.2, "Almafuerte 1111", 3));
+        this.restaurantes.add(crearYGuardarRestaurante("La Capilla", 4.0, "Almafuerte 1111", 3));
     }
 
     private Restaurante crearYGuardarRestaurante(String nombre, double estrellas, String direccion, Integer capacidad) {
@@ -71,7 +71,7 @@ public class RepositorioRestauranteTest {
         Double estrellas = 4.0;
         List<Restaurante> restaurantes = repositorioRestaurante.buscarPorEstrellas(estrellas);
 
-        assertEquals(2, restaurantes.size());
+        assertEquals(1, restaurantes.size());
     }
 
     @Test
@@ -104,7 +104,7 @@ public class RepositorioRestauranteTest {
 
         assertEquals(3, restaurantes.size());
         assertEquals(3.9, restaurantes.get(0).getEstrellas());
-        assertEquals(4.2, restaurantes.get(1).getEstrellas());
+        assertEquals(4.0, restaurantes.get(1).getEstrellas());
         assertEquals(4.5, restaurantes.get(2).getEstrellas());
     }
 
@@ -114,7 +114,7 @@ public class RepositorioRestauranteTest {
 
         assertEquals(3, restaurantes.size());
         assertEquals(4.5, restaurantes.get(0).getEstrellas());
-        assertEquals(4.2, restaurantes.get(1).getEstrellas());
+        assertEquals(4.0, restaurantes.get(1).getEstrellas());
         assertEquals(3.9, restaurantes.get(2).getEstrellas());
     }
 

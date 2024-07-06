@@ -74,6 +74,15 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
     }
 
     @Override
+    public List<Plato> getPlatosPorCategoria(String categoria) {
+        String hql = "FROM Plato p WHERE p.categoria.descripcion = :categoria ORDER BY p.precio DESC";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("categoria", categoria);
+        query.setMaxResults(4);
+        return query.getResultList();
+    }
+
+    @Override
     public List<Plato> buscarPlatoPorNombre(String nombre) {
 
         String hql = "FROM Plato WHERE LOWER(nombre) LIKE LOWER(:nombre)";

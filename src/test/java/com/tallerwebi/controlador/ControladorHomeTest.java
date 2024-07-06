@@ -17,6 +17,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.tallerwebi.dominio.Plato;
+import com.tallerwebi.dominio.excepcion.NoHayPlatos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,6 +41,7 @@ public class ControladorHomeTest {
 	@BeforeEach
 	public void init() {
 		servicioRestauranteMock = mock(ServicioRestaurante.class);
+		servicioPlato = mock(ServicioPlato.class);
 		this.controladorHome = new ControladorHome(this.servicioRestauranteMock, this.servicioPlato,
 				this.servicioGeocoding);
 		this.request = mock(HttpServletRequest.class);
@@ -50,6 +53,40 @@ public class ControladorHomeTest {
 
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
 
+	}
+
+	@Test
+	public void filtrarPlatosCategoriaDevuelveVistaCorrectaConPlatos() throws NoHayPlatos {
+		String categoria = "pizza";
+		List<Plato> platosMockeados = new ArrayList<>();
+		platosMockeados.add(new Plato(1L, "Pizza Margarita", 10.0, "Delicious pizza with mozzarella and basil", "pizza1.jpg", null, null, false));
+		platosMockeados.add(new Plato(2L, "Pizza Pepperoni", 12.0, "Spicy pepperoni pizza", "pizza2.jpg", null, null, false));
+		platosMockeados.add(new Plato(3L, "Pizza Hawaiana", 11.0, "Pizza with pineapple and ham", "pizza3.jpg", null, null, false));
+		platosMockeados.add(new Plato(4L, "Pizza Cuatro Quesos", 13.0, "Pizza with four types of cheese", "pizza4.jpg", null, null, false));
+
+		when(servicioPlato.getPlatosPorCategoria(categoria)).thenReturn(platosMockeados);
+
+		ModelAndView modelAndView = controladorHome.filtrarPlatosCategoria(categoria, this.request);
+
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("home"));
+		@SuppressWarnings("unchecked")
+		List<Plato> platosModel = (List<Plato>) modelAndView.getModel().get("platos");
+		assertEquals(4, platosModel.size());
+		assertEquals("Pizza Margarita", platosModel.get(0).getNombre());
+		assertEquals("Pizza Pepperoni", platosModel.get(1).getNombre());
+		assertEquals("Pizza Hawaiana", platosModel.get(2).getNombre());
+		assertEquals("Pizza Cuatro Quesos", platosModel.get(3).getNombre());
+	}
+
+	@Test
+	public void filtrarPlatosCategoriaSinPlatosLanzaExcepcion() throws NoHayPlatos {
+		String categoria = "noexiste";
+		when(servicioPlato.getPlatosPorCategoria(categoria)).thenThrow(new NoHayPlatos());
+
+		ModelAndView modelAndView = controladorHome.filtrarPlatosCategoria(categoria, this.request);
+
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("Home"));
+		assertEquals("No hay platos disponibles para esa categoría.", modelAndView.getModel().get("error"));
 	}
 
 	@Test

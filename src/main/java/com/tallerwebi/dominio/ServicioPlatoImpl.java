@@ -45,6 +45,15 @@ public class ServicioPlatoImpl implements ServicioPlato {
     }
 
     @Override
+    public List<Plato> getPlatosPorCategoria(String categoria) throws NoHayPlatos {
+        List<Plato> platos = repositorioPlato.getPlatosPorCategoria(categoria);
+        if (platos == null || platos.isEmpty()) {
+            throw new NoHayPlatos();
+        }
+        return platos;
+    }
+
+    @Override
     public List<Plato> getPlatosAgrupadosPorCategoria() {
         return repositorioPlato.getPlatosAgrupadosPorCategoria();
     }

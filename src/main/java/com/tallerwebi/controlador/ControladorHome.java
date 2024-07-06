@@ -5,13 +5,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.tallerwebi.dominio.Plato;
+import com.tallerwebi.dominio.excepcion.NoHayPlatos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tallerwebi.dominio.Restaurante;
@@ -153,6 +152,20 @@ public class ControladorHome {
 			model.put(ERROR_NAME, "No hay restaurantes disponibles.");
 		}
 		addUserInfoToModel(model, request);
+		return new ModelAndView(VIEW_NAME, model);
+	}
+
+	@GetMapping(path = "/home/platos/{categoria}")
+	public ModelAndView filtrarPlatosCategoria(@PathVariable String categoria, HttpServletRequest request) {
+		ModelMap model = new ModelMap();
+		try {
+			List<Plato> platos = servicioPlato.getPlatosPorCategoria(categoria);
+			model.put("platos", platos);
+		} catch (NoHayPlatos e) {
+			model.put(ERROR_NAME, "No hay platos disponibles para esa categoría.");
+		}
+		addUserInfoToModel(model, request);
+		System.out.println(model);
 		return new ModelAndView(VIEW_NAME, model);
 	}
 }

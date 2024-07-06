@@ -14,5 +14,6 @@ public interface RepositorioPlato {
     void guardarPlato(Plato plato);
     void modificarPlato(Plato plato);
     void eliminarPlato(Plato plato);
+    List<Plato> getPlatosPorCategoria(String categoria);
 }
 
