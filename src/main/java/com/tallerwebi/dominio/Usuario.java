@@ -1,8 +1,18 @@
 package com.tallerwebi.dominio;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Usuario {
@@ -33,6 +43,7 @@ public class Usuario {
     private String apellido;
 
     @Column(nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date fecha_nac;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
