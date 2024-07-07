@@ -18,6 +18,6 @@ public interface ServicioPlato {
     List<Plato> ordenarPorPrecio(String tipoDeOrden) throws NoHayPlatos;
     void crearPlato(Plato plato) throws PlatoExistente;
     void actualizarPlato(Plato plato) throws PlatoNoEncontrado;
-    void eliminarPlato(Plato plato) throws PlatoNoEncontrado;
+    void eliminarPlato(Plato id) throws PlatoNoEncontrado;
     List<Plato> getPlatosPorCategoria(String categoria) throws NoHayPlatos;
 }

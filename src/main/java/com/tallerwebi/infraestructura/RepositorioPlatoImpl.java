@@ -37,7 +37,7 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
 
     @Override
     public List<Plato> getPlatosDeRestaurante(Long idRestaurante) {
-        String hql = "FROM Plato WHERE restaurante.id = :idRestaurante";
+        String hql = "SELECT p FROM Plato p JOIN FETCH p.categoria WHERE p.restaurante.id = :idRestaurante";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("idRestaurante", idRestaurante);
         return query.getResultList();
@@ -108,6 +108,9 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
 
     @Override
     public void eliminarPlato(Plato plato) {
-        sessionFactory.getCurrentSession().delete(plato);
+        String hql = "DELETE FROM Plato WHERE id = :id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("id", plato.getId());
+        query.executeUpdate();
     }
 }
