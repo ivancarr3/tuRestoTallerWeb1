@@ -2,12 +2,12 @@ package com.tallerwebi.dominio;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,10 +27,12 @@ public class ServicioLoginTest {
 
         Usuario usr = mock(Usuario.class);
         usr.setPassword("pass");
+        usr.setActivo(true);
 
         when(repositorioUsuario.buscarUsuario("test@test.com", "pass")).thenReturn(usr);
         when(usr.getEmail()).thenReturn("test@test.com");
         when(usr.getPassword()).thenReturn("pass");
+        when(usr.isActivo()).thenReturn(true);
 
         Usuario usuarioDevuelto = servicioLogin.consultarUsuario("test@test.com", "pass");
 
@@ -58,19 +60,16 @@ public class ServicioLoginTest {
 
     @Test
     public void registrarEncuentraQueElUsuarioYaExiste() {
+        Usuario usr = new Usuario();
+        usr.setEmail("dsfa");
+        usr.setPassword("dsfa");
 
-        Usuario usr = mock(Usuario.class);
+        // Mocking the repository to return the existing user
+        when(repositorioUsuario.buscar("dsfa")).thenReturn(usr);
 
-        when(usr.getEmail()).thenReturn("dsfa");
-        when(usr.getPassword()).thenReturn("dsfa");
-
-        when(repositorioUsuario.buscarUsuario(anyString(), anyString())).thenReturn(usr);
-
-        try {
+        // Expecting the UsuarioExistente exception to be thrown
+        assertThrows(UsuarioExistente.class, () -> {
             servicioLogin.registrar(usr);
-            fail();
-        } catch (Exception e) {
-            assertTrue(true);
-        }
+        });
     }
 }

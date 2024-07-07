@@ -22,9 +22,20 @@ public class RepositorioCategoriaImpl implements RepositorioCategoria {
     }
 
     @Override
+    public List<Categoria> get() {
+        try {
+            String hql = "FROM Categoria";
+            Query query = sessionFactory.getCurrentSession().createQuery(hql);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
     public Categoria buscarCategoria(Long id) {
         try {
-            String hql = "FROM Categoria c WHERE c.id = :id";
+            String hql = "FROM Categoria WHERE id = :id";
             Query query = sessionFactory.getCurrentSession().createQuery(hql);
             query.setParameter("id", id);
             return (Categoria) query.getSingleResult();
@@ -44,5 +55,15 @@ public class RepositorioCategoriaImpl implements RepositorioCategoria {
         String hql = "FROM Categoria";
         Query query = sessionFactory.getCurrentSession().createQuery(hql);
         return (List<Categoria>) query.list();
+    }
+
+    @Override
+    public void modificar(Categoria categoria) {
+        this.sessionFactory.getCurrentSession().update(categoria);
+    }
+
+    @Override
+    public void eliminar(Categoria categoria) {
+        this.sessionFactory.getCurrentSession().delete(categoria);
     }
 }

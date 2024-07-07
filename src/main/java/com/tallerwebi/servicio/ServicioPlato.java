@@ -19,4 +19,5 @@ public interface ServicioPlato {
     void crearPlato(Plato plato) throws PlatoExistente;
     void actualizarPlato(Plato plato) throws PlatoNoEncontrado;
     void eliminarPlato(Plato plato) throws PlatoNoEncontrado;
+    List<Plato> getPlatosPorCategoria(String categoria) throws NoHayPlatos;
 }

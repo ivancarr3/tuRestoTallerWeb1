@@ -20,4 +20,12 @@ public class Email {
         message.setText(text);
         emailSender.send(message);
     }
+
+    public void sendPromotionalEmail(String to, String subject, String text) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(text);
+        emailSender.send(message);
+    }
 }

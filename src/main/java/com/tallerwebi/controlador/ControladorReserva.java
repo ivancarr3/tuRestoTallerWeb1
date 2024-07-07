@@ -16,9 +16,21 @@ import com.tallerwebi.dominio.Restaurante;
 import com.tallerwebi.dominio.excepcion.DatosInvalidosReserva;
 import com.tallerwebi.dominio.excepcion.EspacioNoDisponible;
 import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
+import com.tallerwebi.dominio.Usuario;
+import com.tallerwebi.dominio.excepcion.*;
 import com.tallerwebi.servicio.ServicioMercadoPago;
 import com.tallerwebi.servicio.ServicioReserva;
 import com.tallerwebi.servicio.ServicioRestaurante;
+import com.tallerwebi.servicio.ServicioUsuario;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 @Controller
 public class ControladorReserva {
@@ -28,7 +40,7 @@ public class ControladorReserva {
 	private final ServicioMercadoPago servicioMercadoPago;
 
 	private static final String VIEW_NAME = "errReserva";
-	private static final String ERROR_NAME = "error";
+	private static final String ERROR_NAME = "errorForm";
 	private static final String RESERVA_EXITOSA_VIEW = "reserva_exitosa";
 	private static final String REDIRECT_HOME_VIEW = "redirect:/home";
 	private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
@@ -40,10 +52,23 @@ public class ControladorReserva {
 		this.servicioMercadoPago = servicioMercadoPago;
 	}
 
-	@PostMapping(path = "/reservar")
-	public ModelAndView reservar(@ModelAttribute DatosReserva datosReserva)
-			throws RestauranteNoEncontrado, DatosInvalidosReserva, EspacioNoDisponible, MPException, MPApiException {
+	private void addUserInfoToModel(ModelMap model, HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		if (session != null && session.getAttribute("ROL") != null) {
+			String rolUsuario = (String) session.getAttribute("ROL");
+			model.put("usuarioLogueado", true);
+			model.put("rolUsuario", rolUsuario);
+		} else {
+			model.put("usuarioLogueado", false);
+			model.put("rolUsuario", null);
+		}
 
+	}
+
+	@PostMapping(path = "/reservar")
+
+	public ModelAndView reservar(@ModelAttribute DatosReserva datosReserva, HttpServletRequest request,
+			RedirectAttributes redirectAttributes) {
 		ModelMap model = new ModelMap();
 
 		try {
@@ -51,7 +76,7 @@ public class ControladorReserva {
 					datosReserva.getDniForm(), datosReserva.getCantPersonas(), datosReserva.getFechaForm());
 
 			Restaurante restauranteEncontrado = servicioRestaurante.consultar(datosReserva.getIdRestaurante());
-
+			Usuario usuario = obtenerIdUsuarioAutenticado(request);
 			Reserva reserva = servicioReserva.crearReserva(restauranteEncontrado, datosReserva.getNombreForm(),
 					datosReserva.getEmailForm(), datosReserva.getNumForm(), datosReserva.getDniForm(),
 					datosReserva.getCantPersonas(), datosReserva.getFechaForm());
@@ -59,14 +84,24 @@ public class ControladorReserva {
 			String idPago = servicioMercadoPago.armarPago(restauranteEncontrado, reserva, 5000);
 
 			model.put("urlpago", "https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=" + idPago);
+			addUserInfoToModel(model, request);
 			return new ModelAndView(RESERVA_EXITOSA_VIEW, model);
-		} catch (RestauranteNoEncontrado | DatosInvalidosReserva | EspacioNoDisponible e) {
-			model.put(ERROR_NAME, e.getMessage());
-			return new ModelAndView(VIEW_NAME, model);
-		} catch (RuntimeException e) {
-			model.put(ERROR_NAME, "Error del servidor: " + e.getMessage());
-			return new ModelAndView(VIEW_NAME, model);
+		} catch (RestauranteNoEncontrado | DatosInvalidosReserva | FechaAnterior | EmailInvalido |
+
+				EspacioNoDisponible e) {
+			redirectAttributes.addFlashAttribute(ERROR_NAME, e.getMessage());
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(ERROR_NAME, "Error del servidor: " + e.getMessage());
 		}
+
+		addUserInfoToModel(model, request);
+		return new ModelAndView("redirect:/restaurante/" + datosReserva.getIdRestaurante());
+	}
+
+	private Usuario obtenerIdUsuarioAutenticado(HttpServletRequest request) throws NoExisteUsuario {
+		HttpSession session = request.getSession(false);
+		String email = (String) session.getAttribute("email");
+		return servicioUsuario.buscar(email);
 	}
 
 	@GetMapping(path = "/reservar")
@@ -76,7 +111,8 @@ public class ControladorReserva {
 	}
 
 	private void validarDatosReserva(String nombreForm, String emailForm, Integer numForm, Integer dniForm,
-			Integer cantPersonas, Date fechaForm) throws DatosInvalidosReserva {
+
+			Integer cantPersonas, Date fechaForm) throws DatosInvalidosReserva, FechaAnterior, EmailInvalido {
 
 		if (nombreForm == null || nombreForm.isEmpty() || emailForm == null || emailForm.isEmpty() || numForm == null
 				|| dniForm == null || cantPersonas == null || fechaForm == null) {
@@ -86,11 +122,11 @@ public class ControladorReserva {
 		Date fechaActual = new Date();
 
 		if (fechaForm.before(fechaActual)) {
-			throw new DatosInvalidosReserva();
+			throw new FechaAnterior();
 		}
 
 		if (!emailForm.matches(EMAIL_REGEX)) {
-			throw new DatosInvalidosReserva();
+			throw new EmailInvalido();
 		}
-	}
+	} 
 }

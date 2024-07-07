@@ -58,8 +58,29 @@ public class ControladorLogin {
             model.put("error", "El usuario ya existe");
             return new ModelAndView("nuevo-usuario", model);
         } catch (Exception e) {
-            model.put("error", "Error al registrar el nuevo usuario");
-            return new ModelAndView("nuevo-usuario", model);
+            model.put(ERROR, "Error al registrar el nuevo usuario.");
+        }
+        return new ModelAndView(VIEW_NAME, model);
+    }
+
+    @GetMapping("/confirmar")
+    public ModelAndView confirmarCuenta(@RequestParam("token") String token) {
+        ModelMap model = new ModelMap();
+        try {
+            servicioLogin.activarUsuario(token);
+            model.put(DATOS_LOGIN, new DatosLogin());
+            model.put("mensaje", "Cuenta activada con éxito. Por favor, inicie sesión.");
+        } catch (NoExisteUsuario e) {
+            model.put(ERROR, "Token inválido");
+        }
+        return new ModelAndView(LOGIN, model);
+    }
+
+    @GetMapping("/logout")
+    public ModelAndView logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
         }
         return new ModelAndView("redirect:/login");
     }

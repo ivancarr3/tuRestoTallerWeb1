@@ -6,6 +6,8 @@ import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 
 import com.tallerwebi.servicio.ServicioPlato;
 import com.tallerwebi.servicio.ServicioRestaurante;
+import com.tallerwebi.dominio.Plato;
+import com.tallerwebi.dominio.excepcion.NoHayPlatos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -94,6 +96,20 @@ public class ControladorHome {
 		List<Restaurante> restaurantes = servicioRestaurante.get();
 		ModelMap model = new ModelMap();
 		model.put(MODEL_NAME, restaurantes);
+		return new ModelAndView(VIEW_NAME, model);
+	}
+
+	@GetMapping(path = "/home/platos/{categoria}")
+	public ModelAndView filtrarPlatosCategoria(@PathVariable String categoria, HttpServletRequest request) {
+		ModelMap model = new ModelMap();
+		try {
+			List<Plato> platos = servicioPlato.getPlatosPorCategoria(categoria);
+			model.put("platos", platos);
+		} catch (NoHayPlatos e) {
+			model.put(ERROR_NAME, "No hay platos disponibles para esa categoría.");
+		}
+		addUserInfoToModel(model, request);
+		System.out.println(model);
 		return new ModelAndView(VIEW_NAME, model);
 	}
 }
