@@ -164,3 +164,7 @@ INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadP
 
 
 
+INSERT INTO
+    administradorderestaurante (email, password, restaurante_id)
+VALUES
+    ('mundomila@mila.com', '123', 2);
