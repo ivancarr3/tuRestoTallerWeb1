@@ -32,8 +32,11 @@ public class Plato {
     @Column(nullable = false)
     private boolean esRecomendado;
 
-    public Plato() {}
-    public Plato (Long id, String nombre, Double precio, String descripcion, String imagen, Restaurante restaurante, Categoria categoria, boolean esRecomendado) {
+    public Plato() {
+    }
+
+    public Plato(Long id, String nombre, Double precio, String descripcion, String imagen, Restaurante restaurante,
+            Categoria categoria, boolean esRecomendado) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -44,16 +47,56 @@ public class Plato {
         this.esRecomendado = esRecomendado;
     }
 
-    public void setId(Long id) {this.id = id;}
-    public Long getId() {return id;}
-    public String getNombre() {return nombre;}
-    public void setNombre(String nombre) {this.nombre = nombre;}
-    public Double getPrecio() {return precio;}
-    public void setPrecio(Double precio) {this.precio = precio;}
-    public String getDescripcion() {return descripcion;}
-    public void setDescripcion(String descripcion) {this.descripcion = descripcion;}
-    public String getImagen() {return imagen;}
-    public void setImagen(String imagen) {this.imagen = imagen;}
+    public Plato(String nombre, Double precio, String descripcion, String imagen, Restaurante restaurante,
+            Categoria categoria, boolean esRecomendado) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.imagen = imagen;
+        this.restaurante = restaurante;
+        this.categoria = categoria;
+        this.esRecomendado = esRecomendado;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(Double precio) {
+        this.precio = precio;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
 
     public Restaurante getRestaurante() {
         return restaurante;

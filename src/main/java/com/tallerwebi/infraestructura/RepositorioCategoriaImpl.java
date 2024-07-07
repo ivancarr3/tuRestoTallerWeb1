@@ -16,11 +16,14 @@ public class RepositorioCategoriaImpl implements RepositorioCategoria {
 
     private final SessionFactory sessionFactory;
 
-    public RepositorioCategoriaImpl(SessionFactory sessionFactory) {this.sessionFactory = sessionFactory;}
+    public RepositorioCategoriaImpl(SessionFactory sessionFactory) {
+
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
-    public List<Categoria> get(){
-        try{
+    public List<Categoria> get() {
+        try {
             String hql = "FROM Categoria";
             Query query = sessionFactory.getCurrentSession().createQuery(hql);
             return query.getResultList();
@@ -30,8 +33,8 @@ public class RepositorioCategoriaImpl implements RepositorioCategoria {
     }
 
     @Override
-    public Categoria buscarCategoria(Long id){
-        try{
+    public Categoria buscarCategoria(Long id) {
+        try {
             String hql = "FROM Categoria WHERE id = :id";
             Query query = sessionFactory.getCurrentSession().createQuery(hql);
             query.setParameter("id", id);
@@ -54,5 +57,13 @@ public class RepositorioCategoriaImpl implements RepositorioCategoria {
     @Override
     public void eliminar(Categoria categoria) {
         this.sessionFactory.getCurrentSession().delete(categoria);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Categoria> obtenerCategorias() {
+        String hql = "FROM Categoria";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        return (List<Categoria>) query.list();
     }
 }

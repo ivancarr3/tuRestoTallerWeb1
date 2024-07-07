@@ -31,6 +31,16 @@ public class ServicioCategoriaImpl implements ServicioCategoria {
     }
 
     @Override
+    public Categoria getCategoriaDePlato(Long id) {
+        return repositorioCategoria.buscarCategoria(id);
+    }
+
+    @Override
+    public List<Categoria> obtenerTodasLasCategorias() {
+        return this.repositorioCategoria.obtenerCategorias();
+    }
+
+    @Override
     public Categoria buscarCategoria(Long id) throws NoHayCategorias {
         Categoria categoria = repositorioCategoria.buscarCategoria(id);
         if (categoria == null) {
