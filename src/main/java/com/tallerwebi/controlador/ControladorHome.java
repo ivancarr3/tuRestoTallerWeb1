@@ -147,6 +147,9 @@ public class ControladorHome {
 		ModelMap model = new ModelMap();
 		try {
 			List<Restaurante> restaurantes = servicioRestaurante.get();
+			if (restaurantes == null || restaurantes.isEmpty()) {
+				throw new NoHayRestaurantes();
+			}
 			model.put(MODEL_NAME, restaurantes);
 		} catch (NoHayRestaurantes e) {
 			model.put(ERROR_NAME, "No hay restaurantes disponibles.");

@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.tallerwebi.dominio.excepcion.NoExisteUsuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -43,13 +44,9 @@ public class ControladorLoginTest {
 
 	@Test
 	public void loginConUsuarioYPasswordInorrectosDeberiaLlevarALoginNuevamente() throws UsuarioNoActivado{
-		// preparacion
 		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(null);
-
-		// ejecucion
 		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginMock, requestMock);
 
-		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
 		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Usuario o clave incorrecta"));
 		verify(sessionMock, times(0)).setAttribute("ROL", "ADMIN");
@@ -57,19 +54,27 @@ public class ControladorLoginTest {
 
 	@Test
 	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome() throws UsuarioNoActivado{
-		// preparacion
-		Usuario usuarioEncontradoMock = mock(Usuario.class);
-		when(usuarioEncontradoMock.getRol()).thenReturn("ADMIN");
+		when(usuarioMock.getRol()).thenReturn("ADMIN");
 
 		when(requestMock.getSession()).thenReturn(sessionMock);
-		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioEncontradoMock);
+		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioMock);
+		when(usuarioMock.isActivo()).thenReturn(true);
 
-		// ejecucion
 		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginMock, requestMock);
 
-		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
-		verify(sessionMock, times(1)).setAttribute("ROL", usuarioEncontradoMock.getRol());
+		verify(sessionMock, times(1)).setAttribute("ROL", usuarioMock.getRol());
+	}
+
+	@Test
+	public void loginConUsuarioYPasswordCorrectosPeroUsuarioNoActivadoLanzaExcepcion() throws UsuarioNoActivado {
+		when(requestMock.getSession()).thenReturn(sessionMock);
+		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioMock);
+
+		usuarioMock.setActivo(false);
+		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginMock, requestMock);
+
+		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Esta cuenta no está activada."));
 	}
 
 	@Test
@@ -123,5 +128,48 @@ public class ControladorLoginTest {
 		ModelAndView modelAndView = controladorLogin.irALogin();
 
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
+	}
+
+	@Test
+	public void confirmarCuentaConTokenValido() throws NoExisteUsuario {
+		String token = "valid_token";
+
+		ModelAndView modelAndView = controladorLogin.confirmarCuenta(token);
+
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
+		assertThat(modelAndView.getModel().get("mensaje").toString(), equalToIgnoringCase("Cuenta activada con éxito. Por favor, inicie sesión."));
+		verify(servicioLoginMock, times(1)).activarUsuario(token);
+	}
+
+	@Test
+	public void confirmarCuentaConTokenInvalido() throws NoExisteUsuario {
+		String token = "invalid_token";
+		doThrow(new NoExisteUsuario()).when(servicioLoginMock).activarUsuario(token);
+
+		ModelAndView modelAndView = controladorLogin.confirmarCuenta(token);
+
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
+		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Token inválido"));
+		verify(servicioLoginMock, times(1)).activarUsuario(token);
+	}
+
+	@Test
+	public void logoutDebeInvalidarSesionYRedirigirALogin() {
+		when(requestMock.getSession(false)).thenReturn(sessionMock);
+
+		ModelAndView modelAndView = controladorLogin.logout(requestMock);
+
+		verify(sessionMock, times(1)).invalidate();
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/login"));
+	}
+
+	@Test
+	public void logoutSinSesionDebeRedirigirALogin() {
+		when(requestMock.getSession(false)).thenReturn(null);
+
+		ModelAndView modelAndView = controladorLogin.logout(requestMock);
+
+		verify(sessionMock, times(0)).invalidate();
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/login"));
 	}
 }
