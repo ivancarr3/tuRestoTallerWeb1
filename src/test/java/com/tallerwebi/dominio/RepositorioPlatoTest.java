@@ -149,4 +149,29 @@ public class RepositorioPlatoTest {
         assertNull(repositorioPlato.buscar(id));
     }
 
+    @Test
+    public void queDevuelvaPlatosAgrupadosPorCategoria() {
+        Categoria otraCategoria = new Categoria(null, "Otra Categoria");
+        repositorioCategoria.guardar(otraCategoria);
+
+        crearYGuardarPlato("Pizza", 25000.0, "Pizza con mucho queso", this.restauranteInit, otraCategoria);
+        crearYGuardarPlato("Hamburguesa", 18000.0, "Hamburguesa completa", this.restauranteInit, otraCategoria);
+
+        List<Plato> platosAgrupados = repositorioPlato.getPlatosAgrupadosPorCategoria();
+
+        assertNotNull(platosAgrupados);
+        assertEquals(5, platosAgrupados.size());
+    }
+
+    @Test
+    public void queDevuelvaPlatosPorCategoria() {
+        List<Plato> platosPorCategoria = repositorioPlato.getPlatosPorCategoria("Categoria Mock");
+
+        assertNotNull(platosPorCategoria);
+        assertEquals(3, platosPorCategoria.size());
+        assertEquals("Milanesa de pollo", platosPorCategoria.get(0).getNombre());
+        assertEquals("Milanesa de carne", platosPorCategoria.get(1).getNombre());
+        assertEquals("Tarta de espinaca", platosPorCategoria.get(2).getNombre());
+    }
+
 }

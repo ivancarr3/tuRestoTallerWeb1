@@ -126,4 +126,38 @@ public class RepositorioReservaTest {
 		List<Reserva> reservasRestaurante = repositorioReserva.getReservasPorRestaurante(this.restauranteInit.getId());
 		assertEquals(4, reservasRestaurante.size());
 	}
+
+	@Test
+	public void queDevuelvaReservasDelUsuario() {
+		List<Reserva> reservasUsuario = repositorioReserva.buscarReservasDelUsuario(this.usuarioInit.getId());
+		assertNotNull(reservasUsuario);
+		assertEquals(3, reservasUsuario.size());
+	}
+
+	@Test
+	public void queDevuelvaReservasDelUsuarioPasadas() {
+		for (Reserva reserva : this.reservas) {
+			reserva.setFecha(new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000));
+			repositorioReserva.actualizar(reserva);
+		}
+
+		List<Reserva> reservasUsuarioPasadas = repositorioReserva.buscarReservasDelUsuarioPasadas(this.usuarioInit.getId());
+		assertNotNull(reservasUsuarioPasadas);
+		assertEquals(3, reservasUsuarioPasadas.size());
+	}
+
+	@Test
+	public void queDevuelvaReservasDelRestaurante() {
+		List<Reserva> reservasRestaurante = repositorioReserva.buscarReservasDelRestaurante(this.restauranteInit.getId());
+		assertNotNull(reservasRestaurante);
+		assertEquals(3, reservasRestaurante.size());
+	}
+
+	@Test
+	public void queDevuelvaEmailsDeUsuariosPorRestaurante() {
+		List<String> emails = repositorioReserva.buscarEmailDeUsuariosPorRestaurante(this.restauranteInit.getId());
+		assertNotNull(emails);
+		assertEquals(3, emails.size());
+		assertEquals("test@mail.com", emails.get(0));
+	}
 }

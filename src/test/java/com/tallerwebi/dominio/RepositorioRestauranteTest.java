@@ -146,4 +146,18 @@ public class RepositorioRestauranteTest {
 
         assertNull(repositorioRestaurante.buscar(id));
     }
+
+    @Test
+    public void queBusqueYOrdenePorEstrellas() {
+        List<Restaurante> restaurantesAsc = repositorioRestaurante.buscarPorEstrellasYOrdenar(4.0, "ASC");
+        assertEquals(2, restaurantesAsc.size());
+        assertEquals(4.0, restaurantesAsc.get(0).getEstrellas());
+        assertEquals(4.5, restaurantesAsc.get(1).getEstrellas());
+
+        List<Restaurante> restaurantesDesc = repositorioRestaurante.buscarPorEstrellasYOrdenar(4.0, "DESC");
+        assertEquals(2, restaurantesDesc.size());
+        assertEquals(4.5, restaurantesDesc.get(0).getEstrellas());
+        assertEquals(4.0, restaurantesDesc.get(1).getEstrellas());
+    }
+
 }
