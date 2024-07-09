@@ -1,8 +1,11 @@
 package com.tallerwebi.dominio;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.*;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Usuario {
@@ -33,6 +36,7 @@ public class Usuario {
     private String apellido;
 
     @Column(nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date fecha_nac;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
