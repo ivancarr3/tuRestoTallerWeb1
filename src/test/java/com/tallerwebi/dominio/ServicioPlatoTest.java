@@ -260,7 +260,6 @@ public class ServicioPlatoTest {
 
     @Test
     public void queAlAgruparPorCategoriaMeDevuelvaUnArray() {
-
         List<Plato> listaDePlatos = new ArrayList<>();
 
         Plato plato1 = mock(Plato.class);
@@ -280,9 +279,7 @@ public class ServicioPlatoTest {
 
     @Test
     public void queAlOrdenarPorPrecioNoExistanPlatos() {
-
         when(repositorioPlato.ordenarPorPrecio(anyString())).thenReturn(null);
-
         try {
             servicioPlato.ordenarPorPrecio(anyString());
         } catch (NoHayPlatos e) {
@@ -290,7 +287,31 @@ public class ServicioPlatoTest {
         } catch (Exception e) {
             fail();
         }
-
     }
 
+    @Test
+    public void queSePuedanObtenerPlatosPorCategoria() throws NoHayPlatos {
+        List<Plato> listaDePlatos = new ArrayList<>();
+
+        Plato plato1 = mock(Plato.class);
+        Plato plato2 = mock(Plato.class);
+        Plato plato3 = mock(Plato.class);
+
+        listaDePlatos.add(plato3);
+        listaDePlatos.add(plato2);
+        listaDePlatos.add(plato1);
+
+        when(repositorioPlato.getPlatosPorCategoria("categoria")).thenReturn(listaDePlatos);
+
+        List<Plato> platos = servicioPlato.getPlatosPorCategoria("categoria");
+
+        assertEquals(platos, listaDePlatos);
+    }
+
+    @Test
+    public void queLanceExcepcionSiNoHayPlatosPorCategoria() throws NoHayPlatos {
+        when(repositorioPlato.getPlatosPorCategoria("categoria")).thenReturn(null);
+
+        assertThrows(NoHayPlatos.class, () -> servicioPlato.getPlatosPorCategoria("categoria"));
+    }
 }

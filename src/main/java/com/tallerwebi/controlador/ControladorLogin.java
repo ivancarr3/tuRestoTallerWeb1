@@ -44,6 +44,9 @@ public class ControladorLogin {
         try {
             Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword());
             if (usuarioBuscado != null) {
+                if (!usuarioBuscado.isActivo()) {
+                    throw new UsuarioNoActivado();
+                }
                 request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
                 request.getSession().setAttribute("email", usuarioBuscado.getEmail());
                 return new ModelAndView("redirect:/home");

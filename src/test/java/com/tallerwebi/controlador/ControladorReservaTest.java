@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
+import com.tallerwebi.dominio.excepcion.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,10 +22,6 @@ import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.tallerwebi.dominio.Restaurante;
 import com.tallerwebi.dominio.Usuario;
-import com.tallerwebi.dominio.excepcion.DatosInvalidosReserva;
-import com.tallerwebi.dominio.excepcion.EspacioNoDisponible;
-import com.tallerwebi.dominio.excepcion.NoExisteUsuario;
-import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 import com.tallerwebi.servicio.ServicioMercadoPago;
 import com.tallerwebi.servicio.ServicioReserva;
 import com.tallerwebi.servicio.ServicioRestaurante;
@@ -179,4 +176,41 @@ public class ControladorReservaTest {
 		verify(redirectAttributes).addFlashAttribute("errorForm", "Datos ingresados invalidos para la reserva");
 	}
 
+	@Test
+	public void queLanceExcepcionSiQuiereReservarConFechaAnterior() throws EspacioNoDisponible, FechaAnterior, DatosInvalidosReserva, RestauranteNoEncontrado, EmailInvalido {
+		DatosReserva datosReserva = new DatosReserva();
+		datosReserva.setIdRestaurante(1L);
+		datosReserva.setNombreForm("nombre");
+		datosReserva.setEmailForm("test");
+		datosReserva.setNumForm(1234);
+		datosReserva.setDniForm(2);
+		datosReserva.setCantPersonas(2);
+		datosReserva.setFechaForm(new Date(System.currentTimeMillis() - 86400000)); // fecha futura
+
+		when(request.getSession(false)).thenReturn(session);
+
+		ModelAndView modelAndView = controladorReserva.reservar(datosReserva, this.request, this.redirectAttributes);
+
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/restaurante/1"));
+		verify(redirectAttributes).addFlashAttribute("errorForm", "La fecha de la reserva no puede ser anterior a la de hoy.");
+	}
+
+	@Test
+	public void queLanceExcepcionSiQuiereReservarConMailInvalido() throws EspacioNoDisponible, DatosInvalidosReserva, RestauranteNoEncontrado, EmailInvalido {
+		DatosReserva datosReserva = new DatosReserva();
+		datosReserva.setIdRestaurante(1L);
+		datosReserva.setNombreForm("nombre");
+		datosReserva.setEmailForm("test");
+		datosReserva.setNumForm(1234);
+		datosReserva.setDniForm(2);
+		datosReserva.setCantPersonas(2);
+		datosReserva.setFechaForm(new Date(System.currentTimeMillis() + 86400000)); // fecha futura
+
+		when(request.getSession(false)).thenReturn(session);
+
+		ModelAndView modelAndView = controladorReserva.reservar(datosReserva, this.request, this.redirectAttributes);
+
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/restaurante/1"));
+		verify(redirectAttributes).addFlashAttribute("errorForm", "El email ingresado no es válido.");
+	}
 }
