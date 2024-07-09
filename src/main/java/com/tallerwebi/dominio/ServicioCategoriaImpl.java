@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.excepcion.DemasiadasPreferenciasUsuarioRegistro;
 import com.tallerwebi.dominio.excepcion.NoHayCategorias;
 import com.tallerwebi.dominio.excepcion.NoHayReservas;
 import com.tallerwebi.servicio.ServicioCategoria;
@@ -27,6 +28,18 @@ public class ServicioCategoriaImpl implements ServicioCategoria {
             throw new NoHayCategorias();
         }
 
+        return categorias;
+    }
+
+    @Override
+    public List<Categoria> getCategoriasPorIds(List<Long> ids) throws NoHayCategorias, DemasiadasPreferenciasUsuarioRegistro {
+        if(ids.size() > 3){
+            throw new DemasiadasPreferenciasUsuarioRegistro();
+        }
+        List<Categoria> categorias = repositorioCategoria.buscarCategoriasPorListDeIds(ids);
+        if(categorias == null){
+            throw new NoHayCategorias();
+        }
         return categorias;
     }
 

@@ -133,6 +133,12 @@
 		    <artifactId>sdk-java</artifactId>
 		    <version>2.1.24</version>
 		</dependency>
+
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>3.0.2</version>
+        </dependency>
         <!-- compile only, deployed container will provide this -->
         <!--
         <dependency>

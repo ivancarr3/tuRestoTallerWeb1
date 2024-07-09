@@ -1,6 +1,9 @@
 package com.tallerwebi.dominio;
 
+
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Categoria {
@@ -11,6 +14,9 @@ public class Categoria {
 
     @Column(length = 100, nullable = false)
     private String descripcion;
+
+    @ManyToMany(mappedBy = "categorias")
+    private List<Usuario> usuarios;
 
     public Categoria() {}
 
@@ -33,5 +39,13 @@ public class Categoria {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
     }
 }

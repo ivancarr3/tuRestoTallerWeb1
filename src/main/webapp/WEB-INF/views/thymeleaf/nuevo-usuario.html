@@ -34,6 +34,12 @@
           <label for="password" class="form-label">Contraseña</label>
           <input th:field="*{password}" type="password" id="password" class="form-control" required>
         </div>
+        <div class="mb-3">
+          <label for="categorias" class="form-label">Categorías</label>
+          <select id="categorias" name="categoriaIds" class="form-control" multiple>
+            <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.descripcion}"></option>
+          </select>
+        </div>
         <button id="btn-registrarme" class="btn btn-lg btn-primary btn-block" type="submit">Registrarme</button>
         <p th:if="${error != null}" class="alert alert-danger mt-3" th:text="'Error ' + ${error}"></p>
       </form>

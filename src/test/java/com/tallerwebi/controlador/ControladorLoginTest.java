@@ -12,6 +12,8 @@ import static org.mockito.Mockito.when;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.tallerwebi.dominio.Categoria;
+import com.tallerwebi.servicio.ServicioCategoria;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,6 +23,10 @@ import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import com.tallerwebi.dominio.excepcion.UsuarioNoActivado;
 import com.tallerwebi.servicio.ServicioLogin;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class ControladorLoginTest {
 
 	private ControladorLogin controladorLogin;
@@ -29,6 +35,7 @@ public class ControladorLoginTest {
 	private HttpServletRequest requestMock;
 	private HttpSession sessionMock;
 	private ServicioLogin servicioLoginMock;
+	private ServicioCategoria servicioCategoriaMock;
 
 	@BeforeEach
 	public void init(){
@@ -38,7 +45,8 @@ public class ControladorLoginTest {
 		requestMock = mock(HttpServletRequest.class);
 		sessionMock = mock(HttpSession.class);
 		servicioLoginMock = mock(ServicioLogin.class);
-		controladorLogin = new ControladorLogin(servicioLoginMock);
+		servicioCategoriaMock = mock(ServicioCategoria.class);
+		controladorLogin = new ControladorLogin(servicioLoginMock, servicioCategoriaMock);
 	}
 
 	@Test
@@ -74,9 +82,10 @@ public class ControladorLoginTest {
 
 	@Test
 	public void registrameSiUsuarioNoExisteDeberiaCrearUsuarioYVolverAlLogin() throws UsuarioExistente {
+		List<Long> categoriaIds = Collections.emptyList();
 
 		// ejecucion
-		ModelAndView modelAndView = controladorLogin.register(usuarioMock);
+		ModelAndView modelAndView = controladorLogin.register(usuarioMock, categoriaIds);
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
@@ -87,9 +96,10 @@ public class ControladorLoginTest {
 	public void registrarmeSiUsuarioExisteDeberiaVolverAFormularioYMostrarError() throws UsuarioExistente {
 		// preparacion
 		doThrow(UsuarioExistente.class).when(servicioLoginMock).registrar(usuarioMock);
+		List<Long> categoriaIds = Collections.emptyList();
 
 		// ejecucion
-		ModelAndView modelAndView = controladorLogin.register(usuarioMock);
+		ModelAndView modelAndView = controladorLogin.register(usuarioMock, categoriaIds);
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
@@ -100,9 +110,10 @@ public class ControladorLoginTest {
 	public void errorEnRegistrarmeDeberiaVolverAFormularioYMostrarError() throws UsuarioExistente {
 		// preparacion
 		doThrow(RuntimeException.class).when(servicioLoginMock).registrar(usuarioMock);
+		List<Long> categoriaIds = Collections.emptyList();
 
 		// ejecucion
-		ModelAndView modelAndView = controladorLogin.register(usuarioMock);
+		ModelAndView modelAndView = controladorLogin.register(usuarioMock, categoriaIds);
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));

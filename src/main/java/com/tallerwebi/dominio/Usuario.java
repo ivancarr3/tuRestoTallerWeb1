@@ -38,6 +38,14 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Reserva> reservas;
 
+    @ManyToMany
+    @JoinTable(
+            name = "usuario_categoria",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "categoria_id")
+    )
+    private List<Categoria> categorias;
+
     public Usuario() {}
 
     public Usuario(Long id, String email, String password, String rol, String nombre, String apellido, Date fecha_nac) {
@@ -111,5 +119,13 @@ public class Usuario {
     }
     public void setReservas(List<Reserva> reservas) {
         this.reservas = reservas;
+    }
+
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
     }
 }

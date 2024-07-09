@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository("repositorioCategoria")
@@ -39,6 +40,18 @@ public class RepositorioCategoriaImpl implements RepositorioCategoria {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    @Override
+    public List<Categoria> buscarCategoriasPorListDeIds(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        String hql = "FROM Categoria WHERE id IN (:ids)";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameterList("ids", ids);
+        return query.list();
     }
 
     @Override

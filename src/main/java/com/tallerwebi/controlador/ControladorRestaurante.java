@@ -176,7 +176,7 @@ public class ControladorRestaurante {
 		try {
 			List<String> emails = servicioReserva.obtenerEmailsUsuariosPorRestaurante(id);
 			for (String email : emails) {
-				servicioEmail.sendPromotionalEmail(email, subject, text);
+				servicioEmail.generarEmailPromocionPDF(email, subject, text);
 			}
 			model.addAttribute("message", "Promoción enviada con éxito");
 			model.put("restaurantId", id);
