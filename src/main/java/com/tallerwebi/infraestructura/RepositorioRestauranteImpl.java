@@ -2,6 +2,7 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.RepositorioRestaurante;
 import com.tallerwebi.dominio.Restaurante;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -55,7 +56,7 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
         return query.getResultList();
     }
 
-    
+
     @Override
     public List<Restaurante> buscarPorEstrellas(Double estrellas) {
 
@@ -68,7 +69,7 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
     @Override
     public List<Restaurante> ordenarPorEstrellas(String tipoDeOrden) {
 
-        String hql = "FROM Restaurante ORDER BY estrellas "+ tipoDeOrden;
+        String hql = "FROM Restaurante ORDER BY estrellas " + tipoDeOrden;
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         return query.getResultList();
     }
@@ -78,7 +79,7 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
 
         String hql = "FROM Restaurante WHERE LOWER(direccion) LIKE LOWER(:direccion)";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("direccion", "%"+direccion.toLowerCase()+"%");
+        query.setParameter("direccion", "%" + direccion.toLowerCase() + "%");
 
         return query.getResultList();
     }
@@ -97,13 +98,13 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
     public List<Restaurante> buscarPorNombre(String nombre) {
         String hql = "FROM Restaurante WHERE LOWER(nombre) LIKE LOWER(:nombre)";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("nombre", "%"+nombre.toLowerCase()+"%");
+        query.setParameter("nombre", "%" + nombre.toLowerCase() + "%");
         return query.getResultList();
     }
 
     @Override
     public void actualizar(Restaurante restaurante) {
-        this.sessionFactory.getCurrentSession().update(restaurante);
+        this.sessionFactory.getCurrentSession().merge(restaurante);
     }
 
     @Override

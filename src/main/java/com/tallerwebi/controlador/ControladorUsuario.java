@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.Reserva;
 import com.tallerwebi.dominio.Usuario;
 import com.tallerwebi.dominio.excepcion.NoExisteUsuario;
 import com.tallerwebi.dominio.excepcion.NoHayReservas;
+import com.tallerwebi.dominio.excepcion.NoHayReservasPasadas;
 import com.tallerwebi.dominio.excepcion.ReservaNoEncontrada;
 import com.tallerwebi.servicio.ServicioReserva;
 import com.tallerwebi.servicio.ServicioUsuario;
@@ -51,20 +52,33 @@ public class ControladorUsuario {
         HttpSession session = request.getSession(false);
         String email = (String) session.getAttribute("email");
         Usuario usuario = null;
-        Integer cantidadReservas = 0;
+        Integer cantidadReservasPasadas = 0;
         try {
             usuario = servicioUsuario.buscar(email);
             if (usuario == null) {
                 throw new NoExisteUsuario();
             }
-            cantidadReservas = cantidadReservas = servicioReserva.buscarReservasDelUsuarioPasadas(usuario.getId()).size();
-            if (cantidadReservas == 0) {
-                throw new NoHayReservas();
+            cantidadReservasPasadas = servicioReserva.buscarReservasDelUsuarioPasadas(usuario.getId()).size();
+            if (cantidadReservasPasadas == 0) {
+                throw new NoHayReservasPasadas();
             }
             List<Reserva> reservas = servicioReserva.buscarReservasDelUsuario(usuario.getId());
+            if (reservas.isEmpty()) {
+                throw  new NoHayReservas();
+            }
             model.put(MODEL_NAME, reservas);
+        } catch (NoHayReservasPasadas e) {
+            try {
+                List<Reserva> reservas = servicioReserva.buscarReservasDelUsuario(usuario.getId());
+                if (reservas.isEmpty()) {
+                    throw  new NoHayReservas();
+                }
+                model.put(MODEL_NAME, reservas);
+            } catch (NoHayReservas error) {
+                model.put(ERROR, "No hay próximas reservas.");
+            }
         } catch (NoHayReservas e) {
-            model.put(ERROR, "No tienes próximas reservas.");
+            model.put(ERROR, "No hay próximas reservas.");
         } catch (NoExisteUsuario e) {
             model.put(ERROR, "Usuario no encontrado.");
         } catch (Exception e) {
@@ -73,7 +87,7 @@ public class ControladorUsuario {
         if (usuario != null) {
             model.put("username", usuario.getNombre());
         }
-        model.put("cantidadReservas", cantidadReservas);
+        model.put("cantidadReservas", cantidadReservasPasadas);
         addUserInfoToModel(model, request);
         return new ModelAndView("usuario_perfil", model);
     }
@@ -88,7 +102,7 @@ public class ControladorUsuario {
             List<Reserva> reservasPasadas = servicioReserva.buscarReservasDelUsuarioPasadas(usuario.getId());
             model.put(MODEL_NAME, reservasPasadas);
             model.put("user", usuario);
-        } catch (NoHayReservas e) {
+        } catch (NoHayReservasPasadas e) {
             model.put(ERROR, "Todavía no has asistido a ninguna reserva.");
         } catch (NoExisteUsuario e) {
             model.put(ERROR, "Usuario no encontrado.");

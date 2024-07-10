@@ -7,13 +7,10 @@ import java.util.Locale;
 
 import javax.transaction.Transactional;
 
+import com.tallerwebi.dominio.excepcion.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tallerwebi.dominio.excepcion.EspacioNoDisponible;
-import com.tallerwebi.dominio.excepcion.NoExisteUsuario;
-import com.tallerwebi.dominio.excepcion.NoHayReservas;
-import com.tallerwebi.dominio.excepcion.ReservaNoEncontrada;
 import com.tallerwebi.servicio.ServicioReserva;
 
 @Service("servicioReserva")
@@ -67,14 +64,14 @@ public class ServicioReservaImpl implements ServicioReserva {
 	}
 
 	@Override
-	public List<Reserva> buscarReservasDelUsuarioPasadas(Long idUsuario) throws NoHayReservas {
+	public List<Reserva> buscarReservasDelUsuarioPasadas(Long idUsuario) throws NoHayReservasPasadas {
 		List<Reserva> reservas;
 		try {
 			reservas = repositorioReserva.buscarReservasDelUsuarioPasadas(idUsuario);
 			if (reservas.isEmpty()) {
-				throw new NoHayReservas();
+				throw new NoHayReservasPasadas();
 			}
-		} catch (NoHayReservas e) {
+		} catch (NoHayReservasPasadas e) {
 			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException("Error al buscar reservas del usuario", e);
@@ -141,6 +138,7 @@ public class ServicioReservaImpl implements ServicioReserva {
 
 		repositorioReserva.guardar(reserva);
 		restauranteEncontrado.setEspacioDisponible(restauranteEncontrado.getCapacidadMaxima() - reserva.getCantidadPersonas());
+
 		repositorioRestaurante.actualizar(restauranteEncontrado);
 		this.sendMail(nombre_form, restauranteEncontrado.getNombre(), cant_personas, fecha_form, email_form);
 		return reserva;

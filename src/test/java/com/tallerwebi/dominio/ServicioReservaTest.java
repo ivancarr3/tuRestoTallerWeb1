@@ -258,7 +258,7 @@ public class ServicioReservaTest {
     }
 
     @Test
-    public void queBuscarReservasDelUsuarioPasadasDevuelvaReservasCorrectamente() throws NoHayReservas {
+    public void queBuscarReservasDelUsuarioPasadasDevuelvaReservasCorrectamente() throws NoHayReservasPasadas {
         when(repositorioReserva.buscarReservasDelUsuarioPasadas(EXISTING_ID)).thenReturn(reservasMock);
 
         List<Reserva> reservas = servicioReserva.buscarReservasDelUsuarioPasadas(EXISTING_ID);
@@ -270,7 +270,7 @@ public class ServicioReservaTest {
     public void queBuscarReservasDelUsuarioPasadasLanceNoHayReservasCuandoNoHayReservas() {
         when(repositorioReserva.buscarReservasDelUsuarioPasadas(EXISTING_ID)).thenReturn(new ArrayList<>());
 
-        assertThrows(NoHayReservas.class, () -> servicioReserva.buscarReservasDelUsuarioPasadas(EXISTING_ID));
+        assertThrows(NoHayReservasPasadas.class, () -> servicioReserva.buscarReservasDelUsuarioPasadas(EXISTING_ID));
     }
 
     @Test

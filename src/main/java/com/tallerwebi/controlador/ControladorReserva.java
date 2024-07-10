@@ -61,6 +61,7 @@ public class ControladorReserva {
 
 			Restaurante restauranteEncontrado = servicioRestaurante.consultar(datosReserva.getIdRestaurante());
 			Usuario usuario = obtenerIdUsuarioAutenticado(request);
+
 			Reserva reserva = servicioReserva.crearReserva(restauranteEncontrado, datosReserva.getNombreForm(),
 					datosReserva.getEmailForm(), datosReserva.getNumForm(), datosReserva.getDniForm(),
 					datosReserva.getCantPersonas(), datosReserva.getFechaForm(), usuario);
