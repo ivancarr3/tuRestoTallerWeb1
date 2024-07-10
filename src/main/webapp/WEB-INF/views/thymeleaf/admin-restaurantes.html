@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Administrador de Restaurantes</title>
+    <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <script>
+        function filtrarRestaurantes(idInput, idLista) {
+            var input, filter, ul, li, a, i, txtValue;
+            input = document.getElementById(idInput);
+            filter = input.value.toUpperCase();
+            ul = document.getElementById(idLista);
+            li = ul.getElementsByClassName("list-group-item");
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("h5")[0];
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container mt-5">
+    <!-- Mensaje de Error -->
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <strong>Error:</strong> <span th:text="${error}"></span>
+    </div>
+
+    <h2 class="mb-4">Administración de Restaurantes</h2>
+
+    <!-- Restaurantes Deshabilitados -->
+    <div class="mb-5">
+        <h3>Restaurantes Deshabilitados</h3>
+        <input
+                class="form-control mb-3"
+                id="buscarDeshabilitados"
+                type="text"
+                placeholder="Buscar en deshabilitados..."
+                onkeyup="filtrarRestaurantes('buscarDeshabilitados', 'listaDeshabilitados')"
+        />
+        <div class="list-group" id="listaDeshabilitados">
+            <div
+                    th:each="restaurante : ${restaurantesDeshabilitados}"
+                    class="list-group-item"
+            >
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5 th:text="${restaurante.nombre}"></h5>
+                        <p th:text="${restaurante.direccion}"></p>
+                        <p>
+                            <strong>Estrellas:</strong>
+                            <span th:text="${restaurante.estrellas}"></span>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <form
+                                th:action="@{/restaurantes/habilitar}"
+                                method="post"
+                                class="d-inline"
+                        >
+                            <input type="hidden" th:value="${restaurante.id}" name="id" />
+                            <button type="submit" class="btn btn-success">Aceptar</button>
+                        </form>
+                        <form
+                                th:action="@{/restaurantes/eliminar}"
+                                method="post"
+                                class="d-inline"
+                        >
+                            <input type="hidden" th:value="${restaurante.id}" name="id" />
+                            <button type="submit" class="btn btn-danger">Rechazar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Restaurantes Habilitados -->
+    <div>
+        <h3>Restaurantes Habilitados</h3>
+        <input
+                class="form-control mb-3"
+                id="buscarHabilitados"
+                type="text"
+                placeholder="Buscar en habilitados..."
+                onkeyup="filtrarRestaurantes('buscarHabilitados', 'listaHabilitados')"
+        />
+        <div class="list-group" id="listaHabilitados">
+            <div
+                    th:each="restaurante : ${restaurantesHabilitados}"
+                    class="list-group-item"
+            >
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5 th:text="${restaurante.nombre}"></h5>
+                        <p th:text="${restaurante.direccion}"></p>
+                        <p>
+                            <strong>Estrellas:</strong>
+                            <span th:text="${restaurante.estrellas}"></span>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <form
+                                th:action="@{/restaurantes/deshabilitar}"
+                                method="post"
+                                class="d-inline"
+                        >
+                            <input type="hidden" th:value="${restaurante.id}" name="id" />
+                            <button type="submit" class="btn btn-warning">
+                                Deshabilitar
+                            </button>
+                        </form>
+                        <form
+                                th:action="@{/restaurantes/eliminar}"
+                                method="post"
+                                class="d-inline"
+                        >
+                            <input type="hidden" th:value="${restaurante.id}" name="id" />
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

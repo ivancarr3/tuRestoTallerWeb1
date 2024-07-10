@@ -55,7 +55,6 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
         return query.getResultList();
     }
 
-    
     @Override
     public List<Restaurante> buscarPorEstrellas(Double estrellas) {
 
@@ -68,7 +67,7 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
     @Override
     public List<Restaurante> ordenarPorEstrellas(String tipoDeOrden) {
 
-        String hql = "FROM Restaurante ORDER BY estrellas "+ tipoDeOrden;
+        String hql = "FROM Restaurante ORDER BY estrellas " + tipoDeOrden;
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         return query.getResultList();
     }
@@ -78,7 +77,7 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
 
         String hql = "FROM Restaurante WHERE LOWER(direccion) LIKE LOWER(:direccion)";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("direccion", "%"+direccion.toLowerCase()+"%");
+        query.setParameter("direccion", "%" + direccion.toLowerCase() + "%");
 
         return query.getResultList();
     }
@@ -97,7 +96,7 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
     public List<Restaurante> buscarPorNombre(String nombre) {
         String hql = "FROM Restaurante WHERE LOWER(nombre) LIKE LOWER(:nombre)";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("nombre", "%"+nombre.toLowerCase()+"%");
+        query.setParameter("nombre", "%" + nombre.toLowerCase() + "%");
         return query.getResultList();
     }
 
@@ -109,5 +108,44 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
     @Override
     public void eliminar(Restaurante restaurante) {
         this.sessionFactory.getCurrentSession().delete(restaurante);
+    }
+
+    @Override
+    public List<Restaurante> obtenerRestaurantesDeshabilitados() {
+        String hql = "FROM Restaurante WHERE habilitado = false";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Restaurante> obtenerRestaurantesHabilitados() {
+        String hql = "FROM Restaurante WHERE habilitado = true";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        return query.getResultList();
+    }
+
+    @Override
+    public void habilitarRestaurante(Long id) {
+
+        String hql = "UPDATE Restaurante SET habilitado = true WHERE id = :id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+
+    @Override
+    public void deshabilitarRestaurante(Long id) {
+        String hql = "UPDATE Restaurante SET habilitado = false WHERE id = :id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+
+    @Override
+    public void eliminarRestaurantePorId(Long id) {
+        Restaurante restaurante = sessionFactory.getCurrentSession().load(Restaurante.class, id);
+        if (restaurante != null) {
+            sessionFactory.getCurrentSession().delete(restaurante);
+        }
     }
 }
