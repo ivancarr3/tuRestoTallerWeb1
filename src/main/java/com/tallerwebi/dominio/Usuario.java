@@ -59,8 +59,8 @@ public class Usuario {
         this.rol = rol;
         this.activo = false;
         this.confirmationToken = "";
-        this.nombre = "mateo";
-        this.apellido = "fortuna";
+        this.nombre = nombre;
+        this.apellido = apellido;
         this.fecha_nac = new Date();
     }
 

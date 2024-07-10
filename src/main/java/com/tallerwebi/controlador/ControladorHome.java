@@ -1,6 +1,11 @@
 package com.tallerwebi.controlador;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -34,7 +39,6 @@ public class ControladorHome {
 	private static final String VIEW_NAME = "home";
 
 	@Autowired
-
 	public ControladorHome(ServicioRestaurante servicioRestaurante, ServicioPlato servicioPlato,
 			ServicioGeocoding servicioGeocoding) {
 		this.servicioRestaurante = servicioRestaurante;
@@ -67,6 +71,16 @@ public class ControladorHome {
 		ModelMap model = new ModelMap();
 		try {
 			List<Restaurante> restaurantes = servicioRestaurante.consultarRestaurantePorNombre(busqueda);
+			Random rand = new Random();
+			DecimalFormat df = new DecimalFormat("#.#");
+			df.setRoundingMode(RoundingMode.HALF_UP);
+			df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
+
+			for (Restaurante restaurante : restaurantes) {
+				Double distancia = 0.1 + (5.0 - 0.1) * rand.nextDouble();
+				distancia = Double.parseDouble(df.format(distancia));
+				restaurante.setDistancia(distancia);
+			}
 			model.put(MODEL_NAME, restaurantes);
 		} catch (RestauranteNoEncontrado e) {
 			model.put("errorBusqueda", "No se encontraron restaurantes con el nombre " + busqueda);
@@ -89,6 +103,16 @@ public class ControladorHome {
 		ModelMap model = new ModelMap();
 		try {
 			List<Restaurante> restaurantes = servicioRestaurante.consultarRestaurantePorFiltros(estrella, tipoDeOrden);
+			Random rand = new Random();
+			DecimalFormat df = new DecimalFormat("#.#");
+			df.setRoundingMode(RoundingMode.HALF_UP);
+			df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
+
+			for (Restaurante restaurante : restaurantes) {
+				Double distancia = 0.1 + (5.0 - 0.1) * rand.nextDouble();
+				distancia = Double.parseDouble(df.format(distancia));
+				restaurante.setDistancia(distancia);
+			}
 			model.put(MODEL_NAME, restaurantes);
 
 		} catch (RestauranteNoEncontrado e) {
@@ -108,6 +132,16 @@ public class ControladorHome {
 		ModelMap model = new ModelMap();
 		try {
 			List<Restaurante> restaurantes = servicioRestaurante.consultarRestaurantePorEspacio(capacidad);
+			Random rand = new Random();
+			DecimalFormat df = new DecimalFormat("#.#");
+			df.setRoundingMode(RoundingMode.HALF_UP);
+			df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
+
+			for (Restaurante restaurante : restaurantes) {
+				Double distancia = 0.1 + (5.0 - 0.1) * rand.nextDouble();
+				distancia = Double.parseDouble(df.format(distancia));
+				restaurante.setDistancia(distancia);
+			}
 			model.put(MODEL_NAME, restaurantes);
 
 		} catch (NoHayRestaurantes e) {
@@ -127,6 +161,16 @@ public class ControladorHome {
 		ModelMap model = new ModelMap();
 		try {
 			List<Restaurante> restaurantes = servicioRestaurante.filtrarPorDireccion(direccion, distanciaMaxima);
+			Random rand = new Random();
+			DecimalFormat df = new DecimalFormat("#.#");
+			df.setRoundingMode(RoundingMode.HALF_UP);
+			df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
+
+			for (Restaurante restaurante : restaurantes) {
+				Double distancia = 0.1 + (5.0 - 0.1) * rand.nextDouble();
+				distancia = Double.parseDouble(df.format(distancia));
+				restaurante.setDistancia(distancia);
+			}
 			model.put(MODEL_NAME, restaurantes);
 		} catch (NoHayRestaurantes e) {
 			model.put(ERROR_FILTRO, e.getMessage() + " en esa dirección");
@@ -150,6 +194,18 @@ public class ControladorHome {
 			if (restaurantes == null || restaurantes.isEmpty()) {
 				throw new NoHayRestaurantes();
 			}
+
+			Random rand = new Random();
+			DecimalFormat df = new DecimalFormat("#.#");
+			df.setRoundingMode(RoundingMode.HALF_UP);
+			df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
+
+			for (Restaurante restaurante : restaurantes) {
+				Double distancia = 0.1 + (5.0 - 0.1) * rand.nextDouble();
+				distancia = Double.parseDouble(df.format(distancia));
+				restaurante.setDistancia(distancia);
+			}
+
 			model.put(MODEL_NAME, restaurantes);
 		} catch (NoHayRestaurantes e) {
 			model.put(ERROR_NAME, "No hay restaurantes disponibles.");

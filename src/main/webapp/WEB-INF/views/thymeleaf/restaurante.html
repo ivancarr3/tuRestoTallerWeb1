@@ -23,6 +23,10 @@
             height: 200px;
             object-fit: cover;
         }
+
+        .capitalize-first-letter::first-letter {
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
@@ -57,14 +61,20 @@
         <div class="card mb-3" style="width: 100%;">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img th:src="@{/img/restaurant/restaurant.jpg}" class="img-fluid rounded-start" alt="prueba" title="prueba">
+                    <img th:src="@{/img/restaurant/__${restaurante.imagen}__}" class="img-fluid rounded-start"
+                         th:alt="${restaurante.nombre}" th:title="${restaurante.nombre}">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${restaurante.nombre}"></h5>
                         <p class="card-text" th:text="${restaurante.direccion}"></p>
-                        <p class="card-text"><small class="text-body-secondary" th:text="${restaurante.estrellas}"></small> <i class="fas fa-star" style="color: #ffc107"></i></p>
-                        <p class="card-text"><small th:text="'Hay ' + ${restaurante.espacioDisponible} + ' espacios disponibles'"></small> <i class="fas fa-user"></i></p>
+                        <p class="card-text"><small class="text-body-secondary"
+                                                    th:text="${restaurante.estrellas}"></small> <i class="fas fa-star"
+                                                                                                   style="color: #ffc107"></i>
+                        </p>
+                        <p class="card-text"><small
+                                th:text="'Hay ' + ${restaurante.espacioDisponible} + ' espacios disponibles'"></small>
+                            <i class="fas fa-user"></i></p>
                     </div>
                 </div>
             </div>
@@ -222,7 +232,7 @@
                     </li>
                 </ul>
             </div>
-            <input id="precioPlato" type="hidden" name="precioPlato" value="" />
+            <input id="precioPlato" type="hidden" name="precioPlato" value=""/>
             <input
                     id="idRestaurante"
                     type="hidden"
@@ -252,8 +262,8 @@
                                  th:if="${iterStat.index &lt; 4}"
                                  class="col-sm-6 col-md-4 col-lg-3">
                                 <div class="card h-100">
-                                    <img th:src="@{/img/platos/__${plato.imagen}__}" class="card-img-top" alt="Plato"
-                                         title="Plato"/>
+                                    <img th:src="@{/img/platos/__${plato.imagen}__}" class="card-img-top"
+                                         th:alt="${plato.nombre}" th:title="${plato.nombre}"/>
                                     <div class="card-body d-flex flex-column">
                                         <h5 class="card-title" th:text="${plato.nombre}"></h5>
                                         <p class="card-text flex-grow-1" th:text="${plato.descripcion}"></p>
@@ -269,11 +279,12 @@
             </div>
             <h2 class="mb-4">Platos por Categoría</h2>
             <div th:each="entry : ${platosPorCategoria}">
-                <h3 class="mb-4" th:text="${entry.key.descripcion}"></h3>
+                <h3 class="mb-4 capitalize-first-letter" th:text="${entry.key.descripcion}"></h3>
                 <div class="row">
                     <div th:each="plato, iterStat : ${entry.value}" class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                         <div class="card h-100">
-                            <img th:src="@{/img/platos/__${plato.imagen}__}" alt="Plato" title="Plato"
+                            <img th:src="@{/img/platos/__${plato.imagen}__}" th:alt="${plato.nombre}"
+                                 th:title="${plato.nombre}"
                                  class="card-img-top"/>
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title" th:text="${plato.nombre}"></h5>
@@ -305,6 +316,7 @@
         document.getElementById("precioPlato").value = precio;
         document.getElementById("form_plato").submit();
     }
+
 </script>
 </body>
 </html>
