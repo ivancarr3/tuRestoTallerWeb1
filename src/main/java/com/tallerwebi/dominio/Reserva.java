@@ -1,8 +1,15 @@
 package com.tallerwebi.dominio;
 
-import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Reserva {
@@ -36,11 +43,14 @@ public class Reserva {
 
     @Column(nullable = false)
     private Date fecha;
+    
+    @Column(nullable = true)
+    private String link;
 
     public Reserva() {}
 
     public Reserva(Long id, Restaurante restaurante, String nombre, String email, Integer numeroCelular,
-                   Integer dni, Integer cantidadPersonas, Date fecha, Usuario usuario) {
+                   Integer dni, Integer cantidadPersonas, Date fecha, Usuario usuario, String link) {
         this.id = id;
         this.restaurante = restaurante;
         this.nombre = nombre;
@@ -50,6 +60,7 @@ public class Reserva {
         this.cantidadPersonas = cantidadPersonas;
         this.fecha = fecha;
         this.usuario = usuario;
+        this.link = link;
     }
 
     public Long getId() { return id; }
@@ -70,6 +81,9 @@ public class Reserva {
     public void setNumeroCelular(Integer numeroCelular) { this.numeroCelular = numeroCelular; }
     public Integer getDni() { return dni; }
     public void setDni(Integer dni) { this.dni = dni; }
+    public String getLink() {return link;}
+    public void setLink(String link) { this.link = link;}
+    
 
     public String getFechaFormateada() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");

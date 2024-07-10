@@ -73,7 +73,7 @@ public class ControladorReservaTest {
 		when(request.getSession(false)).thenReturn(session);
 
 
-		Reserva reserva = new Reserva(null, restaurante, "nombre", "test@test.com", 1, 1, 1, datosReserva.getFechaForm(), new Usuario());
+		Reserva reserva = new Reserva(null, restaurante, "nombre", "test@test.com", 1, 1, 1, datosReserva.getFechaForm(), new Usuario(), null);
 		when(servicioReservaMock.crearReserva(restaurante, datosReserva.getNombreForm(), datosReserva.getEmailForm(), datosReserva.getNumForm(), datosReserva.getDniForm(), datosReserva.getCantPersonas(), datosReserva.getFechaForm(), this.usuarioInit))
 				.thenReturn(reserva);
 

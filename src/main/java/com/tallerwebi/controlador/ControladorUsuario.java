@@ -57,10 +57,7 @@ public class ControladorUsuario {
             if (usuario == null) {
                 throw new NoExisteUsuario();
             }
-            cantidadReservas = cantidadReservas = servicioReserva.buscarReservasDelUsuarioPasadas(usuario.getId()).size();
-            if (cantidadReservas == 0) {
-                throw new NoHayReservas();
-            }
+            cantidadReservas = servicioReserva.buscarReservasDelUsuarioPasadas(usuario.getId()).size();
             List<Reserva> reservas = servicioReserva.buscarReservasDelUsuario(usuario.getId());
             model.put(MODEL_NAME, reservas);
         } catch (NoHayReservas e) {

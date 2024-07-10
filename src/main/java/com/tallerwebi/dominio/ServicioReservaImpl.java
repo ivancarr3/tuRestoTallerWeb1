@@ -71,11 +71,6 @@ public class ServicioReservaImpl implements ServicioReserva {
 		List<Reserva> reservas;
 		try {
 			reservas = repositorioReserva.buscarReservasDelUsuarioPasadas(idUsuario);
-			if (reservas.isEmpty()) {
-				throw new NoHayReservas();
-			}
-		} catch (NoHayReservas e) {
-			throw e;
 		} catch (Exception e) {
 			throw new RuntimeException("Error al buscar reservas del usuario", e);
 		}
@@ -113,10 +108,6 @@ public class ServicioReservaImpl implements ServicioReserva {
 
 	@Override
 	public void actualizar(Reserva reserva) throws ReservaNoEncontrada {
-		Reserva reservaNoEncontrada = repositorioReserva.buscarReserva(reserva.getId());
-		if (reservaNoEncontrada == null) {
-			throw new ReservaNoEncontrada();
-		}
 		repositorioReserva.actualizar(reserva);
 	}
 
@@ -133,7 +124,7 @@ public class ServicioReservaImpl implements ServicioReserva {
 		}
 
 		Reserva reserva = new Reserva(null, restauranteEncontrado, nombre_form, email_form, num_form, dni_form,
-				cant_personas, fecha_form, usuario);
+				cant_personas, fecha_form, usuario, null);
 
 		if (!verificarEspacioDisponible(reserva)) {
 			throw new EspacioNoDisponible();
