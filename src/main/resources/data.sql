@@ -136,7 +136,7 @@ INSERT INTO plato (nombre, precio, descripcion, imagen, id_restaurante, id_categ
     ('Pizza Napolitana', 13000, 'Pizza con tomate, ajo, orégano y mozzarella', 'pizza.jpeg', @idResto6, @idCategoria9, true),
     ('Vacío a la Parrilla', 23000, 'Vacío de res a la parrilla con chimichurri', 'asado.jpg', @idResto6, @idCategoria10, true);
 
-INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha, idUsuario) VALUES (@idResto1, "mateo", "ivancarr03@gmail.com", 1234, 4321, 2, "2024-09-10", @idUsuario1);
+/*INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha, idUsuario) VALUES (@idResto1, "mateo", "ivancarr03@gmail.com", 1234, 4321, 2, "2024-09-10", @idUsuario1);
 INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha, idUsuario) VALUES (@idResto2, "mateo", "mateo.fortu@gmail.com", 1234, 4321, 2, "2024-06-10", @idUsuario1);
 INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha, idUsuario) VALUES (@idResto3, "mateo", "ivancarr03@gmail.com", 1234, 4321, 2, "2024-05-10", @idUsuario1);
-INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha, idUsuario) VALUES (@idResto1, "gene", "mateo.fortu@gmail.com", 1234, 4321, 2, "2024-06-11", @idUsuario2);
+INSERT INTO reserva (idRestaurante, nombre, email, numeroCelular, dni, cantidadPersonas, fecha, idUsuario) VALUES (@idResto1, "gene", "mateo.fortu@gmail.com", 1234, 4321, 2, "2024-06-11", @idUsuario2);*/
