@@ -2,6 +2,7 @@ package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.config.HibernateTestConfig;
 import com.tallerwebi.dominio.config.SpringWebTestConfig;
+import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,6 +22,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration(classes = {SpringWebTestConfig.class, HibernateTestConfig.class})
 @Transactional
 public class RepositorioCategoriaTest {
+
+    @Autowired
+    private SessionFactory sessionFactory;
 
     @Autowired
     private RepositorioCategoria repositorioCategoria;
@@ -40,6 +45,37 @@ public class RepositorioCategoriaTest {
         List<Categoria> result = repositorioCategoria.get();
         assertNotNull(result);
         assertEquals(3, result.size());
+    }
+
+    @Test
+    public void queBusqueCategoriasPorListDeIds() {
+        List<Long> ids = List.of(
+                repositorioCategoria.get().get(0).getId(),
+                repositorioCategoria.get().get(1).getId()
+        );
+
+        List<Categoria> result = repositorioCategoria.buscarCategoriasPorListDeIds(ids);
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertTrue(result.stream().anyMatch(c -> c.getDescripcion().equals("Ensaladas")));
+        assertTrue(result.stream().anyMatch(c -> c.getDescripcion().equals("Hamburguesas")));
+    }
+
+    @Test
+    public void queDevuelvaListaVaciaSiIdsEsNull() {
+        List<Categoria> result = repositorioCategoria.buscarCategoriasPorListDeIds(null);
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void queDevuelvaListaVaciaSiIdsEstaVacio() {
+        List<Categoria> result = repositorioCategoria.buscarCategoriasPorListDeIds(new ArrayList<>());
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
     }
 
     @Test

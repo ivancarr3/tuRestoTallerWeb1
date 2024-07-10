@@ -159,5 +159,4 @@ public class RepositorioRestauranteTest {
         assertEquals(4.5, restaurantesDesc.get(0).getEstrellas());
         assertEquals(4.0, restaurantesDesc.get(1).getEstrellas());
     }
-
 }
