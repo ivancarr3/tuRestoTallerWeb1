@@ -24,7 +24,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
     @Override
     public Usuario buscarUsuario(String email, String password) {
         try {
-            String hql = "FROM Usuario WHERE email = :email AND password = :password";
+            String hql = "FROM Usuario u LEFT JOIN FETCH u.categorias WHERE u.email = :email AND u.password = :password";
             Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
             query.setParameter("email", email);
             query.setParameter("password", password);
@@ -33,6 +33,19 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
             return null;
         }
     }
+
+    @Override
+    public Usuario buscarUsuarioPorEmail(String email) {
+        try {
+            String hql = "FROM Usuario u LEFT JOIN FETCH u.categorias WHERE u.email = :email";
+            Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+            query.setParameter("email", email);
+            return (Usuario) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
 
     @Override
     public void guardar(Usuario usuario) {

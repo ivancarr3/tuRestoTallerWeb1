@@ -10,6 +10,7 @@
 .contPlato {
   flex-basis: 200px;
   height: 150px;
+  width: 400px;
   overflow: hidden;
   border-radius: 10px;
   position: relative;

@@ -85,38 +85,20 @@
     <h1 class="mb-4" th:text="${restauranteNombre}"></h1>
     <h2>Crear una promoción</h2>
     <form
-            th:action="@{/perfilRestaurante/{id}/crearPromocion(id=${idRestaurante})}"
+            th:action="@{/perfil_restaurante/{id}/enviarPromocion(id=${idRestaurante})}"
             method="post"
     >
         <div class="mb-3">
             <label for="subject" class="form-label">Asunto:</label>
-            <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    class="form-control"
-                    required
-            />
+            <input type="text" id="subject" name="subject" class="form-control" required />
         </div>
         <div class="mb-3">
             <label for="text" class="form-label">Texto de la promoción:</label>
-            <textarea
-                    id="text"
-                    name="text"
-                    class="form-control"
-                    rows="5"
-                    required
-            ></textarea>
+            <textarea id="text" name="text" class="form-control" rows="5" required></textarea>
         </div>
-        <input
-                type="hidden"
-                th:name="idRestaurante"
-                th:value="${restaurantId}"
-        />
+        <input type="hidden" th:name="idRestaurante" th:value="${restaurantId}" />
         <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-primary">
-                Enviar Promoción
-            </button>
+            <button type="submit" class="btn btn-primary">Enviar Promoción</button>
         </div>
     </form>
 </main>

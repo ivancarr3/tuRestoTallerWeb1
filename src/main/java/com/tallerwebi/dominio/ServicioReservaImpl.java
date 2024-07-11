@@ -36,7 +36,7 @@ public class ServicioReservaImpl implements ServicioReserva {
         Reserva reserva = repositorioReserva.findByPaymentId(paymentId.toString());
         if (reserva != null) {
             reserva.setEstadoPago(estadoPago);
-            repositorioReserva.guardar(reserva);
+            repositorioReserva.actualizar(reserva);
         }
     }
 

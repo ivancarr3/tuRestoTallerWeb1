@@ -53,8 +53,8 @@ public class VistaLoginE2E {
 
     @Test
     void deberiaNavegarAlHomeSiElUsuarioExiste() {
-        vistaLogin.escribirEMAIL("admin@admin.com");
-        vistaLogin.escribirClave("admin");
+        vistaLogin.escribirEMAIL("ivancarr03@gmail.com");
+        vistaLogin.escribirClave("123");
         vistaLogin.darClickEnIniciarSesion();
         String url = vistaLogin.obtenerURLActual();
         assertThat(url, containsStringIgnoringCase("/turesto/home"));

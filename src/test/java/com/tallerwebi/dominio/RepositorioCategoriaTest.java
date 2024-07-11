@@ -31,9 +31,9 @@ public class RepositorioCategoriaTest {
 
     @BeforeEach
     public void init() {
-        Categoria categoria1 = new Categoria(null, "Ensaladas");
-        Categoria categoria2 = new Categoria(null, "Hamburguesas");
-        Categoria categoria3 = new Categoria(null, "Milanesas");
+        Categoria categoria1 = new Categoria(null, "Ensaladas", "img");
+        Categoria categoria2 = new Categoria(null, "Hamburguesas", "img");
+        Categoria categoria3 = new Categoria(null, "Milanesas", "img");
 
         repositorioCategoria.guardar(categoria1);
         repositorioCategoria.guardar(categoria2);
@@ -88,7 +88,7 @@ public class RepositorioCategoriaTest {
 
     @Test
     public void queGuardeCategoriaCorrectamente() {
-        Categoria nuevaCategoria = new Categoria(null, "Sopas");
+        Categoria nuevaCategoria = new Categoria(null, "Sopas", "img");
         repositorioCategoria.guardar(nuevaCategoria);
         List<Categoria> result = repositorioCategoria.get();
         assertEquals(4, result.size());

@@ -57,14 +57,14 @@ public class VistaHomeE2E {
     void deberiaFiltrarPorEstrellas() {
         vistaWeb.page.navigate("http://localhost:8080/turesto/home");
 
-        vistaWeb.seleccionarOpcionDelSelect("select[name='filtrado']", "4.0");
+        vistaWeb.seleccionarOpcionDelSelect("select[name='filtrado']", "5.0");
 
         vistaWeb.darClickEnElElemento("body > main > div:nth-child(2) > div > form:nth-child(1) > div > button");
 
         List<Locator> estrellas = vistaWeb.obtenerElementos(".contRestaurant-estrellas");
         for (Locator estrella : estrellas) {
             double valorEstrella = Double.parseDouble(estrella.textContent());
-            assertThat("El valor de las estrellas debería ser al menos 4.0", valorEstrella, greaterThanOrEqualTo(4.0));
+            assertThat("El valor de las estrellas debería ser 5.0", valorEstrella, greaterThanOrEqualTo(5.0));
         }
     }
 

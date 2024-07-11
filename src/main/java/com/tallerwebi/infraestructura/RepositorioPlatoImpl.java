@@ -75,7 +75,7 @@ public class RepositorioPlatoImpl implements RepositorioPlato {
 
     @Override
     public List<Plato> getPlatosPorCategoria(String categoria) {
-        String hql = "FROM Plato p WHERE p.categoria.descripcion = :categoria ORDER BY p.precio DESC";
+        String hql = "FROM Plato p WHERE p.restaurante.habilitado = TRUE AND p.categoria.descripcion = :categoria ORDER BY p.precio DESC";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("categoria", categoria);
         query.setMaxResults(4);

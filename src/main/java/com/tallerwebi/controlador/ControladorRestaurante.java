@@ -73,6 +73,7 @@ public class ControladorRestaurante {
 
 			model.put("platosPorCategoria", platosPorCategoria);
 			model.put("platosRecomendados", platosRecomendados);
+			model.put("restauranteId", restaurante.getId());
 			model.put(DATOS_RESERVA, new DatosReserva());
 			model.put(MODEL_NAME_SINGULAR, restaurante);
 			addUserInfoToModel(model, request);
@@ -93,8 +94,8 @@ public class ControladorRestaurante {
 		return new ModelAndView("home", model);
 	}
 
-	@PostMapping(path = "/restaurante/filtrarPlato")
-	public ModelAndView filtrarPlato(@RequestParam("idRestaurante") Long idRestaurante,
+	@PostMapping(path = "/restaurante/{id}/filtrarPlato")
+	public ModelAndView filtrarPlato(@PathVariable("id") Long idRestaurante,
 			@RequestParam("precioPlato") String precioStr, HttpServletRequest request) {
 		ModelMap model = new ModelMap();
 		try {
@@ -127,64 +128,5 @@ public class ControladorRestaurante {
 		}
 		addUserInfoToModel(model, request);
 		return new ModelAndView(MODEL_NAME_SINGULAR, model);
-	}
-
-	@GetMapping(path = "/perfilRestaurante/{id}")
-	public ModelAndView cargarPerfilRestaurante(@PathVariable("id") Long id, HttpServletRequest request) {
-		ModelMap model = new ModelMap();
-		long ganancia = 0;
-		try {
-			Restaurante restaurante = servicioRestaurante.consultar(id);
-			List<Reserva> reservas = servicioReserva.buscarReservasDelRestaurante(restaurante.getId());
-			ganancia = reservas.size()*5000;
-			model.put(MODEL_NAME_RESERVAS, reservas);
-			model.put("username", restaurante.getId());
-			model.put("restaurantId", id);
-			model.put("restauranteNombre", restaurante.getNombre());
-		} catch (NoHayReservas e) {
-			model.put(ERROR_NAME, "Todavía no tenes ninguna reserva.");
-		} catch (Exception e) {
-			model.put(ERROR_NAME, "Error del servidor: " + e.getMessage());
-		}
-		model.put(MODEL_NAME_GANANCIAS, ganancia);
-		addUserInfoToModel(model, request);
-		return new ModelAndView("perfil_restaurante", model);
-	}
-
-	@GetMapping(path = "/perfilRestaurante/{id}/crearPromocion")
-	public ModelAndView cargarFormPromocion(@PathVariable("id") Long id,
-											HttpServletRequest request){
-		ModelMap model = new ModelMap();
-		try {
-			Restaurante restaurante = servicioRestaurante.consultar(id);
-			model.addAttribute("idRestaurante", id);
-			model.put("restaurantId", id);
-			model.put("restauranteNombre", restaurante.getNombre());
-		} catch (RestauranteNoEncontrado e) {
-			model.put(ERROR_NAME, "No existe el restaurante");
-		} catch (Exception e) {
-			model.put(ERROR_NAME, "Error del servidor: " + e.getMessage());
-		}
-        return new ModelAndView("crear_promocion", model);
-	}
-
-	@PostMapping(path = "/perfilRestaurante/{id}/crearPromocion")
-	public ModelAndView enviarPromocion(@PathVariable("id") Long id,
-										@RequestParam("subject") String subject,
-										@RequestParam("text") String text) {
-		ModelMap model = new ModelMap();
-		try {
-			List<String> emails = servicioReserva.obtenerEmailsUsuariosPorRestaurante(id);
-			for (String email : emails) {
-				servicioEmail.generarEmailPromocionPDF(email, subject, text);
-			}
-			model.addAttribute("message", "Promoción enviada con éxito");
-			model.put("restaurantId", id);
-		} catch (NoHayReservas e) {
-			model.addAttribute("error", "No hay reservas para este restaurante");
-		} catch (Exception e) {
-			model.addAttribute("error", "Error al enviar la promoción: " + e.getMessage());
-		}
-		return new ModelAndView("promocion_enviada", model);
 	}
 }

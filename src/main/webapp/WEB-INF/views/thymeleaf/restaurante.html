@@ -238,7 +238,7 @@
     <div class="container">
         <form
                 action="#"
-                th:action="@{/restaurante/filtrarPlato}"
+                th:action="@{/restaurante/{id}/filtrarPlato(id=${restauranteId})}"
                 id="form_plato"
                 th:method="POST"
                 method="POST"
