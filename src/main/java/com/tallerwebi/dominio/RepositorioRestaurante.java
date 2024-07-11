@@ -15,5 +15,10 @@ public interface RepositorioRestaurante {
     void guardar(Restaurante restaurante);
     void actualizar(Restaurante restaurante);
     void eliminar(Restaurante restaurante);
+    List<Restaurante> obtenerRestaurantesDeshabilitados();
+    List<Restaurante> obtenerRestaurantesHabilitados();
+    void habilitarRestaurante(Long id);
+    void deshabilitarRestaurante(Long id);
+    void eliminarRestaurantePorId(Long id);
 }
 
