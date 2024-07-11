@@ -33,6 +33,7 @@ public class ControladorUsuarioRestauranteTest {
     private ServicioRestaurante servicioRestauranteMock;
     private ServicioReserva servicioReservaMock;
     private ServicioCategoria servicioCategoriaMock;
+    private ServicioPlato servicioPlatoMock;
     private Email emailMock;
     private HttpServletRequest request;
     private MockMvc mockMvc;
@@ -42,10 +43,11 @@ public class ControladorUsuarioRestauranteTest {
         servicioRestauranteMock = mock(ServicioRestaurante.class);
         servicioReservaMock = mock(ServicioReserva.class);
         servicioCategoriaMock = mock(ServicioCategoria.class);
+        servicioPlatoMock = mock(ServicioPlato.class);
         emailMock = mock(Email.class);
         request = mock(HttpServletRequest.class);
 
-        this.controladorUsuarioRestaurante = new ControladorUsuarioRestaurante(servicioRestauranteMock, servicioReservaMock, servicioCategoriaMock, emailMock);
+        this.controladorUsuarioRestaurante = new ControladorUsuarioRestaurante(servicioRestauranteMock, servicioReservaMock, servicioCategoriaMock, servicioPlatoMock, emailMock);
         this.mockMvc = MockMvcBuilders.standaloneSetup(controladorUsuarioRestaurante).build();
     }
 

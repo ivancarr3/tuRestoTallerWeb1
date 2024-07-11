@@ -33,20 +33,20 @@ INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, 
     ('Mundo Milanesa', 3.0, 'Mármol 2498', 'restaurant1.jpg', 100, 100, -34.674521, -58.564940, TRUE, @idUsuario4);
 SET @idResto2 = LAST_INSERT_ID();
 
-INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud, usuario_id) VALUES
-    ('La Trattoria Bella Italia', 3.0, 'Almafuerte 2550', 'restaurant2.jpg', 100, 100, -34.672880, -58.566442, @idUsuario5);
+INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud, habilitado, usuario_id) VALUES
+    ('La Trattoria Bella Italia', 3.0, 'Almafuerte 2550', 'restaurant2.jpg', 100, 100, -34.672880, -58.566442, TRUE, @idUsuario5);
 SET @idResto3 = LAST_INSERT_ID();
 
-INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud, usuario_id) VALUES
-    ('La Parrilla de Don Juan', 4.0, 'Avenida Central 456', 'restaurant3.jpg', 100, 100, -34.610000, -58.400000, @idUsuario6);
+INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud,habilitado, usuario_id) VALUES
+    ('La Parrilla de Don Juan', 4.0, 'Avenida Central 456', 'restaurant3.jpg', 100, 100, -34.610000, -58.400000, TRUE, @idUsuario6);
 SET @idResto4 = LAST_INSERT_ID();
 
-INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud, usuario_id) VALUES
-    ('El Sabor del Mar', 2.0, 'Calle Principal 123', 'restaurant4.jpg', 100, 100, -34.599000, -58.430000, @idUsuario7);
+INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud, habilitado,usuario_id) VALUES
+    ('El Sabor del Mar', 2.0, 'Calle Principal 123', 'restaurant4.jpg', 100, 100, -34.599000, -58.430000, TRUE, @idUsuario7);
 SET @idResto5 = LAST_INSERT_ID();
 
-INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud, usuario_id) VALUES
-    ('Café Parisien', 4.0, 'Paseo de las Flores 15', 'restaurant5.jpg', 100, 100, -34.600000, -58.410000, @idUsuario8);
+INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud, habilitado, usuario_id) VALUES
+    ('Café Parisien', 4.0, 'Paseo de las Flores 15', 'restaurant5.jpg', 100, 100, -34.600000, -58.410000, TRUE, @idUsuario8);
 SET @idResto6 = LAST_INSERT_ID();
 
 INSERT INTO categoria (descripcion, imagen) VALUES ('ensaladas', 'ensalada.jpg');
