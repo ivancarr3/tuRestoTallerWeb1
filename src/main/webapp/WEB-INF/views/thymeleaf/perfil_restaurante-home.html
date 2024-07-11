@@ -67,9 +67,7 @@
                             class="dropdown-menu dropdown-menu-end"
                             aria-labelledby="navbarDropdownMenuLink"
                     >
-                        <a class="dropdown-item" th:href="@{/usuarioPerfil}"
-                        >Ver perfil</a
-                        >
+                        <p th:value="${emailUser}"></p>
                         <a class="dropdown-item" th:href="@{/logout}">Cerrar sesión</a>
                     </div>
                 </li>
@@ -82,51 +80,25 @@
 </header>
 <main>
     <div class="container">
-        <h1
-                class="my-3"
-                th:text="'Reservas del restaurante ' + ${restauranteNombre}"
-        ></h1>
+        <h1 class="my-3" th:text="'Reservas del restaurante ' + ${restauranteNombre}"></h1>
         <hr />
-        <h1
-                class="my-3"
-                th:text="'Lleva $' + ${ganancias} +' en ganancias con sus reservas!'"
-        ></h1>
+        <h1 class="my-3" th:text="'Lleva $' + ${ganancias} +' en ganancias con sus reservas!'"></h1>
         <hr />
         <h2 class="mt-3">Estas son tus reservas:</h2>
-        <div
-                class="mt-3 d-flex align-items-center justify-content-start flex-wrap"
-                style="gap: 3em"
-        >
-            <div
-                    th:each="reserva : ${reservas}"
-                    class="card"
-                    style="width: 18rem"
-            >
+        <div class="mt-3 d-flex align-items-center justify-content-start flex-wrap" style="gap: 3em">
+            <div th:each="reserva : ${reservas}" class="card" style="width: 18rem">
                 <div class="card-body">
                     <h2 style="font-size: 1.5em" th:text="${reserva.nombre}"></h2>
                     <p class="fw-light" th:text="'Fecha: ' + ${reserva.fecha}"></p>
-                    <p
-                            class="fw-light"
-                            th:text="'Telefono: ' + ${reserva.numeroCelular}"
-                    ></p>
+                    <p class="fw-light" th:text="'Teléfono: ' + ${reserva.numeroCelular}"></p>
                     <p class="fw-light" th:text="'Email: ' + ${reserva.email}"></p>
-                    <p
-                            class="fw-light"
-                            th:text="'Para ' + ${reserva.cantidadPersonas} + ' personas'"
-                    ></p>
+                    <p class="fw-light" th:text="'Para ' + ${reserva.cantidadPersonas} + ' personas'"></p>
                 </div>
             </div>
         </div>
-        <p
-                th:if="${error != null}"
-                class="alert alert-warning mt-3"
-                th:text="${error}"
-        ></p>
-        <a
-                class="btn btn-primary mt-3"
-                th:href="@{/perfilRestaurante/{id}/crearPromocion(id=${restaurantId})}"
-        >Crear promoción por mail</a
-        >
+        <p th:if="${error != null}" class="alert alert-warning mt-3" th:text="${error}"></p>
+        <p th:if="${mensajeReservas != null}" class="alert alert-info mt-3" th:text="${mensajeReservas}"></p>
+        <a class="btn btn-primary mt-3" th:href="@{/perfil_restaurante/{id}/crearPromocion(id=${restaurantId})}">Crear promoción por mail</a>
     </div>
 </main>
 <footer

@@ -20,5 +20,6 @@ public interface RepositorioRestaurante {
     void habilitarRestaurante(Long id);
     void deshabilitarRestaurante(Long id);
     void eliminarRestaurantePorId(Long id);
+    public Restaurante buscarPorUsuarioId(Long usuarioId);
 }
 

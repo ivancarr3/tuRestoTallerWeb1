@@ -43,13 +43,26 @@ public class RepositorioReservaTest {
 	private SessionFactory sessionFactory;
 
     private final Date fecha = new Date();
-    private final Restaurante restauranteInit = new Restaurante(null, "Restaurante Mock", 4.5, "Direccion Mock", "imagenMock.jpg", 50, -34.598940, -58.415550);
+    private Restaurante restauranteInit;
     private final Usuario usuarioInit = new Usuario(null, "test@test.com", "123", "USER", "mateo", "fortuna", this.fecha);
     private List<Reserva> reservas = new ArrayList<Reserva>();
 
 
 	@BeforeEach
 	public void init() {
+		Usuario usuario = new Usuario();
+		usuario.setNombre("Usuario Mock");
+		usuario.setEmail("usuario@mock.com");
+		usuario.setApellido("Mock Usuario");
+		usuario.setConfirmationToken("");
+		usuario.setFecha_nac(new Date(118, 10, 17));
+		usuario.setActivo(true);
+		usuario.setPassword("passwordMock");
+		usuario.setRol("ROLE_USER");
+		repositorioUsuario.guardar(usuario);
+
+		this.restauranteInit =  new Restaurante(null, "Restaurante Mock", 4.5, "Direccion Mock", "imagenMock.jpg", 50, -34.598940, -58.415550, true, usuario);
+
 		this.repositorioRestaurante.guardar(this.restauranteInit);
 		this.repositorioUsuario.guardar(this.usuarioInit);
 		this.reservas.add(crearYGuardarReserva("Mateo", 5));

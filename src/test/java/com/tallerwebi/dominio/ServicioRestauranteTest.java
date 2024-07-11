@@ -9,10 +9,7 @@ import com.tallerwebi.servicio.ServicioRestaurante;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -32,15 +29,19 @@ public class ServicioRestauranteTest {
     private static final int CAPACITY = 100;
     private static final double LATITUDE = -34.610000;
     private static final double LONGITUDE = -58.400000;
+    private static final boolean HABILITADO = true;
 
     private ServicioRestaurante servicioRestaurante;
     private RepositorioRestaurante repositorioRestaurante;
     private ServicioReserva servicioReserva;
     private List<Restaurante> restaurantesMock;
     private ServicioGeocoding servicioGeocoding;
+    private RepositorioUsuario repositorioUsuario;
 
     @BeforeEach
     public void init() {
+
+        repositorioUsuario = mock(RepositorioUsuario.class);
         repositorioRestaurante = mock(RepositorioRestaurante.class);
         servicioReserva = mock(ServicioReserva.class);
         servicioGeocoding = mock(ServicioGeocoding.class);
@@ -49,10 +50,21 @@ public class ServicioRestauranteTest {
     }
 
     private void initRestaurantesMock() {
+        Usuario usuario = new Usuario();
+        usuario.setNombre("Usuario Mock");
+        usuario.setEmail("usuario@mock.com");
+        usuario.setApellido("Mock Usuario");
+        usuario.setConfirmationToken("");
+        usuario.setFecha_nac(new Date(118, 10, 17));
+        usuario.setActivo(true);
+        usuario.setPassword("passwordMock");
+        usuario.setRol("ROLE_USER");
+        repositorioUsuario.guardar(usuario);
+
         restaurantesMock = new ArrayList<>();
-        restaurantesMock.add(new Restaurante(EXISTING_ID, EXISTING_NAME, EXISTING_RATING, EXISTING_ADDRESS, IMAGE, 2, LATITUDE, LONGITUDE));
-        restaurantesMock.add(new Restaurante(2L, "La Farola", 4.0, "Almafuerte 3344", IMAGE, CAPACITY, LATITUDE, LONGITUDE));
-        restaurantesMock.add(new Restaurante(3L, "Benjamin", 4.5, "Arieta 3344", IMAGE, CAPACITY, LATITUDE, LONGITUDE));
+        restaurantesMock.add(new Restaurante(EXISTING_ID, EXISTING_NAME, EXISTING_RATING, EXISTING_ADDRESS, IMAGE, 2, LATITUDE, LONGITUDE, HABILITADO, usuario));
+        restaurantesMock.add(new Restaurante(2L, "La Farola", 4.0, "Almafuerte 3344", IMAGE, CAPACITY, LATITUDE, LONGITUDE, HABILITADO, usuario));
+        restaurantesMock.add(new Restaurante(3L, "Benjamin", 4.5, "Arieta 3344", IMAGE, CAPACITY, LATITUDE, LONGITUDE, HABILITADO, usuario));
     }
 
     @Test
@@ -195,7 +207,7 @@ public class ServicioRestauranteTest {
     @Test
     public void testCrearRestaurante() throws RestauranteExistente {
         when(repositorioRestaurante.buscar(anyLong())).thenReturn(null);
-        Restaurante nuevoRestaurante = new Restaurante(EXISTING_ID, EXISTING_NAME, EXISTING_RATING, EXISTING_ADDRESS, IMAGE, CAPACITY, LATITUDE, LONGITUDE);
+        Restaurante nuevoRestaurante = new Restaurante(EXISTING_ID, EXISTING_NAME, EXISTING_RATING, EXISTING_ADDRESS, IMAGE, CAPACITY, LATITUDE, LONGITUDE, HABILITADO, new Usuario());
 
         servicioRestaurante.crearRestaurante(nuevoRestaurante);
 
@@ -204,10 +216,10 @@ public class ServicioRestauranteTest {
 
     @Test
     public void testLanzaExcepcionSiSeCreaRestauranteConMismoId() throws RestauranteExistente {
-        Restaurante restauranteExistente = new Restaurante(EXISTING_ID, EXISTING_NAME, EXISTING_RATING, EXISTING_ADDRESS, IMAGE, CAPACITY, LATITUDE, LONGITUDE);
+        Restaurante restauranteExistente = new Restaurante(EXISTING_ID, EXISTING_NAME, EXISTING_RATING, EXISTING_ADDRESS, IMAGE, CAPACITY, LATITUDE, LONGITUDE, HABILITADO, new Usuario());
         when(repositorioRestaurante.buscar(EXISTING_ID)).thenReturn(restauranteExistente);
 
-        Restaurante nuevoRestaurante = new Restaurante(EXISTING_ID, EXISTING_NAME, EXISTING_RATING, EXISTING_ADDRESS, IMAGE, CAPACITY, LATITUDE, LONGITUDE);
+        Restaurante nuevoRestaurante = new Restaurante(EXISTING_ID, EXISTING_NAME, EXISTING_RATING, EXISTING_ADDRESS, IMAGE, CAPACITY, LATITUDE, LONGITUDE, HABILITADO, new Usuario());
 
 
         assertThrows(RestauranteExistente.class, () -> servicioRestaurante.crearRestaurante(nuevoRestaurante));
@@ -228,7 +240,7 @@ public class ServicioRestauranteTest {
 
     @Test
     public void testLanzaExcepcionSiNoEncuentraRestauranteParaActualizar() {
-        Restaurante restaurante = new Restaurante(67L, EXISTING_NAME, EXISTING_RATING, EXISTING_ADDRESS, IMAGE, CAPACITY, LATITUDE, LONGITUDE);
+        Restaurante restaurante = new Restaurante(67L, EXISTING_NAME, EXISTING_RATING, EXISTING_ADDRESS, IMAGE, CAPACITY, LATITUDE, LONGITUDE, HABILITADO, new Usuario());
 
         assertThrows(RestauranteNoEncontrado.class, () -> servicioRestaurante.actualizarRestaurante(restaurante));
 

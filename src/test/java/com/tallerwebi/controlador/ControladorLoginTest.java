@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.tallerwebi.dominio.Categoria;
+import com.tallerwebi.dominio.excepcion.NoHayCategorias;
 import com.tallerwebi.servicio.ServicioCategoria;
 import com.tallerwebi.dominio.excepcion.NoExisteUsuario;
 
@@ -62,7 +63,7 @@ public class ControladorLoginTest {
 
 	@Test
 	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome() throws UsuarioNoActivado{
-		when(usuarioMock.getRol()).thenReturn("ADMIN");
+		when(usuarioMock.getRol()).thenReturn("USER");
 
 		when(requestMock.getSession()).thenReturn(sessionMock);
 		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioMock);
@@ -86,7 +87,7 @@ public class ControladorLoginTest {
 	}
 
 	@Test
-	public void registrameSiUsuarioNoExisteDeberiaCrearUsuarioYVolverAlLogin() throws UsuarioExistente {
+	public void registrameSiUsuarioNoExisteDeberiaCrearUsuarioYVolverAlLogin() throws UsuarioExistente, NoHayCategorias{
 		List<Long> categoriaIds = Collections.emptyList();
 
 		// ejecucion
@@ -98,7 +99,7 @@ public class ControladorLoginTest {
 	}
 
 	@Test
-	public void registrarmeSiUsuarioExisteDeberiaVolverAFormularioYMostrarError() throws UsuarioExistente {
+	public void registrarmeSiUsuarioExisteDeberiaVolverAFormularioYMostrarError() throws UsuarioExistente, NoHayCategorias {
 		// preparacion
 		doThrow(UsuarioExistente.class).when(servicioLoginMock).registrar(usuarioMock);
 		List<Long> categoriaIds = Collections.emptyList();
@@ -112,7 +113,7 @@ public class ControladorLoginTest {
 	}
 
 	@Test
-	public void errorEnRegistrarmeDeberiaVolverAFormularioYMostrarError() throws UsuarioExistente {
+	public void errorEnRegistrarmeDeberiaVolverAFormularioYMostrarError() throws UsuarioExistente, NoHayCategorias {
 		// preparacion
 		doThrow(RuntimeException.class).when(servicioLoginMock).registrar(usuarioMock);
 		List<Long> categoriaIds = Collections.emptyList();

@@ -15,14 +15,18 @@ public class Categoria {
     @Column(length = 100, nullable = false)
     private String descripcion;
 
+    @Column(length = 100, nullable = false)
+    private String imagen;
+
     @ManyToMany(mappedBy = "categorias")
     private List<Usuario> usuarios;
 
     public Categoria() {}
 
-    public Categoria(Long id, String descripcion) {
+    public Categoria(Long id, String descripcion, String imagen) {
         this.id = id;
         this.descripcion = descripcion;
+        this.imagen = imagen;
     }
 
     public Long getId() {
@@ -47,5 +51,13 @@ public class Categoria {
 
     public void setUsuarios(List<Usuario> usuarios) {
         this.usuarios = usuarios;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 }

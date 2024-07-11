@@ -44,6 +44,14 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
         return restaurante;
     }
 
+    public Restaurante consultarPorUsuarioId(Long usuarioId) throws RestauranteNoEncontrado {
+        Restaurante restaurante = repositorioRestaurante.buscarPorUsuarioId(usuarioId);
+        if (restaurante == null) {
+            throw new RestauranteNoEncontrado();
+        }
+        return restaurante;
+    }
+
     @Override
     public List<Restaurante> consultarRestaurantePorNombre(String nombre) throws RestauranteNoEncontrado {
         List<Restaurante> restaurantes = repositorioRestaurante.buscarPorNombre(nombre);

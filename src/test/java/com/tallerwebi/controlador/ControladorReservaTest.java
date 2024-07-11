@@ -1,5 +1,6 @@
 package com.tallerwebi.controlador;
 
+import static java.lang.Boolean.TRUE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 
@@ -70,7 +71,8 @@ public class ControladorReservaTest {
 	@Test
 	public void laReservaSeRealizaExitosamente()
 			throws EspacioNoDisponible, DatosInvalidosReserva, RestauranteNoEncontrado, NoExisteUsuario, ReservaNoEncontrada {
-		Restaurante restaurante = new Restaurante(1L, "restaurante", 2.2, "direccion", "imagen", 3, -34.610000, -58.400000);
+		Usuario user = new Usuario();
+		Restaurante restaurante = new Restaurante(1L, "restaurante", 2.2, "direccion", "imagen", 3, -34.610000, -58.400000, true, user);
 		DatosReserva datosReserva = new DatosReserva();
 		datosReserva.setIdRestaurante(1L);
 		datosReserva.setNombreForm("mateo");
@@ -143,7 +145,8 @@ public class ControladorReservaTest {
 
 	@Test
 	public void espacioNoDisponible() throws RestauranteNoEncontrado, EspacioNoDisponible, DatosInvalidosReserva, NoExisteUsuario, ReservaNoEncontrada {
-		Restaurante restaurante = new Restaurante(1L, "nombre", 2.2, "direccion", "imagen", 3, -34.610000, -58.400000);
+		Usuario user = new Usuario();
+		Restaurante restaurante = new Restaurante(1L, "nombre", 2.2, "direccion", "imagen", 3, -34.610000, -58.400000, true, user);
 
 		DatosReserva datosReserva = new DatosReserva();
 		datosReserva.setIdRestaurante(1L);

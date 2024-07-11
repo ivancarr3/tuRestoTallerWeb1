@@ -1,8 +1,12 @@
 package com.tallerwebi.controlador;
 
+
+import java.util.ArrayList;
+
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -10,19 +14,16 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.tallerwebi.dominio.Plato;
-import com.tallerwebi.dominio.excepcion.NoHayPlatos;
+import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.excepcion.*;
+import com.tallerwebi.servicio.ServicioCategoria;
+import com.tallerwebi.servicio.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.tallerwebi.dominio.Restaurante;
-import com.tallerwebi.dominio.ServicioGeocoding;
-import com.tallerwebi.dominio.excepcion.NoExisteDireccion;
-import com.tallerwebi.dominio.excepcion.NoHayRestaurantes;
-import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 import com.tallerwebi.servicio.ServicioPlato;
 import com.tallerwebi.servicio.ServicioRestaurante;
 
@@ -32,6 +33,8 @@ public class ControladorHome {
 	private final ServicioRestaurante servicioRestaurante;
 	private final ServicioPlato servicioPlato;
 	private final ServicioGeocoding servicioGeocoding;
+	private final ServicioUsuario servicioUsuario;
+	private final ServicioCategoria servicioCategoria;
 	private static final String MODEL_NAME = "restaurantes";
 	private static final String ERROR_NAME = "error";
 	private static final String ERROR_FILTRO = "errorFiltro";
@@ -40,18 +43,26 @@ public class ControladorHome {
 
 	@Autowired
 	public ControladorHome(ServicioRestaurante servicioRestaurante, ServicioPlato servicioPlato,
-			ServicioGeocoding servicioGeocoding) {
+			ServicioGeocoding servicioGeocoding, ServicioUsuario servicioUsuario, ServicioCategoria servicioCategoria) {
 		this.servicioRestaurante = servicioRestaurante;
 		this.servicioPlato = servicioPlato;
 		this.servicioGeocoding = servicioGeocoding;
+		this.servicioUsuario = servicioUsuario;
+		this.servicioCategoria = servicioCategoria;
 	}
 
 	private void addUserInfoToModel(ModelMap model, HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
 		if (session != null && session.getAttribute("ROL") != null) {
 			String rolUsuario = (String) session.getAttribute("ROL");
+			List<Categoria> categoriasPref = (List<Categoria>) session.getAttribute("categoriasPref");
 			model.put("usuarioLogueado", true);
 			model.put("rolUsuario", rolUsuario);
+			model.put("categoriasPref", categoriasPref);
+
+			List<Categoria> categoriasDisponibles = servicioUsuario.obtenerCategoriasDisponibles(categoriasPref);
+			model.put("categoriasDisponibles", categoriasDisponibles);
+
 		} else {
 			model.put("usuarioLogueado", false);
 			model.put("rolUsuario", null);
@@ -207,10 +218,24 @@ public class ControladorHome {
 			}
 
 			model.put(MODEL_NAME, restaurantes);
+
+			HttpSession session = request.getSession(false);
+			if (session != null && session.getAttribute("email") != null) {
+				String email = (String) session.getAttribute("email");
+				Usuario usuario = servicioUsuario.buscarUsuarioPorEmail(email);
+				List<Categoria> categoriasPref = usuario.getCategorias();
+				List<Categoria> todasCategorias = servicioCategoria.get();
+				todasCategorias.removeAll(categoriasPref);
+				model.put("categoriasNoPreferidas", todasCategorias);
+			}
 		} catch (NoHayRestaurantes e) {
 			model.put(ERROR_NAME, "No hay restaurantes disponibles.");
-		}
-		addUserInfoToModel(model, request);
+		} catch (NoExisteUsuario e) {
+            throw new RuntimeException(e);
+        } catch (NoHayCategorias e) {
+            throw new RuntimeException(e);
+        }
+        addUserInfoToModel(model, request);
 		return new ModelAndView(VIEW_NAME, model);
 	}
 
@@ -226,4 +251,39 @@ public class ControladorHome {
 		addUserInfoToModel(model, request);
 		return new ModelAndView(VIEW_NAME, model);
 	}
+
+	@PostMapping(path = "/agregar-categoria")
+	public ModelAndView agregarCategoriaPref(@RequestParam("categoriaId") Long categoriaId, HttpServletRequest request) {
+		ModelMap model = new ModelMap();
+		try {
+			HttpSession session = request.getSession(false);
+			if (session != null && session.getAttribute("email") != null) {
+				String email = (String) session.getAttribute("email");
+				servicioUsuario.agregarCategoriaPrefUser(email, categoriaId);
+
+				// Actualizar la lista de categorías preferidas en la sesión
+				Usuario usuario = servicioUsuario.buscarUsuarioPorEmail(email);
+				session.setAttribute("categoriasPref", usuario.getCategorias());
+			}
+		} catch (Exception e) {
+			model.put(ERROR_NAME, ERROR_SERVIDOR + e.getMessage());
+		}
+		addUserInfoToModel(model, request);
+		return new ModelAndView("redirect:/home", model);
+	}
+
+	/*@GetMapping(path = "/categorias-no-preferidas")
+	@ResponseBody
+	public List<Categoria> obtenerCategoriasNoPreferidas(HttpServletRequest request) throws NoExisteUsuario, NoHayCategorias {
+		HttpSession session = request.getSession(false);
+		if (session != null && session.getAttribute("email") != null) {
+			String email = (String) session.getAttribute("email");
+			Usuario usuario = servicioUsuario.buscarUsuarioPorEmail(email);
+			List<Categoria> categoriasPref = usuario.getCategorias();
+			List<Categoria> todasCategorias = servicioCategoria.get();
+			todasCategorias.removeAll(categoriasPref);
+			return todasCategorias;
+		}
+		return new ArrayList<>();
+	}*/
 }

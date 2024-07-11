@@ -52,8 +52,8 @@ public class VistaRestauranteE2E {
     @Test
     void deberiaRealizarLaReservaCorrectamente() {
         vistaWeb.page.navigate("http://localhost:8080/turesto/login");
-        vistaLogin.escribirEMAIL("admin@admin.com");
-        vistaLogin.escribirClave("admin");
+        vistaLogin.escribirEMAIL("ivancarr03@gmail.com");
+        vistaLogin.escribirClave("123");
         vistaLogin.darClickEnIniciarSesion();
         vistaWeb.darClickEnElElemento("body > main > div:nth-child(3) > div:nth-child(3) > div > div > a");
         vistaWeb.escribirEnElElemento("#nombre_form", "mateo");

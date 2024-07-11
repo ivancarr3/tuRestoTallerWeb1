@@ -30,7 +30,7 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
 
     @Override
     public List<Restaurante> get() {
-        String hql = "FROM Restaurante";
+        String hql = "FROM Restaurante WHERE habilitado = true";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         return query.getResultList();
     }
@@ -41,6 +41,18 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
             String hql = "FROM Restaurante WHERE id = :id";
             Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
             query.setParameter("id", id);
+            return (Restaurante) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Restaurante buscarPorUsuarioId(Long usuarioId) {
+        try {
+            String hql = "FROM Restaurante WHERE usuario.id = :usuarioId";
+            Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+            query.setParameter("usuarioId", usuarioId);
             return (Restaurante) query.getSingleResult();
         } catch (NoResultException e) {
             return null;
