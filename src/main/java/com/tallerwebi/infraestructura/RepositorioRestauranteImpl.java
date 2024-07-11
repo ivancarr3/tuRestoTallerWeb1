@@ -127,7 +127,6 @@ public class RepositorioRestauranteImpl implements RepositorioRestaurante {
 
     @Override
     public void habilitarRestaurante(Long id) {
-
         String hql = "UPDATE Restaurante SET habilitado = true WHERE id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("id", id);

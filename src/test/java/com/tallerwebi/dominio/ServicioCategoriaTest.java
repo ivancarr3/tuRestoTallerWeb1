@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.excepcion.DemasiadasPreferenciasUsuarioRegistro;
 import com.tallerwebi.dominio.excepcion.NoHayCategorias;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,5 +76,30 @@ public class ServicioCategoriaTest {
         servicioCategoria.eliminarCategoria(categoria);
 
         verify(repositorioCategoria).eliminar(categoria);
+    }
+
+    @Test
+    public void getCategoriasPorIdsDevuelveCategorias() throws NoHayCategorias, DemasiadasPreferenciasUsuarioRegistro {
+        List<Long> ids = Arrays.asList(1L, 2L, 3L);
+        List<Categoria> categorias = Arrays.asList(new Categoria(), new Categoria());
+        when(repositorioCategoria.buscarCategoriasPorListDeIds(ids)).thenReturn(categorias);
+
+        List<Categoria> result = servicioCategoria.getCategoriasPorIds(ids);
+        assertEquals(categorias, result);
+    }
+
+    @Test
+    public void getCategoriasPorIdsLanzaExcepcionSiNoHayCategorias() {
+        List<Long> ids = Arrays.asList(1L, 2L, 3L);
+        when(repositorioCategoria.buscarCategoriasPorListDeIds(ids)).thenReturn(null);
+
+        assertThrows(NoHayCategorias.class, () -> servicioCategoria.getCategoriasPorIds(ids));
+    }
+
+    @Test
+    public void getCategoriasPorIdsLanzaExcepcionSiDemasiadasPreferencias() {
+        List<Long> ids = Arrays.asList(1L, 2L, 3L, 4L);
+
+        assertThrows(DemasiadasPreferenciasUsuarioRegistro.class, () -> servicioCategoria.getCategoriasPorIds(ids));
     }
 }

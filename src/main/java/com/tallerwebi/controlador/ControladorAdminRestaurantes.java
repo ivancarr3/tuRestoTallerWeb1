@@ -16,14 +16,15 @@ import java.util.List;
 @Controller
 public class ControladorAdminRestaurantes {
 
-    ServicioRestaurante servicioRestaurante;
+    private final ServicioRestaurante servicioRestaurante;
+    private static final String REDIRECT = "redirect:/admin-restaurantes";
 
     @Autowired
     public ControladorAdminRestaurantes(ServicioRestaurante servicioRestaurante) {
         this.servicioRestaurante = servicioRestaurante;
     }
 
-    @GetMapping("admin-restaurantes")
+    @GetMapping("/admin-restaurantess")
     public ModelAndView homeAdministradorRestaurantes() {
         List<Restaurante> restaurantesDeshabilitados = servicioRestaurante.obtenerRestaurantesDeshabilitados();
         List<Restaurante> restaurantesHabilitados = servicioRestaurante.obtenerRestaurantesHabilitados();
@@ -42,7 +43,7 @@ public class ControladorAdminRestaurantes {
 
         servicioRestaurante.habilitarRestaurante(id);
 
-        return new ModelAndView("redirect:/admin-restaurantes", model);
+        return new ModelAndView(REDIRECT, model);
     }
 
     @PostMapping("/restaurantes/deshabilitar")
@@ -51,12 +52,12 @@ public class ControladorAdminRestaurantes {
 
         servicioRestaurante.deshabilitarRestaurante(id);
 
-        return new ModelAndView("redirect:/admin-restaurantes", model);
+        return new ModelAndView(REDIRECT, model);
     }
 
     @PostMapping("/restaurantes/eliminar")
     public ModelAndView eliminarRestaurante(@RequestParam("id") Long id) {
         servicioRestaurante.eliminarRestaurantePorId(id);
-        return new ModelAndView("redirect:/admin-restaurantes");
+        return new ModelAndView(REDIRECT);
     }
 }

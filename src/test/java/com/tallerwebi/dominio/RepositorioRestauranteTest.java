@@ -6,9 +6,7 @@ import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -18,9 +16,11 @@ import javax.transaction.Transactional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
@@ -158,5 +158,56 @@ public class RepositorioRestauranteTest {
         assertEquals(2, restaurantesDesc.size());
         assertEquals(4.5, restaurantesDesc.get(0).getEstrellas());
         assertEquals(4.0, restaurantesDesc.get(1).getEstrellas());
+    }
+
+    @Test
+    public void queObtengaRestaurantesDeshabilitados() {
+        repositorioRestaurante.deshabilitarRestaurante(restaurantes.get(0).getId());
+
+        List<Restaurante> restaurantesDeshabilitados = repositorioRestaurante.obtenerRestaurantesDeshabilitados();
+
+        assertEquals(3, restaurantesDeshabilitados.size());
+        assertEquals("La Quintana", restaurantesDeshabilitados.get(0).getNombre());
+    }
+
+    @Test
+    public void queObtengaRestaurantesHabilitados() {
+        // Deshabilitar uno de los restaurantes
+        repositorioRestaurante.deshabilitarRestaurante(restaurantes.get(0).getId());
+
+        List<Restaurante> restaurantesHabilitados = repositorioRestaurante.obtenerRestaurantesHabilitados();
+
+        assertEquals(0, restaurantesHabilitados.size());
+    }
+
+    @Test
+    public void queHabiliteRestaurante() {
+        Restaurante restauranteNuevo = new Restaurante(null, "mateo", 2.0, "direccion", "restaurant.jpg", 20, -34.598940, -58.415550);
+        repositorioRestaurante.guardar(restauranteNuevo);
+
+        restauranteNuevo.setHabilitado(true);
+        repositorioRestaurante.actualizar(restauranteNuevo);
+        Restaurante restaurante = repositorioRestaurante.buscar(restauranteNuevo.getId());
+
+        assertTrue(restaurante.isHabilitado());
+    }
+
+    @Test
+    public void queDeshabiliteRestaurante() {
+        repositorioRestaurante.deshabilitarRestaurante(restaurantes.get(0).getId());
+
+        Restaurante restaurante = repositorioRestaurante.buscar(restaurantes.get(0).getId());
+
+        assertFalse(restaurante.isHabilitado());
+    }
+
+    @Test
+    public void queElimineRestaurantePorId() {
+        Long id = restaurantes.get(0).getId();
+        repositorioRestaurante.eliminarRestaurantePorId(id);
+
+        Restaurante restaurante = repositorioRestaurante.buscar(id);
+
+        assertNull(restaurante);
     }
 }
