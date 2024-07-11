@@ -1,6 +1,7 @@
 package com.tallerwebi.controlador;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -79,7 +80,7 @@ public class ControladorReserva {
 			reserva.setLink(linkDePago);
 			servicioReserva.actualizar(reserva);
 			model.put("urlpago", linkDePago);
-			
+
 			addUserInfoToModel(model, request);
 			return new ModelAndView(RESERVA_EXITOSA_VIEW, model);
 		} catch (RestauranteNoEncontrado | DatosInvalidosReserva | FechaAnterior | EmailInvalido | EspacioNoDisponible e) {
@@ -90,6 +91,7 @@ public class ControladorReserva {
 		addUserInfoToModel(model, request);
 		return new ModelAndView("redirect:/restaurante/" + datosReserva.getIdRestaurante());
 	}
+
 
 	private Usuario obtenerIdUsuarioAutenticado(HttpServletRequest request) throws NoExisteUsuario {
 		HttpSession session = request.getSession(false);

@@ -32,6 +32,15 @@ public class ServicioReservaImpl implements ServicioReserva {
     }
 
     @Override
+    public void actualizarEstadoPago(Long paymentId, String estadoPago) {
+        Reserva reserva = repositorioReserva.findByPaymentId(paymentId.toString());
+        if (reserva != null) {
+            reserva.setEstadoPago(estadoPago);
+            repositorioReserva.guardar(reserva);
+        }
+    }
+
+    @Override
     public List<Reserva> buscarReservasDelUsuario(Long idUsuario) throws NoHayReservas {
         List<Reserva> reservas;
         try {

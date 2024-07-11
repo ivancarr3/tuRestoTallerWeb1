@@ -2,8 +2,12 @@ package com.tallerwebi.dominio;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.mercadopago.client.payment.PaymentClient;
+import com.mercadopago.resources.payment.Payment;
 import org.springframework.stereotype.Service;
 
 import com.mercadopago.MercadoPagoConfig;
@@ -23,8 +27,8 @@ public class ServicioMercadoPagoImpl implements ServicioMercadoPago {
 		MercadoPagoConfig.setAccessToken("TEST-231726774127987-061717-be04919a5b6480ff7181884b074dd77c-423795726");
 
 		String desc = "Reserva en " + restaurante.getNombre() + ". Direccion: " + restaurante.getDireccion()
-		+ ". Fecha: " + reserva.getFechaFormateada();
-		
+				+ ". Fecha: " + reserva.getFechaFormateada();
+
 		PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
 				.id("1234")
 				.title(restaurante.getNombre())
@@ -33,7 +37,7 @@ public class ServicioMercadoPagoImpl implements ServicioMercadoPago {
 				.categoryId("food")
 				.quantity(1)
 				.currencyId("ARS")
-				.unitPrice(new BigDecimal(total))
+				.unitPrice(BigDecimal.valueOf(total))
 				.build();
 
 		List<PreferenceItemRequest> items = new ArrayList<>();
@@ -41,6 +45,7 @@ public class ServicioMercadoPagoImpl implements ServicioMercadoPago {
 		PreferenceRequest preferenceRequest = PreferenceRequest.builder().items(items).build();
 		PreferenceClient client = new PreferenceClient(new MPDefaultHttpClient());
 		Preference preference = client.create(preferenceRequest);
+
 		return preference.getId();
 	}
 }

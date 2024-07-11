@@ -1,11 +1,15 @@
 package com.tallerwebi.controlador;
 
+import com.mercadopago.exceptions.MPApiException;
+import com.mercadopago.exceptions.MPException;
 import com.tallerwebi.dominio.Reserva;
+import com.tallerwebi.dominio.ReservaDTO;
 import com.tallerwebi.dominio.Usuario;
 import com.tallerwebi.dominio.excepcion.NoExisteUsuario;
 import com.tallerwebi.dominio.excepcion.NoHayReservas;
 import com.tallerwebi.dominio.excepcion.NoHayReservasPasadas;
 import com.tallerwebi.dominio.excepcion.ReservaNoEncontrada;
+import com.tallerwebi.servicio.ServicioMercadoPago;
 import com.tallerwebi.servicio.ServicioReserva;
 import com.tallerwebi.servicio.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -27,11 +32,13 @@ public class ControladorUsuario {
     private static final String ERROR = "error";
     private final ServicioReserva servicioReserva;
     private final ServicioUsuario servicioUsuario;
+    private final ServicioMercadoPago servicioMercadoPago;
 
     @Autowired
-    public ControladorUsuario(ServicioReserva servicioReserva, ServicioUsuario servicioUsuario) {
+    public ControladorUsuario(ServicioReserva servicioReserva, ServicioUsuario servicioUsuario, ServicioMercadoPago servicioMercadoPago) {
         this.servicioReserva = servicioReserva;
         this.servicioUsuario = servicioUsuario;
+        this.servicioMercadoPago = servicioMercadoPago;
     }
 
     private void addUserInfoToModel(ModelMap model, HttpServletRequest request) {
@@ -64,16 +71,30 @@ public class ControladorUsuario {
             }
             List<Reserva> reservas = servicioReserva.buscarReservasDelUsuario(usuario.getId());
             if (reservas.isEmpty()) {
-                throw  new NoHayReservas();
+                throw new NoHayReservas();
             }
-            model.put(MODEL_NAME, reservas);
+
+            List<ReservaDTO> reservasDTO = new ArrayList<>();
+            for (Reserva reserva : reservas) {
+                boolean pagada = "approved".equals(reserva.getEstadoPago());
+                reservasDTO.add(new ReservaDTO(reserva, pagada));
+            }
+
+            model.put(MODEL_NAME, reservasDTO);
         } catch (NoHayReservasPasadas e) {
             try {
                 List<Reserva> reservas = servicioReserva.buscarReservasDelUsuario(usuario.getId());
                 if (reservas.isEmpty()) {
-                    throw  new NoHayReservas();
+                    throw new NoHayReservas();
                 }
-                model.put(MODEL_NAME, reservas);
+
+                List<ReservaDTO> reservasDTO = new ArrayList<>();
+                for (Reserva reserva : reservas) {
+                    boolean pagada = "approved".equals(reserva.getEstadoPago());
+                    reservasDTO.add(new ReservaDTO(reserva, pagada));
+                }
+
+                model.put(MODEL_NAME, reservasDTO);
             } catch (NoHayReservas error) {
                 model.put(ERROR, "No hay próximas reservas.");
             }

@@ -43,11 +43,18 @@ public class Reserva {
 
     @Column(nullable = false)
     private Date fecha;
-    
+
     @Column(nullable = true)
     private String link;
 
-    public Reserva() {}
+    @Column(nullable = true)
+    private String paymentId;
+
+    @Column(nullable = true)
+    private String estadoPago;
+
+    public Reserva() {
+    }
 
     public Reserva(Long id, Restaurante restaurante, String nombre, String email, Integer numeroCelular,
                    Integer dni, Integer cantidadPersonas, Date fecha, Usuario usuario, String link) {
@@ -63,30 +70,99 @@ public class Reserva {
         this.link = link;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Integer getCantidadPersonas() { return cantidadPersonas; }
-    public void setCantidadPersonas(Integer cantidadPersonas) { this.cantidadPersonas = cantidadPersonas; }
-    public Date getFecha() { return fecha; }
-    public void setFecha(Date fecha) { this.fecha = fecha; }
-    public Restaurante getRestaurante() { return restaurante; }
-    public void setRestaurante(Restaurante restaurante) { this.restaurante = restaurante; }
-    public Usuario getUsuario() { return usuario; }
-    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public Integer getNumeroCelular() { return numeroCelular; }
-    public void setNumeroCelular(Integer numeroCelular) { this.numeroCelular = numeroCelular; }
-    public Integer getDni() { return dni; }
-    public void setDni(Integer dni) { this.dni = dni; }
-    public String getLink() {return link;}
-    public void setLink(String link) { this.link = link;}
-    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getCantidadPersonas() {
+        return cantidadPersonas;
+    }
+
+    public void setCantidadPersonas(Integer cantidadPersonas) {
+        this.cantidadPersonas = cantidadPersonas;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public Restaurante getRestaurante() {
+        return restaurante;
+    }
+
+    public void setRestaurante(Restaurante restaurante) {
+        this.restaurante = restaurante;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Integer getNumeroCelular() {
+        return numeroCelular;
+    }
+
+    public void setNumeroCelular(Integer numeroCelular) {
+        this.numeroCelular = numeroCelular;
+    }
+
+    public Integer getDni() {
+        return dni;
+    }
+
+    public void setDni(Integer dni) {
+        this.dni = dni;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
+    }
 
     public String getFechaFormateada() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return formatter.format(this.fecha);
     }
+
+    public String getEstadoPago() { return estadoPago; }
+    public void setEstadoPago(String estadoPago) { this.estadoPago = estadoPago; }
 }

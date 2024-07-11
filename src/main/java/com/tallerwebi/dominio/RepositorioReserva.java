@@ -13,4 +13,5 @@ public interface RepositorioReserva {
 	List<Reserva> buscarTodasLasReservas();
 	List<Reserva> buscarReservasDelRestaurante(Long idRestaurante);
     List<String> buscarEmailDeUsuariosPorRestaurante(Long idRestaurante);
+    Reserva findByPaymentId(String paymentId);
 }

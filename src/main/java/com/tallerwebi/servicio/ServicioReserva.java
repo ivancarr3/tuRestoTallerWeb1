@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface ServicioReserva {
+    void actualizarEstadoPago(Long paymentId, String estadoPago);
     List<Reserva> buscarReservasDelUsuario(Long idUsuario) throws NoHayReservas;
     List<Reserva> buscarReservasDelUsuarioPasadas(Long idUsuario) throws NoHayReservasPasadas;
     Reserva buscarReserva(Long id) throws ReservaNoEncontrada;

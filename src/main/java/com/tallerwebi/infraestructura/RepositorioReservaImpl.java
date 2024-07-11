@@ -53,6 +53,14 @@ public class RepositorioReservaImpl implements RepositorioReserva {
     }
 
     @Override
+    public Reserva findByPaymentId(String paymentId) {
+        String hql = "FROM Reserva WHERE paymentId = :paymentId";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("paymentId", paymentId);
+        return (Reserva) query.getSingleResult();
+    }
+
+    @Override
     public List<Reserva> buscarTodasLasReservas() {
         String hql = "FROM Reserva";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);

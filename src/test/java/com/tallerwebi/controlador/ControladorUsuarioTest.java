@@ -14,6 +14,7 @@ import com.tallerwebi.dominio.excepcion.NoExisteUsuario;
 import com.tallerwebi.dominio.excepcion.NoHayReservas;
 import com.tallerwebi.dominio.excepcion.NoHayReservasPasadas;
 import com.tallerwebi.dominio.excepcion.ReservaNoEncontrada;
+import com.tallerwebi.servicio.ServicioMercadoPago;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,14 +34,16 @@ public class ControladorUsuarioTest {
     private ServicioUsuario servicioUsuarioMock;
     private HttpServletRequest request;
     private HttpSession session;
+    private ServicioMercadoPago servicioMercadoPago;
 
     @BeforeEach
     public void init() {
         servicioReservaMock = mock(ServicioReserva.class);
         servicioUsuarioMock = mock(ServicioUsuario.class);
+        servicioMercadoPago = mock(ServicioMercadoPago.class);
         request = mock(HttpServletRequest.class);
         session = mock(HttpSession.class);
-        this.controladorUsuario = new ControladorUsuario(this.servicioReservaMock, this.servicioUsuarioMock);
+        this.controladorUsuario = new ControladorUsuario(this.servicioReservaMock, this.servicioUsuarioMock, servicioMercadoPago);
 
         when(request.getSession(false)).thenReturn(session);
         when(session.getAttribute("email")).thenReturn("test@example.com");
