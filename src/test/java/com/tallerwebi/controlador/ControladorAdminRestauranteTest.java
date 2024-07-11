@@ -41,9 +41,9 @@ public class ControladorAdminRestauranteTest {
         when(servicioRestaurante.obtenerRestaurantesHabilitados()).thenReturn(restaurantesHabilitados);
         when(servicioRestaurante.obtenerRestaurantesDeshabilitados()).thenReturn(restaurantesDeshabilitados);
 
-        mockMvc.perform(get("/admin-restaurantess"))
+        mockMvc.perform(get("/admin-restaurantes"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("admin-restaurantes"))
+                .andExpect(view().name("admin-restaurantes-home"))
                 .andExpect(model().attribute("restaurantesHabilitados", restaurantesHabilitados))
                 .andExpect(model().attribute("restaurantesDeshabilitados", restaurantesDeshabilitados));
 

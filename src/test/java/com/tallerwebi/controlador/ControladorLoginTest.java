@@ -63,7 +63,7 @@ public class ControladorLoginTest {
 
 	@Test
 	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome() throws UsuarioNoActivado{
-		when(usuarioMock.getRol()).thenReturn("ADMIN");
+		when(usuarioMock.getRol()).thenReturn("USER");
 
 		when(requestMock.getSession()).thenReturn(sessionMock);
 		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioMock);

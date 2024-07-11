@@ -45,10 +45,14 @@ public class Restaurante {
 
     private Double distancia;
 
+    @OneToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
+
     public Restaurante() {}
 
     public Restaurante(Long id, String nombre, Double estrellas, String direccion, String imagen,
-                       Integer capacidadMaxima, Double latitud, Double longitud) {
+                       Integer capacidadMaxima, Double latitud, Double longitud, boolean habilitado, Usuario usuario) {
 
         this.id = id;
         this.nombre = nombre;
@@ -60,7 +64,8 @@ public class Restaurante {
         this.latitud = latitud;
         this.longitud = longitud;
         this.distancia = 0.0;
-        this.habilitado = false;
+        this.habilitado = habilitado;
+        this.usuario = usuario;
     }
 
     public Long getId() {
@@ -167,4 +172,11 @@ public class Restaurante {
         this.habilitado = habilitado;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }

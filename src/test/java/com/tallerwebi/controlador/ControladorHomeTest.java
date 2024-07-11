@@ -1,5 +1,6 @@
 package com.tallerwebi.controlador;
 
+import static java.lang.Boolean.TRUE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
@@ -17,6 +18,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.tallerwebi.dominio.Plato;
+import com.tallerwebi.dominio.Usuario;
 import com.tallerwebi.dominio.excepcion.NoExisteDireccion;
 import com.tallerwebi.dominio.excepcion.NoHayPlatos;
 import com.tallerwebi.servicio.ServicioCategoria;
@@ -99,9 +101,9 @@ public class ControladorHomeTest {
         // preparacion
         List<Restaurante> restaurantesMockeados = new ArrayList<>();
         Restaurante restauranteMockeado1 = new Restaurante(null, "La Farola", 4.0, "Santa Maria 3500", "restaurant.jpg",
-                100, -34.598940, -58.415550);
+                100, -34.598940, -58.415550, TRUE, new Usuario());
         Restaurante restauranteMockeado2 = new Restaurante(null, "El Club de la Milanesa", 5.0, "Arieta 5000",
-                "restaurant2.jpg", 100, -34.598940, -58.415550);
+                "restaurant2.jpg", 100, -34.598940, -58.415550, TRUE, new Usuario());
         restaurantesMockeados.add(restauranteMockeado1);
         restaurantesMockeados.add(restauranteMockeado2);
 
@@ -123,7 +125,7 @@ public class ControladorHomeTest {
         // preparacion
         List<Restaurante> restaurantesMockeados = new ArrayList<>();
         Restaurante restauranteMockeado1 = new Restaurante(null, "La Farola", 4.0, "Santa Maria 3500", "restaurant.jpg",
-                100, -34.598940, -58.415550);
+                100, -34.598940, -58.415550, true, new Usuario());
         restaurantesMockeados.add(restauranteMockeado1);
 
         when(servicioRestauranteMock.consultarRestaurantePorNombre(anyString())).thenReturn(restaurantesMockeados);
@@ -146,11 +148,11 @@ public class ControladorHomeTest {
         List<Restaurante> restaurantesMock = new ArrayList<Restaurante>();
 
         restaurantesMock.add(new Restaurante(null, "El club de la Milanesa", 5.0, "Arieta 5000", "restaurant.jpg", 100,
-                -34.598940, -58.415550));
+                -34.598940, -58.415550, true, new Usuario()));
         restaurantesMock.add(new Restaurante(null, "La Trattoria Bella Italia", 3.0, "Avenida Libertador 789",
-                "restaurant2.jpg", 100, -34.598940, -58.415550));
+                "restaurant2.jpg", 100, -34.598940, -58.415550, true, new Usuario()));
         restaurantesMock.add(new Restaurante(null, "La Parrilla de Don Juan", 4.0, "Avenida Central 456",
-                "restaurant3.jpg", 100, -34.598940, -58.415550));
+                "restaurant3.jpg", 100, -34.598940, -58.415550, true, new Usuario()));
 
         when(this.servicioRestauranteMock.get()).thenReturn(restaurantesMock);
 
@@ -295,8 +297,8 @@ public class ControladorHomeTest {
         // Preparación
         int capacidad = 50;
         List<Restaurante> restaurantesMockeados = new ArrayList<>();
-        restaurantesMockeados.add(new Restaurante(null, "Restaurante A", 4.0, "Calle Falsa 123", "restauranteA.jpg", capacidad, -34.598940, -58.415550));
-        restaurantesMockeados.add(new Restaurante(null, "Restaurante B", 5.0, "Avenida Siempre Viva 742", "restauranteB.jpg", capacidad, -34.598940, -58.415550));
+        restaurantesMockeados.add(new Restaurante(null, "Restaurante A", 4.0, "Calle Falsa 123", "restauranteA.jpg", capacidad, -34.598940, -58.415550, true, new Usuario()));
+        restaurantesMockeados.add(new Restaurante(null, "Restaurante B", 5.0, "Avenida Siempre Viva 742", "restauranteB.jpg", capacidad, -34.598940, -58.415550, true, new Usuario()));
 
         when(servicioRestauranteMock.consultarRestaurantePorEspacio(capacidad)).thenReturn(restaurantesMockeados);
 
@@ -345,8 +347,8 @@ public class ControladorHomeTest {
         String direccion = "Calle Falsa 123";
         Double distanciaMaxima = 10.0;
         List<Restaurante> restaurantesMockeados = new ArrayList<>();
-        restaurantesMockeados.add(new Restaurante(null, "Restaurante A", 4.0, "Calle Falsa 123", "restauranteA.jpg", 50, -34.598940, -58.415550));
-        restaurantesMockeados.add(new Restaurante(null, "Restaurante B", 5.0, "Avenida Siempre Viva 742", "restauranteB.jpg", 50, -34.598940, -58.415550));
+        restaurantesMockeados.add(new Restaurante(null, "Restaurante A", 4.0, "Calle Falsa 123", "restauranteA.jpg", 50, -34.598940, -58.415550, true, new Usuario()));
+        restaurantesMockeados.add(new Restaurante(null, "Restaurante B", 5.0, "Avenida Siempre Viva 742", "restauranteB.jpg", 50, -34.598940, -58.415550, true, new Usuario()));
 
         when(servicioRestauranteMock.filtrarPorDireccion(direccion, distanciaMaxima)).thenReturn(restaurantesMockeados);
 

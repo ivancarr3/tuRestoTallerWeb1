@@ -37,6 +37,7 @@ public class ServicioReservaTest {
     private static final double RATING = 4.0;
     private static final double LATITUDE = -34.610000;
     private static final double LONGITUDE = -58.400000;
+    private static final boolean HABILITADO = true;
 
     private ServicioRestaurante servicioRestaurante;
     private RepositorioRestaurante repositorioRestaurante;
@@ -56,7 +57,7 @@ public class ServicioReservaTest {
         initializeDates();
         initializeMocks();
         initializeReservasMock();
-        this.restauranteInit = new Restaurante(EXISTING_ID, EXISTING_NAME, RATING, ADDRESS, IMAGE, 7, LATITUDE, LONGITUDE);
+        this.restauranteInit = new Restaurante(EXISTING_ID, EXISTING_NAME, RATING, ADDRESS, IMAGE, 7, LATITUDE, LONGITUDE, HABILITADO, new Usuario());
         this.servicioRestaurante = new ServicioRestauranteImpl(this.repositorioRestaurante, this.servicioReserva, this.servicioGeocoding);
         this.servicioReserva = new ServicioReservaImpl(this.repositorioReserva, this.repositorioRestaurante, this.emailSender, this.repositorioUsuario);
     }
@@ -115,7 +116,7 @@ public class ServicioReservaTest {
 
     @Test
     public void queLanceExcepcionSiQuiereCrearUnaReservaYNoHayEspacioDisponible() throws EspacioNoDisponible, DatosInvalidosReserva {
-        Restaurante restaurante = new Restaurante(EXISTING_ID, EXISTING_NAME, RATING, ADDRESS, IMAGE, 2, LATITUDE, LONGITUDE);
+        Restaurante restaurante = new Restaurante(EXISTING_ID, EXISTING_NAME, RATING, ADDRESS, IMAGE, 2, LATITUDE, LONGITUDE, HABILITADO, new Usuario());
         Reserva nuevaReserva = new Reserva(10L, restaurante, "Pepe", EXISTING_EMAIL, EXISTING_PHONE, EXISTING_DNI, EXISTING_PEOPLE, this.tomorrow, new Usuario(), null);
 
         assertThrows(EspacioNoDisponible.class, () -> servicioReserva.crearReserva(nuevaReserva.getRestaurante(), nuevaReserva.getNombre(), nuevaReserva.getEmail(), nuevaReserva.getNumeroCelular(), nuevaReserva.getDni(), nuevaReserva.getCantidadPersonas(), nuevaReserva.getFecha(), usuarioInit));
@@ -125,7 +126,7 @@ public class ServicioReservaTest {
 
     @Test
     public void queLanceExcepcionSiQuiereCrearUnaReservaYNoExisteUsuario() throws EspacioNoDisponible, DatosInvalidosReserva {
-        Restaurante restaurante = new Restaurante(EXISTING_ID, EXISTING_NAME, RATING, ADDRESS, IMAGE, 2, LATITUDE, LONGITUDE);
+        Restaurante restaurante = new Restaurante(EXISTING_ID, EXISTING_NAME, RATING, ADDRESS, IMAGE, 2, LATITUDE, LONGITUDE, HABILITADO, new Usuario());
         Reserva nuevaReserva = new Reserva(10L, restaurante, "Pepe", EXISTING_EMAIL, EXISTING_PHONE, EXISTING_DNI, EXISTING_PEOPLE, this.tomorrow, new Usuario(), null);
 
         assertThrows(NoExisteUsuario.class, () -> servicioReserva.crearReserva(nuevaReserva.getRestaurante(), nuevaReserva.getNombre(), nuevaReserva.getEmail(), nuevaReserva.getNumeroCelular(), nuevaReserva.getDni(), nuevaReserva.getCantidadPersonas(), nuevaReserva.getFecha(), null));

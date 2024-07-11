@@ -27,4 +27,5 @@ public interface ServicioRestaurante {
     void habilitarRestaurante(Long id);
     void deshabilitarRestaurante(Long id);
     void eliminarRestaurantePorId(Long id);
+    Restaurante consultarPorUsuarioId(Long usuarioId) throws RestauranteNoEncontrado;
 }

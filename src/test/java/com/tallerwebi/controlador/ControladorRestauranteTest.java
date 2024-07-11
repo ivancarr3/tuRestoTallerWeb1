@@ -2,9 +2,7 @@ package com.tallerwebi.controlador;
 
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.hamcrest.Matchers.hasKey;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -93,6 +91,7 @@ public class ControladorRestauranteTest {
         Double precio = 20000.0;
         Restaurante restaurante = new Restaurante();
         restaurante.setId(restauranteId);
+        restaurante.setNombre("Restaurante Prueba");
         Categoria categoria = new Categoria();
         categoria.setDescripcion("Milanesas");
 
@@ -103,8 +102,7 @@ public class ControladorRestauranteTest {
         when(servicioRestauranteMock.consultar(restauranteId)).thenReturn(restaurante);
         when(servicioPlatoMock.consultarPlatoPorPrecio(precio)).thenReturn(platos);
 
-        mockMvc.perform(post("/restaurante/filtrarPlato")
-                        .param("idRestaurante", restauranteId.toString())
+        mockMvc.perform(post("/restaurante/{id}/filtrarPlato", restauranteId)
                         .param("precioPlato", precio.toString()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("restaurante"))
@@ -112,11 +110,15 @@ public class ControladorRestauranteTest {
                 .andExpect(model().attributeExists("platosRecomendados"))
                 .andExpect(model().attributeExists("restaurante"))
                 .andExpect(model().attribute("platosPorCategoria", hasKey(categoria)))
-                .andExpect(model().attribute("platosRecomendados", hasSize(1)));
+                .andExpect(model().attribute("platosRecomendados", hasSize(1)))
+                .andExpect(model().attribute("platosRecomendados", hasItem(
+                        hasProperty("nombre", is("Plato 1"))
+                )));
 
         verify(servicioRestauranteMock, times(1)).consultar(restauranteId);
         verify(servicioPlatoMock, times(1)).consultarPlatoPorPrecio(precio);
     }
+
 
     @Test
     public void alIntentarMostrarRestauranteElREstauranteNoFueEncontrado()
@@ -225,166 +227,5 @@ public class ControladorRestauranteTest {
         assertThat((String) modelAndView.getModel().get("error"), equalToIgnoringCase("No existe el restaurante"));
     }
 
-    @Test
-    public void queAlCargarPerfilRestauranteMuestreReservasYGanancia() throws Exception {
-        Long restauranteId = 1L;
-        Restaurante restaurante = new Restaurante();
-        restaurante.setId(restauranteId);
-        restaurante.setNombre("Restaurante Prueba");
-
-        List<Reserva> reservas = Arrays.asList(
-                new Reserva(), new Reserva(), new Reserva()
-        );
-
-        when(servicioRestauranteMock.consultar(restauranteId)).thenReturn(restaurante);
-        when(servicioReservaMock.buscarReservasDelRestaurante(restauranteId)).thenReturn(reservas);
-
-        mockMvc.perform(get("/perfilRestaurante/{id}", restauranteId))
-                .andExpect(status().isOk())
-                .andExpect(view().name("perfil_restaurante"))
-                .andExpect(model().attribute("username", restauranteId))
-                .andExpect(model().attribute("restaurantId", restauranteId))
-                .andExpect(model().attribute("restauranteNombre", restaurante.getNombre()))
-                .andExpect(model().attribute("reservas", reservas))
-                .andExpect(model().attribute("ganancias", 15000L)); // 3 reservas * 5000
-
-        verify(servicioRestauranteMock, times(1)).consultar(restauranteId);
-        verify(servicioReservaMock, times(1)).buscarReservasDelRestaurante(restauranteId);
-    }
-
-    @Test
-    public void queAlCargarPerfilRestauranteMuestreErrorSiNoHayReservas() throws Exception {
-        Long restauranteId = 1L;
-        Restaurante restaurante = new Restaurante();
-        restaurante.setId(restauranteId);
-
-        when(servicioRestauranteMock.consultar(restauranteId)).thenReturn(restaurante);
-        when(servicioReservaMock.buscarReservasDelRestaurante(restauranteId)).thenThrow(new NoHayReservas());
-
-        mockMvc.perform(get("/perfilRestaurante/{id}", restauranteId))
-                .andExpect(status().isOk())
-                .andExpect(view().name("perfil_restaurante"))
-                .andExpect(model().attribute("error", "Todavía no tenes ninguna reserva."));
-
-        verify(servicioRestauranteMock, times(1)).consultar(restauranteId);
-        verify(servicioReservaMock, times(1)).buscarReservasDelRestaurante(restauranteId);
-    }
-
-    @Test
-    public void queAlCargarPerfilRestauranteMuestreErrorDeServidor() throws Exception {
-        Long restauranteId = 1L;
-        when(servicioRestauranteMock.consultar(restauranteId)).thenThrow(new RuntimeException("Error del servidor"));
-
-        mockMvc.perform(get("/perfilRestaurante/{id}", restauranteId))
-                .andExpect(status().isOk())
-                .andExpect(view().name("perfil_restaurante"))
-                .andExpect(model().attribute("error", "Error del servidor: Error del servidor"));
-
-        verify(servicioRestauranteMock, times(1)).consultar(restauranteId);
-    }
-
-    @Test
-    public void queAlCargarFormPromocionMuestreElFormulario() throws Exception {
-        Long restauranteId = 1L;
-        Restaurante restaurante = new Restaurante();
-        restaurante.setId(restauranteId);
-        restaurante.setNombre("Restaurante Prueba");
-
-        when(servicioRestauranteMock.consultar(restauranteId)).thenReturn(restaurante);
-
-        mockMvc.perform(get("/perfilRestaurante/{id}/crearPromocion", restauranteId))
-                .andExpect(status().isOk())
-                .andExpect(view().name("crear_promocion"))
-                .andExpect(model().attribute("idRestaurante", restauranteId))
-                .andExpect(model().attribute("restaurantId", restauranteId))
-                .andExpect(model().attribute("restauranteNombre", restaurante.getNombre()));
-
-        verify(servicioRestauranteMock, times(1)).consultar(restauranteId);
-    }
-
-    @Test
-    public void queAlCargarFormPromocionMuestreErrorSiRestauranteNoEncontrado() throws Exception {
-        Long restauranteId = 1L;
-
-        when(servicioRestauranteMock.consultar(restauranteId)).thenThrow(new RestauranteNoEncontrado());
-
-        mockMvc.perform(get("/perfilRestaurante/{id}/crearPromocion", restauranteId))
-                .andExpect(status().isOk())
-                .andExpect(view().name("crear_promocion"))
-                .andExpect(model().attribute("error", "No existe el restaurante"));
-
-        verify(servicioRestauranteMock, times(1)).consultar(restauranteId);
-    }
-
-    @Test
-    public void queAlCargarFormPromocionMuestreErrorDeServidor() throws Exception {
-        Long restauranteId = 1L;
-
-        when(servicioRestauranteMock.consultar(restauranteId)).thenThrow(new RuntimeException("Error del servidor"));
-
-        mockMvc.perform(get("/perfilRestaurante/{id}/crearPromocion", restauranteId))
-                .andExpect(status().isOk())
-                .andExpect(view().name("crear_promocion"))
-                .andExpect(model().attribute("error", "Error del servidor: Error del servidor"));
-
-        verify(servicioRestauranteMock, times(1)).consultar(restauranteId);
-    }
-
-    @Test
-    public void queAlEnviarPromocionSeEnvienLosEmailsCorrectamente() throws Exception {
-        Long restauranteId = 1L;
-        String subject = "Promoción Especial";
-        String text = "Disfruta de un 50% de descuento!";
-        List<String> emails = Arrays.asList("test1@example.com", "test2@example.com");
-
-        when(servicioReservaMock.obtenerEmailsUsuariosPorRestaurante(restauranteId)).thenReturn(emails);
-
-        mockMvc.perform(post("/perfilRestaurante/{id}/crearPromocion", restauranteId)
-                        .param("subject", subject)
-                        .param("text", text))
-                .andExpect(status().isOk())
-                .andExpect(view().name("promocion_enviada"))
-                .andExpect(model().attribute("message", "Promoción enviada con éxito"));
-
-        verify(servicioReservaMock, times(1)).obtenerEmailsUsuariosPorRestaurante(restauranteId);
-        verify(emailMock, times(1)).generarEmailPromocionPDF("test1@example.com", subject, text);
-        verify(emailMock, times(1)).generarEmailPromocionPDF("test2@example.com", subject, text);
-    }
-
-    @Test
-    public void queAlEnviarPromocionMuestreErrorSiNoHayReservas() throws Exception {
-        Long restauranteId = 1L;
-        String subject = "Promoción Especial";
-        String text = "Disfruta de un 50% de descuento!";
-
-        when(servicioReservaMock.obtenerEmailsUsuariosPorRestaurante(restauranteId)).thenThrow(new NoHayReservas());
-
-        mockMvc.perform(post("/perfilRestaurante/{id}/crearPromocion", restauranteId)
-                        .param("subject", subject)
-                        .param("text", text))
-                .andExpect(status().isOk())
-                .andExpect(view().name("promocion_enviada"))
-                .andExpect(model().attribute("error", "No hay reservas para este restaurante"));
-
-        verify(servicioReservaMock, times(1)).obtenerEmailsUsuariosPorRestaurante(restauranteId);
-    }
-
-    @Test
-    public void queAlEnviarPromocionMuestreErrorDeServidor() throws Exception {
-        Long restauranteId = 1L;
-        String subject = "Promoción Especial";
-        String text = "Disfruta de un 50% de descuento!";
-
-        when(servicioReservaMock.obtenerEmailsUsuariosPorRestaurante(restauranteId)).thenThrow(new RuntimeException("Error del servidor"));
-
-        mockMvc.perform(post("/perfilRestaurante/{id}/crearPromocion", restauranteId)
-                        .param("subject", subject)
-                        .param("text", text))
-                .andExpect(status().isOk())
-                .andExpect(view().name("promocion_enviada"))
-                .andExpect(model().attribute("error", "Error al enviar la promoción: Error del servidor"));
-
-        verify(servicioReservaMock, times(1)).obtenerEmailsUsuariosPorRestaurante(restauranteId);
-    }
 
 }

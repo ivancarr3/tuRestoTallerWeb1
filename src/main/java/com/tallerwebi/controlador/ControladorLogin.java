@@ -51,11 +51,18 @@ public class ControladorLogin {
                 HttpSession session = request.getSession();
                 session.setAttribute("ROL", usuarioBuscado.getRol());
                 session.setAttribute("email", usuarioBuscado.getEmail());
+                session.setAttribute("userId", usuarioBuscado.getId());
 
                 List<Categoria> categoriasPref = new ArrayList<>(usuarioBuscado.getCategorias());
                 session.setAttribute("categoriasPref", categoriasPref);
 
-                return new ModelAndView("redirect:/home");
+                if ("ADMIN".equals(usuarioBuscado.getRol())) {
+                    return new ModelAndView("redirect:/admin-restaurantes");
+                } else if("RESTO".equals(usuarioBuscado.getRol())){
+                    return new ModelAndView("redirect:/perfil_restaurante");
+                }else {
+                    return new ModelAndView("redirect:/home");
+                }
             } else {
                 model.put(ERROR, "Usuario o clave incorrecta");
             }

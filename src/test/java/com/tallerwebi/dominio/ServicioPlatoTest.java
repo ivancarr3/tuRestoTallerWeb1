@@ -57,8 +57,8 @@ public class ServicioPlatoTest {
     }
 
     private void initializePlatosMock() {
-        Restaurante resto1 = new Restaurante(1L, "El club de la milanesa", 4.0, "", "", 2, -34.610000, -58.400000);
-        Restaurante resto2 = new Restaurante(2L, "Mundo Milanesa", 3.0, "", "", 2, -34.610000, -58.400000);
+        Restaurante resto1 = new Restaurante(1L, "El club de la milanesa", 4.0, "", "", 2, -34.610000, -58.400000, true, new Usuario());
+        Restaurante resto2 = new Restaurante(2L, "Mundo Milanesa", 3.0, "", "", 2, -34.610000, -58.400000, true, new Usuario());
         this.platosMock = new ArrayList<>();
         this.platosMock.add(new Plato(1L, MILANESA_CARNE, PRICE_20000, "napolitana", "", resto1, categoriaMock, true));
         this.platosMock.add(new Plato(2L, POLLO, PRICE_10000, "a la mostaza", "", resto1, categoriaMock, true));

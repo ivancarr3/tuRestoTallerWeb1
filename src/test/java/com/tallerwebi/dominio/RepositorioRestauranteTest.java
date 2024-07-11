@@ -19,6 +19,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -31,19 +32,33 @@ public class RepositorioRestauranteTest {
     private RepositorioRestaurante repositorioRestaurante;
 
     @Autowired
+    private RepositorioUsuario repositorioUsuario;
+
+    @Autowired
     private SessionFactory sessionFactory;
 
     private List<Restaurante> restaurantes = new ArrayList<>();
 
     @BeforeEach
     public void init() {
+
         this.restaurantes.add(crearYGuardarRestaurante("La Quintana", 4.5, "Arieta 5000", 1));
         this.restaurantes.add(crearYGuardarRestaurante("Benjamin", 3.9, "Arieta 5446", 2));
         this.restaurantes.add(crearYGuardarRestaurante("La Capilla", 4.0, "Almafuerte 1111", 3));
     }
 
     private Restaurante crearYGuardarRestaurante(String nombre, double estrellas, String direccion, Integer capacidad) {
-        Restaurante restaurante = new Restaurante(null, nombre, estrellas, direccion, "restaurant.jpg", capacidad, -34.598940, -58.415550);
+        Usuario usuario = new Usuario();
+        usuario.setNombre("Usuario Mock");
+        usuario.setEmail("usuario@mock.com");
+        usuario.setApellido("Mock Usuario");
+        usuario.setConfirmationToken("");
+        usuario.setFecha_nac(new Date(118, 10, 17));
+        usuario.setActivo(true);
+        usuario.setPassword("passwordMock");
+        usuario.setRol("ROLE_USER");
+        repositorioUsuario.guardar(usuario);
+        Restaurante restaurante = new Restaurante(null, nombre, estrellas, direccion, "restaurant.jpg", capacidad, -34.598940, -58.415550, true, usuario);
         repositorioRestaurante.guardar(restaurante);
         return restaurante;
     }
@@ -166,7 +181,7 @@ public class RepositorioRestauranteTest {
 
         List<Restaurante> restaurantesDeshabilitados = repositorioRestaurante.obtenerRestaurantesDeshabilitados();
 
-        assertEquals(3, restaurantesDeshabilitados.size());
+        assertEquals(1, restaurantesDeshabilitados.size());
         assertEquals("La Quintana", restaurantesDeshabilitados.get(0).getNombre());
     }
 
@@ -177,12 +192,21 @@ public class RepositorioRestauranteTest {
 
         List<Restaurante> restaurantesHabilitados = repositorioRestaurante.obtenerRestaurantesHabilitados();
 
-        assertEquals(0, restaurantesHabilitados.size());
+        assertEquals(2, restaurantesHabilitados.size());
     }
 
     @Test
-    public void queHabiliteRestaurante() {
-        Restaurante restauranteNuevo = new Restaurante(null, "mateo", 2.0, "direccion", "restaurant.jpg", 20, -34.598940, -58.415550);
+    public void queHabiliteRestaurante() {Usuario usuario = new Usuario();
+        usuario.setNombre("Usuario Mock");
+        usuario.setEmail("usuario@mock.com");
+        usuario.setApellido("Mock Usuario");
+        usuario.setConfirmationToken("");
+        usuario.setFecha_nac(new Date(118, 10, 17));
+        usuario.setActivo(true);
+        usuario.setPassword("passwordMock");
+        usuario.setRol("ROLE_USER");
+        repositorioUsuario.guardar(usuario);
+        Restaurante restauranteNuevo = new Restaurante(null, "mateo", 2.0, "direccion", "restaurant.jpg", 20, -34.598940, -58.415550, true, usuario);
         repositorioRestaurante.guardar(restauranteNuevo);
 
         restauranteNuevo.setHabilitado(true);
@@ -194,12 +218,18 @@ public class RepositorioRestauranteTest {
 
     @Test
     public void queDeshabiliteRestaurante() {
-        repositorioRestaurante.deshabilitarRestaurante(restaurantes.get(0).getId());
+        Long restauranteId = restaurantes.get(0).getId();
 
-        Restaurante restaurante = repositorioRestaurante.buscar(restaurantes.get(0).getId());
+        repositorioRestaurante.deshabilitarRestaurante(restauranteId);
+
+        sessionFactory.getCurrentSession().flush();
+        sessionFactory.getCurrentSession().clear();
+
+        Restaurante restaurante = repositorioRestaurante.buscar(restauranteId);
 
         assertFalse(restaurante.isHabilitado());
     }
+
 
     @Test
     public void queElimineRestaurantePorId() {

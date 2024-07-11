@@ -13,6 +13,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -34,14 +35,29 @@ public class RepositorioPlatoTest {
     private RepositorioCategoria repositorioCategoria;
 
     @Autowired
+    private RepositorioUsuario repositorioUsuario;
+
+    @Autowired
     private SessionFactory sessionFactory;
 
     private final List<Plato> platos = new ArrayList<>();
-    private final Restaurante restauranteInit = new Restaurante(null, "Restaurante Mock", 4.5, "Direccion Mock", "imagenMock.jpg", 50, -34.598940, -58.415550);
+    private Restaurante restauranteInit;
     private final Categoria categoriaInit = new Categoria(null, "Categoria Mock", "Img Mock");
 
     @BeforeEach
     public void init() {
+        Usuario usuario = new Usuario();
+        usuario.setNombre("Usuario Mock");
+        usuario.setEmail("usuario@mock.com");
+        usuario.setApellido("Mock Usuario");
+        usuario.setConfirmationToken("");
+        usuario.setFecha_nac(new Date(118, 10, 17));
+        usuario.setActivo(true);
+        usuario.setPassword("passwordMock");
+        usuario.setRol("ROLE_USER");
+        repositorioUsuario.guardar(usuario);
+
+        restauranteInit = new Restaurante(null, "Restaurante Mock", 4.5, "Direccion Mock", "imagenMock.jpg", 50, -34.598940, -58.415550, true, usuario);
         repositorioRestaurante.guardar(restauranteInit);
         repositorioCategoria.guardar(categoriaInit);
         this.platos.add(crearYGuardarPlato("Milanesa de pollo", 20000.0, "Rellena de jyq", restauranteInit, categoriaInit));

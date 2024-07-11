@@ -1,31 +1,49 @@
 INSERT INTO usuario (nombre, apellido, fecha_nac, email, password, rol, activo, confirmationToken) VALUES ('Mateo', 'Fortuna', '2003-11-21', 'admin@admin.com', 'admin', 'ADMIN', TRUE, '');
 SET @idUsuario1 = LAST_INSERT_ID();
 
-INSERT INTO usuario (nombre, apellido, fecha_nac, email, password, rol, activo, confirmationToken) VALUES ('Mateo', 'Fortuna', '2003-11-21', 'user@user.com', 'user', 'USER', TRUE, '');
+INSERT INTO usuario (nombre, apellido, fecha_nac, email, password, rol, activo, confirmationToken) VALUES ('Mateo', 'Fortuna', '2003-11-21', 'resto@resto.com', 'resto', 'RESTO', TRUE, '');
 SET @idUsuario2 = LAST_INSERT_ID();
 
-INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud) VALUES
-    ('El club de la Milanesa', 5.0, 'Pres. Juan Domingo Perón 2700', 'restaurant.jpg', 100, 0, -34.671958, -58.562666);
+INSERT INTO usuario (nombre, apellido, fecha_nac, email, password, rol, activo, confirmationToken) VALUES ('Ivan', 'Carreño', '2000-11-17', 'ivancarr03@gmail.com', '123', 'USER', TRUE, '');
+SET @idUsuario3 = LAST_INSERT_ID();
+
+INSERT INTO usuario (nombre, apellido, fecha_nac, email, password, rol, activo, confirmationToken) VALUES ('Mateo', 'Fortuna', '2003-11-21', 'resto2@resto.com', 'resto', 'RESTO', TRUE, '');
+SET @idUsuario4 = LAST_INSERT_ID();
+
+INSERT INTO usuario (nombre, apellido, fecha_nac, email, password, rol, activo, confirmationToken) VALUES ('Mateo', 'Fortuna', '2003-11-21', 'resto3@resto.com', 'resto', 'RESTO', TRUE, '');
+SET @idUsuario5 = LAST_INSERT_ID();
+
+INSERT INTO usuario (nombre, apellido, fecha_nac, email, password, rol, activo, confirmationToken) VALUES ('Mateo', 'Fortuna', '2003-11-21', 'resto4@resto.com', 'resto', 'RESTO', TRUE, '');
+SET @idUsuario6 = LAST_INSERT_ID();
+
+INSERT INTO usuario (nombre, apellido, fecha_nac, email, password, rol, activo, confirmationToken) VALUES ('Mateo', 'Fortuna', '2003-11-21', 'resto5@resto.com', 'resto', 'RESTO', TRUE, '');
+SET @idUsuario7 = LAST_INSERT_ID();
+
+INSERT INTO usuario (nombre, apellido, fecha_nac, email, password, rol, activo, confirmationToken) VALUES ('Mateo', 'Fortuna', '2003-11-21', 'resto6@resto.com', 'resto', 'RESTO', TRUE, '');
+SET @idUsuario8 = LAST_INSERT_ID();
+
+INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud, habilitado, usuario_id) VALUES
+    ('El club de la Milanesa', 5.0, 'Pres. Juan Domingo Perón 2700', 'restaurant.jpg', 100, 0, -34.671958, -58.562666, TRUE, @idUsuario2);
 SET @idResto1 = LAST_INSERT_ID();
 
-INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud) VALUES
-    ('Mundo Milanesa', 3.0, 'Mármol 2498', 'restaurant1.jpg', 100, 100, -34.674521, -58.564940);
+INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud, habilitado, usuario_id) VALUES
+    ('Mundo Milanesa', 3.0, 'Mármol 2498', 'restaurant1.jpg', 100, 100, -34.674521, -58.564940, TRUE, @idUsuario4);
 SET @idResto2 = LAST_INSERT_ID();
 
-INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud) VALUES
-    ('La Trattoria Bella Italia', 3.0, 'Almafuerte 2550', 'restaurant2.jpg', 100, 100, -34.672880, -58.566442);
+INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud, usuario_id) VALUES
+    ('La Trattoria Bella Italia', 3.0, 'Almafuerte 2550', 'restaurant2.jpg', 100, 100, -34.672880, -58.566442, @idUsuario5);
 SET @idResto3 = LAST_INSERT_ID();
 
-INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud) VALUES
-    ('La Parrilla de Don Juan', 4.0, 'Avenida Central 456', 'restaurant3.jpg', 100, 100, -34.610000, -58.400000);
+INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud, usuario_id) VALUES
+    ('La Parrilla de Don Juan', 4.0, 'Avenida Central 456', 'restaurant3.jpg', 100, 100, -34.610000, -58.400000, @idUsuario6);
 SET @idResto4 = LAST_INSERT_ID();
 
-INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud) VALUES
-    ('El Sabor del Mar', 2.0, 'Calle Principal 123', 'restaurant4.jpg', 100, 100, -34.599000, -58.430000);
+INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud, usuario_id) VALUES
+    ('El Sabor del Mar', 2.0, 'Calle Principal 123', 'restaurant4.jpg', 100, 100, -34.599000, -58.430000, @idUsuario7);
 SET @idResto5 = LAST_INSERT_ID();
 
-INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud) VALUES
-    ('Café Parisien', 4.0, 'Paseo de las Flores 15', 'restaurant5.jpg', 100, 100, -34.600000, -58.410000);
+INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud, usuario_id) VALUES
+    ('Café Parisien', 4.0, 'Paseo de las Flores 15', 'restaurant5.jpg', 100, 100, -34.600000, -58.410000, @idUsuario8);
 SET @idResto6 = LAST_INSERT_ID();
 
 INSERT INTO categoria (descripcion, imagen) VALUES ('ensaladas', 'ensalada.jpg');
@@ -57,6 +75,8 @@ SET @idCategoria9 = LAST_INSERT_ID();
 
 INSERT INTO categoria (descripcion, imagen) VALUES ('asado', 'asado.jpg');
 SET @idCategoria10 = LAST_INSERT_ID();
+
+INSERT INTO usuario_categoria (usuario_id, categoria_id) VALUES (@idUsuario3, @idCategoria1);
 
 -- Inserción de platos para Restaurante 1
 INSERT INTO plato (nombre, precio, descripcion, imagen, id_restaurante, id_categoria, esRecomendado) VALUES
@@ -99,39 +119,39 @@ INSERT INTO plato (nombre, precio, descripcion, imagen, id_restaurante, id_categ
 
 -- Inserción de platos para Restaurante 4
 INSERT INTO plato (nombre, precio, descripcion, imagen, id_restaurante, id_categoria, esRecomendado) VALUES
-    ('Ensalada de Quinoa', 13000, 'Ensalada de quinoa con vegetales y vinagreta de limón', 'ensalada.jpg', @idResto4, @idCategoria1, true),
-    ('Hamburguesa Clásica', 15000, 'Hamburguesa con carne de res, lechuga, tomate y queso', 'hamburguesa.jpg', @idResto4, @idCategoria2, true),
-    ('Milanesa a Caballo', 19000, 'Milanesa de res con huevo frito y papas fritas', 'milanesa.jpg', @idResto4, @idCategoria3, true),
-    ('Helado de Vainilla', 8000, 'Helado de vainilla con sirope de chocolate', 'helado.jpg', @idResto4, @idCategoria4, true),
-    ('Lasagna Bolognesa', 17000, 'Lasagna con salsa bolognesa y bechamel', 'pasta.jpeg', @idResto4, @idCategoria5, true),
-    ('Tabla de Quesos', 16000, 'Variedad de quesos con nueces y miel', 'tapas.jpg', @idResto4, @idCategoria6, true),
-    ('Sopa de Tomate', 11500, 'Sopa caliente de tomate con albahaca', 'sopa.jpg', @idResto4, @idCategoria7, true),
-    ('Pulpo a la Gallega', 22000, 'Pulpo cocido con aceite de oliva y pimentón', 'mariscos.jpg', @idResto4, @idCategoria8, true),
-    ('Pizza Cuatro Quesos', 14500, 'Pizza con mezcla de cuatro quesos: mozzarella, gorgonzola, parmesano y provolone', 'pizza.jpeg', @idResto4, @idCategoria9, true),
-    ('Asado de Tira', 25000, 'Tira de asado a la parrilla con ensalada', 'asado.jpg', @idResto4, @idCategoria10, true);
+                                                                                                         ('Ensalada de Quinoa', 13000, 'Ensalada de quinoa con vegetales y vinagreta de limón', 'ensalada.jpg', @idResto4, @idCategoria1, true),
+                                                                                                         ('Hamburguesa Clásica', 15000, 'Hamburguesa con carne de res, lechuga, tomate y queso', 'hamburguesa.jpg', @idResto4, @idCategoria2, true),
+                                                                                                         ('Milanesa a Caballo', 19000, 'Milanesa de res con huevo frito y papas fritas', 'milanesa.jpg', @idResto4, @idCategoria3, true),
+                                                                                                         ('Helado de Vainilla', 8000, 'Helado de vainilla con sirope de chocolate', 'helado.jpg', @idResto4, @idCategoria4, true),
+                                                                                                         ('Lasagna Bolognesa', 17000, 'Lasagna con salsa bolognesa y bechamel', 'pasta.jpeg', @idResto4, @idCategoria5, true),
+                                                                                                         ('Tabla de Quesos', 16000, 'Variedad de quesos con nueces y miel', 'tapas.jpg', @idResto4, @idCategoria6, true),
+                                                                                                         ('Sopa de Tomate', 11500, 'Sopa caliente de tomate con albahaca', 'sopa.jpg', @idResto4, @idCategoria7, true),
+                                                                                                         ('Pulpo a la Gallega', 22000, 'Pulpo cocido con aceite de oliva y pimentón', 'mariscos.jpg', @idResto4, @idCategoria8, true),
+                                                                                                         ('Pizza Cuatro Quesos', 14500, 'Pizza con mezcla de cuatro quesos: mozzarella, gorgonzola, parmesano y provolone', 'pizza.jpeg', @idResto4, @idCategoria9, true),
+                                                                                                         ('Asado de Tira', 25000, 'Tira de asado a la parrilla con ensalada', 'asado.jpg', @idResto4, @idCategoria10, true);
 
 -- Inserción de platos para Restaurante 5
 INSERT INTO plato (nombre, precio, descripcion, imagen, id_restaurante, id_categoria, esRecomendado) VALUES
-    ('Ensalada de Frutas', 12000, 'Ensalada de frutas frescas con yogurt', 'ensalada.jpg', @idResto5, @idCategoria1, true),
-    ('Hamburguesa Vegana', 16000, 'Hamburguesa con patty de vegetales, lechuga, tomate y aguacate', 'hamburguesa.jpg', @idResto5, @idCategoria2, true),
-    ('Milanesa de Berenjena', 17000, 'Milanesa de berenjena con ensalada de rúcula', 'milanesa.jpg', @idResto5, @idCategoria3, true),
-    ('Panna Cotta', 8500, 'Postre italiano de nata cocida con frutos rojos', 'helado.jpg', @idResto5, @idCategoria4, true),
-    ('Ñoquis de Papa', 16000, 'Ñoquis de papa con salsa de tomate y albahaca', 'pasta.jpeg', @idResto5, @idCategoria5, true),
-    ('Mezze Mediterráneo', 15000, 'Variedad de aperitivos mediterráneos', 'tapas.jpg', @idResto5, @idCategoria6, true),
-    ('Gazpacho Andaluz', 10500, 'Sopa fría de tomate y verduras', 'sopa.jpg', @idResto5, @idCategoria7, true),
-    ('Langostinos al Ajillo', 22000, 'Langostinos salteados con ajo y perejil', 'mariscos.jpg', @idResto5, @idCategoria8, true),
-    ('Pizza Vegetariana', 13500, 'Pizza con variedad de vegetales y mozzarella', 'pizza.jpeg', @idResto5, @idCategoria9, true),
-    ('Morcilla a la Parrilla', 24000, 'Morcilla a la parrilla con papas asadas', 'asado.jpg', @idResto5, @idCategoria10, true);
+                                                                                                         ('Ensalada de Frutas', 12000, 'Ensalada de frutas frescas con yogurt', 'ensalada.jpg', @idResto5, @idCategoria1, true),
+                                                                                                         ('Hamburguesa Vegana', 16000, 'Hamburguesa con patty de vegetales, lechuga, tomate y aguacate', 'hamburguesa.jpg', @idResto5, @idCategoria2, true),
+                                                                                                         ('Milanesa de Berenjena', 17000, 'Milanesa de berenjena con ensalada de rúcula', 'milanesa.jpg', @idResto5, @idCategoria3, true),
+                                                                                                         ('Panna Cotta', 8500, 'Postre italiano de nata cocida con frutos rojos', 'helado.jpg', @idResto5, @idCategoria4, true),
+                                                                                                         ('Ñoquis de Papa', 16000, 'Ñoquis de papa con salsa de tomate y albahaca', 'pasta.jpeg', @idResto5, @idCategoria5, true),
+                                                                                                         ('Mezze Mediterráneo', 15000, 'Variedad de aperitivos mediterráneos', 'tapas.jpg', @idResto5, @idCategoria6, true),
+                                                                                                         ('Gazpacho Andaluz', 10500, 'Sopa fría de tomate y verduras', 'sopa.jpg', @idResto5, @idCategoria7, true),
+                                                                                                         ('Langostinos al Ajillo', 22000, 'Langostinos salteados con ajo y perejil', 'mariscos.jpg', @idResto5, @idCategoria8, true),
+                                                                                                         ('Pizza Vegetariana', 13500, 'Pizza con variedad de vegetales y mozzarella', 'pizza.jpeg', @idResto5, @idCategoria9, true),
+                                                                                                         ('Morcilla a la Parrilla', 24000, 'Morcilla a la parrilla con papas asadas', 'asado.jpg', @idResto5, @idCategoria10, true);
 
 -- Inserción de platos para Restaurante 6
 INSERT INTO plato (nombre, precio, descripcion, imagen, id_restaurante, id_categoria, esRecomendado) VALUES
-    ('Ensalada Caprese', 11500, 'Ensalada de tomate, mozzarella y albahaca con aceite de oliva', 'ensalada.jpg', @idResto6, @idCategoria1, true),
-    ('Hamburguesa de Pollo', 15000, 'Hamburguesa con patty de pollo, lechuga, tomate y mayonesa', 'hamburguesa.jpg', @idResto6, @idCategoria2, true),
-    ('Milanesa a la Suiza', 18000, 'Milanesa de res con queso gratinado y salsa de champiñones', 'milanesa.jpg', @idResto6, @idCategoria3, true),
-    ('Crème Brûlée', 9500, 'Postre francés de crema con caramelo crujiente', 'helado.jpg', @idResto6, @idCategoria4, true),
-    ('Canelones de Espinaca', 16500, 'Canelones rellenos de espinaca y ricota con salsa blanca', 'pasta.jpeg', @idResto6, @idCategoria5, true),
-    ('Bruschettas Variadas', 14000, 'Bruschettas con diferentes toppings', 'tapas.jpg', @idResto6, @idCategoria6, true),
-    ('Minestrone', 11000, 'Sopa italiana de verduras y pasta', 'sopa.jpg', @idResto6, @idCategoria7, true),
-    ('Calamares a la Romana', 21000, 'Calamares fritos con alioli', 'mariscos.jpg', @idResto6, @idCategoria8, true),
-    ('Pizza Napolitana', 13000, 'Pizza con tomate, ajo, orégano y mozzarella', 'pizza.jpeg', @idResto6, @idCategoria9, true),
-    ('Vacío a la Parrilla', 23000, 'Vacío de res a la parrilla con chimichurri', 'asado.jpg', @idResto6, @idCategoria10, true);
+                                                                                                         ('Ensalada Caprese', 11500, 'Ensalada de tomate, mozzarella y albahaca con aceite de oliva', 'ensalada.jpg', @idResto6, @idCategoria1, true),
+                                                                                                         ('Hamburguesa de Pollo', 15000, 'Hamburguesa con patty de pollo, lechuga, tomate y mayonesa', 'hamburguesa.jpg', @idResto6, @idCategoria2, true),
+                                                                                                         ('Milanesa a la Suiza', 18000, 'Milanesa de res con queso gratinado y salsa de champiñones', 'milanesa.jpg', @idResto6, @idCategoria3, true),
+                                                                                                         ('Crème Brûlée', 9500, 'Postre francés de crema con caramelo crujiente', 'helado.jpg', @idResto6, @idCategoria4, true),
+                                                                                                         ('Canelones de Espinaca', 16500, 'Canelones rellenos de espinaca y ricota con salsa blanca', 'pasta.jpeg', @idResto6, @idCategoria5, true),
+                                                                                                         ('Bruschettas Variadas', 14000, 'Bruschettas con diferentes toppings', 'tapas.jpg', @idResto6, @idCategoria6, true),
+                                                                                                         ('Minestrone', 11000, 'Sopa italiana de verduras y pasta', 'sopa.jpg', @idResto6, @idCategoria7, true),
+                                                                                                         ('Calamares a la Romana', 21000, 'Calamares fritos con alioli', 'mariscos.jpg', @idResto6, @idCategoria8, true),
+                                                                                                         ('Pizza Napolitana', 13000, 'Pizza con tomate, ajo, orégano y mozzarella', 'pizza.jpeg', @idResto6, @idCategoria9, true),
+                                                                                                         ('Vacío a la Parrilla', 23000, 'Vacío de res a la parrilla con chimichurri', 'asado.jpg', @idResto6, @idCategoria10, true);

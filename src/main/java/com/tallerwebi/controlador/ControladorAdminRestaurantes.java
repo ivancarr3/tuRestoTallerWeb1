@@ -1,8 +1,8 @@
 package com.tallerwebi.controlador;
 
 
-import com.tallerwebi.dominio.Categoria;
-
+import com.tallerwebi.dominio.Email;
+import com.tallerwebi.servicio.ServicioReserva;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,13 +13,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.tallerwebi.dominio.Restaurante;
 
-import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 import com.tallerwebi.servicio.ServicioRestaurante;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import com.tallerwebi.servicio.ServicioRestaurante;
 
 
 import java.util.List;
@@ -29,12 +26,16 @@ public class ControladorAdminRestaurantes {
 
 
     private final ServicioRestaurante servicioRestaurante;
+    private final ServicioReserva servicioReserva;
+    private final Email servicioEmail;
     private static final String REDIRECT = "redirect:/admin-restaurantes";
 
 
     @Autowired
-    public ControladorAdminRestaurantes(ServicioRestaurante servicioRestaurante) {
+    public ControladorAdminRestaurantes(ServicioRestaurante servicioRestaurante, ServicioReserva servicioReserva, Email servicioEmail) {
         this.servicioRestaurante = servicioRestaurante;
+        this.servicioReserva = servicioReserva;
+        this.servicioEmail = servicioEmail;
     }
 
 
@@ -51,9 +52,8 @@ public class ControladorAdminRestaurantes {
     }
 
 
-    @GetMapping("/admin-restaurantess")
-
-    public ModelAndView homeAdministradorRestaurantes() {
+    @GetMapping("/admin-restaurantes")
+    public ModelAndView homeAdministradorRestaurantes(HttpServletRequest request) {
         List<Restaurante> restaurantesDeshabilitados = servicioRestaurante.obtenerRestaurantesDeshabilitados();
         List<Restaurante> restaurantesHabilitados = servicioRestaurante.obtenerRestaurantesHabilitados();
 
@@ -61,8 +61,8 @@ public class ControladorAdminRestaurantes {
 
         model.addAttribute("restaurantesHabilitados", restaurantesHabilitados);
         model.addAttribute("restaurantesDeshabilitados", restaurantesDeshabilitados);
-
-        return new ModelAndView("admin-restaurantes", model);
+        addUserInfoToModel(model, request);
+        return new ModelAndView("admin-restaurantes-home", model);
     }
 
     @PostMapping("/restaurantes/habilitar")
@@ -93,5 +93,7 @@ public class ControladorAdminRestaurantes {
 
         return new ModelAndView(REDIRECT);
     }
+
+
 }
 

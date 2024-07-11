@@ -39,11 +39,36 @@ public class Email {
         document.addPage(page);
 
         PDPageContentStream contentStream = new PDPageContentStream(document, page);
-        contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 12);
+
+        // Título "tu resto"
+        contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 20);
         contentStream.beginText();
-        contentStream.newLineAtOffset(25, 700);
-        contentStream.showText(text);
+        contentStream.newLineAtOffset(220, 750);
+        contentStream.showText("Tu Resto");
         contentStream.endText();
+
+        // Línea horizontal
+        contentStream.setLineWidth(1);
+        contentStream.moveTo(25, 730);
+        contentStream.lineTo(575, 730);
+        contentStream.stroke();
+
+        // Eliminar caracteres de control del texto
+        text = text.replaceAll("[\\u0000-\\u001F]", "");
+
+        // Texto de la promoción
+        contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 12);
+        String[] lines = text.split("\n");
+        int yPosition = 700; // Comenzamos desde una posición vertical
+
+        for (String line : lines) {
+            contentStream.beginText();
+            contentStream.newLineAtOffset(25, yPosition);
+            contentStream.showText(line);
+            contentStream.endText();
+            yPosition -= 15; // Bajamos la posición vertical para la siguiente línea
+        }
+
         contentStream.close();
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
