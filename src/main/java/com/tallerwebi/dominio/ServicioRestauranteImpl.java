@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import com.tallerwebi.dominio.excepcion.*;
 import com.tallerwebi.servicio.*;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,16 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
     }
 
     @Override
+    public Restaurante consultarPorUsuarioId(Long usuarioId) throws RestauranteNoEncontrado {
+        Restaurante restaurante = repositorioRestaurante.buscarPorUsuarioId(usuarioId);
+        Hibernate.initialize(restaurante.getPlatos());
+        if (restaurante == null) {
+            throw new RestauranteNoEncontrado();
+        }
+        return restaurante;
+    }
+
+    @Override
     public List<Restaurante> get() throws NoHayRestaurantes {
         List<Restaurante> restaurantes = repositorioRestaurante.get();
         if (restaurantes == null || restaurantes.isEmpty()) {
@@ -38,14 +49,6 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
     @Override
     public Restaurante consultar(Long id) throws RestauranteNoEncontrado {
         Restaurante restaurante = repositorioRestaurante.buscar(id);
-        if (restaurante == null) {
-            throw new RestauranteNoEncontrado();
-        }
-        return restaurante;
-    }
-
-    public Restaurante consultarPorUsuarioId(Long usuarioId) throws RestauranteNoEncontrado {
-        Restaurante restaurante = repositorioRestaurante.buscarPorUsuarioId(usuarioId);
         if (restaurante == null) {
             throw new RestauranteNoEncontrado();
         }

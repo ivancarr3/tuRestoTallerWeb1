@@ -32,6 +32,11 @@ public class ServicioCategoriaImpl implements ServicioCategoria {
     }
 
     @Override
+    public Categoria getCategoriaDePlato(Long id) {
+        return repositorioCategoria.buscarCategoria(id);
+    }
+
+    @Override
     public List<Categoria> getCategoriasPorIds(List<Long> ids) throws NoHayCategorias, DemasiadasPreferenciasUsuarioRegistro {
         if(ids.size() > 3){
             throw new DemasiadasPreferenciasUsuarioRegistro();

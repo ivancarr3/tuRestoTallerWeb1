@@ -13,4 +13,5 @@ public interface ServicioCategoria {
     void crearCategoria(Categoria categoria);
     void editarCategoria(Categoria categoria);
     void eliminarCategoria(Categoria categoria);
+    Categoria getCategoriaDePlato(Long id);
 }

@@ -1,18 +1,18 @@
 ﻿<!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <title>Taller Web I</title>
-    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}"/>
     <link
             rel="stylesheet"
             th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"
     />
-    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
     <style>
       body {
         background-image: url("img/kitchen-background.jpg");
@@ -75,6 +75,7 @@
         text-decoration: none;
         margin: 0;
       }
+
     </style>
 </head>
 <body>
@@ -82,58 +83,63 @@
     <a class="header-titulo mb-0" th:href="@{/home}">TuResto</a>
 </header>
 <main role="main" class="container login-container">
-	<div class="container">
-		<div id="loginbox" class="mainbox col-md-6 mx-auto login-box">
-			<form action="#" th:action="@{/register}" method="POST"
-				th:object="${usuario}" accept-charset="UTF-8">
-				<h3 class="login-title">TuResto</h3>
-				<hr class="my-4">
-				<div class="mb-3">
-					<label for="nombre" class="form-label">Nombre</label> <input
-						th:field="*{nombre}" id="nombre" type="text" class="form-control"
-						required>
-				</div>
-				<div class="mb-3">
-					<label for="apellido" class="form-label">Apellido</label> <input
-						th:field="*{apellido}" id="apellido" type="text"
-						class="form-control" required>
-				</div>
-				<div class="mb-3">
-					<label for="fecha_nac" class="form-label">Fecha de nacimiento</label> <input
-					th:field="*{fecha_nac}" id="fecha_nac" type="date"
-						class="form-control" required>
-				</div>
-				<div class="mb-3">
-					<label for="email" class="form-label">Email</label> <input
-						th:field="*{email}" id="email" type="email" class="form-control"
-						required>
-				</div>
-				<div class="mb-3">
-					<label for="password" class="form-label">Contraseña</label> <input
-						th:field="*{password}" type="password" id="password"
-						class="form-control" required>
-				</div>
-				<div class="mb-3">
-					<label for="categorias" class="form-label">Categorías</label>
-					<select id="categorias" name="categoriaIds" class="form-control" multiple>
-						<option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.descripcion}"></option>
-					</select>
-				</div>
-				<button id="btn-login" class="btn btn-lg login-button"
-					type="submit">Registrarse</button>
-				<p th:if="${error != null}" class="alert alert-danger"
-					th:text="'Error ' + ${error}"></p>
-				<p th:if="${mensaje != null}" class="alert alert-info"
-					th:text="${mensaje}"></p>
-			</form>
-			<div class="register-link">
-				<p>¿Ya tienes una cuenta?</p>
-				<p class="mb-0">
-					<a id="ir-a-login" th:href="@{/login}">Iniciar sesión</a>
-				</p>
-			</div>
-		</div>
-	</div>
+    <div class="container">
+        <div id="loginbox" class="mainbox col-md-6 mx-auto login-box">
+            <form action="#" th:action="@{/register}" method="POST"
+                  th:object="${usuario}" accept-charset="UTF-8">
+                <h3 class="login-title">TuResto</h3>
+                <hr class="my-4">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre</label> <input
+                        th:field="*{nombre}" id="nombre" type="text" class="form-control"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="apellido" class="form-label">Apellido</label> <input
+                        th:field="*{apellido}" id="apellido" type="text"
+                        class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="fecha_nac" class="form-label">Fecha de nacimiento</label> <input
+                        th:field="*{fecha_nac}" id="fecha_nac" type="date"
+                        class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label> <input
+                        th:field="*{email}" id="email" type="email" class="form-control"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label> <input
+                        th:field="*{password}" type="password" id="password"
+                        class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="categorias" class="form-label">Categorías</label>
+                    <div id="categorias">
+                        <div th:each="categoria : ${categorias}">
+                            <input type="checkbox" th:id="'categoria_' + ${categoria.id}" th:name="categoriaIds"
+                                   th:value="${categoria.id}">
+                            <label th:for="'categoria_' + ${categoria.id}" th:text="${categoria.descripcion}"></label>
+                        </div>
+                    </div>
+                </div>
+                <button id="btn-login" class="btn btn-lg login-button"
+                        type="submit">Registrarse
+                </button>
+                <p th:if="${error != null}" class="alert alert-danger"
+                   th:text="'Error ' + ${error}"></p>
+                <p th:if="${mensaje != null}" class="alert alert-info"
+                   th:text="${mensaje}"></p>
+            </form>
+            <div class="register-link">
+                <p>¿Ya tienes una cuenta?</p>
+                <p class="mb-0">
+                    <a id="ir-a-login" th:href="@{/login}">Iniciar sesión</a>
+                </p>
+            </div>
+        </div>
+    </div>
 </main>
 <script
         type="text/javascript"
