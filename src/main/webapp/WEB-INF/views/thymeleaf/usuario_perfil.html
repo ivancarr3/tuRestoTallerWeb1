@@ -100,7 +100,7 @@
                     <p class="fw-light" th:text="'Para ' + ${reservaDTO.reserva.cantidadPersonas} + ' personas'"></p>
                     <div th:if="${!reservaDTO.pagada}" style="margin-bottom: 1em;">
                         <a class="btn btn-success" target="_blank" referrerpolicy="no-referrer"
-                           th:href="${reservaDTO.reserva.link}">Pagar <i class="fas fa-dollar-sign"></i></a>
+                           th:href="${reservaDTO.reserva.link}">Pagada </i></a>
                     </div>
                     <div th:if="${reservaDTO.pagada}">
                         <p class="text-success">PAGADA</p>
