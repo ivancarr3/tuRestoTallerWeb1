@@ -42,12 +42,13 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Reserva> reservas;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "usuario_categoria",
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "categoria_id")
     )
+
     private List<Categoria> categorias;
 
     public Usuario() {}
@@ -59,8 +60,8 @@ public class Usuario {
         this.rol = rol;
         this.activo = false;
         this.confirmationToken = "";
-        this.nombre = "mateo";
-        this.apellido = "fortuna";
+        this.nombre = nombre;
+        this.apellido = apellido;
         this.fecha_nac = new Date();
     }
 

@@ -28,34 +28,34 @@ INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, 
     ('Café Parisien', 4.0, 'Paseo de las Flores 15', 'restaurant5.jpg', 100, 100, -34.600000, -58.410000);
 SET @idResto6 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('ensaladas');
+INSERT INTO categoria (descripcion, imagen) VALUES ('ensaladas', 'ensalada.jpg');
 SET @idCategoria1 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('hamburguesas');
+INSERT INTO categoria (descripcion, imagen) VALUES ('hamburguesas', 'hamburguesa.jpg');
 SET @idCategoria2 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('milanesas');
+INSERT INTO categoria (descripcion, imagen) VALUES ('milanesas', 'milanesa.jpg');
 SET @idCategoria3 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('postres');
+INSERT INTO categoria (descripcion, imagen) VALUES ('postres', 'helado.jpg');
 SET @idCategoria4 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('pastas');
+INSERT INTO categoria (descripcion, imagen) VALUES ('pastas', 'pasta.jpeg');
 SET @idCategoria5 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('picadas');
+INSERT INTO categoria (descripcion, imagen) VALUES ('picadas', 'picadas.jpg');
 SET @idCategoria6 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('sopas');
+INSERT INTO categoria (descripcion, imagen) VALUES ('sopas', 'sopa.jpg');
 SET @idCategoria7 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('mariscos');
+INSERT INTO categoria (descripcion, imagen) VALUES ('mariscos', 'mariscos.jpg');
 SET @idCategoria8 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('pizzas');
+INSERT INTO categoria (descripcion, imagen) VALUES ('pizzas', 'pizza.jpeg');
 SET @idCategoria9 = LAST_INSERT_ID();
 
-INSERT INTO categoria (descripcion) VALUES ('asado');
+INSERT INTO categoria (descripcion, imagen) VALUES ('asado', 'asado.jpg');
 SET @idCategoria10 = LAST_INSERT_ID();
 
 --Restaurante 1

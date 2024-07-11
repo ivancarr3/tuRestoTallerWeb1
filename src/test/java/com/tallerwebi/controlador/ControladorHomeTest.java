@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import com.tallerwebi.dominio.Plato;
 import com.tallerwebi.dominio.excepcion.NoExisteDireccion;
 import com.tallerwebi.dominio.excepcion.NoHayPlatos;
+import com.tallerwebi.servicio.ServicioCategoria;
+import com.tallerwebi.servicio.ServicioUsuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,6 +38,8 @@ public class ControladorHomeTest {
     private ServicioRestaurante servicioRestauranteMock;
     private ServicioPlato servicioPlato;
     private ServicioGeocoding servicioGeocoding;
+    private ServicioUsuario servicioUsuarioMock;
+    private ServicioCategoria servicioCategoriaMock;
     private HttpServletRequest request;
 
     @BeforeEach
@@ -43,7 +47,7 @@ public class ControladorHomeTest {
         servicioRestauranteMock = mock(ServicioRestaurante.class);
         servicioPlato = mock(ServicioPlato.class);
         this.controladorHome = new ControladorHome(this.servicioRestauranteMock, this.servicioPlato,
-                this.servicioGeocoding);
+                this.servicioGeocoding, this.servicioUsuarioMock, this.servicioCategoriaMock);
         this.request = mock(HttpServletRequest.class);
     }
 

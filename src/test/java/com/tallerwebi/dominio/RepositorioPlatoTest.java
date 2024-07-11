@@ -38,7 +38,7 @@ public class RepositorioPlatoTest {
 
     private final List<Plato> platos = new ArrayList<>();
     private final Restaurante restauranteInit = new Restaurante(null, "Restaurante Mock", 4.5, "Direccion Mock", "imagenMock.jpg", 50, -34.598940, -58.415550);
-    private final Categoria categoriaInit = new Categoria(null, "Categoria Mock");
+    private final Categoria categoriaInit = new Categoria(null, "Categoria Mock", "Img Mock");
 
     @BeforeEach
     public void init() {
@@ -151,7 +151,7 @@ public class RepositorioPlatoTest {
 
     @Test
     public void queDevuelvaPlatosAgrupadosPorCategoria() {
-        Categoria otraCategoria = new Categoria(null, "Otra Categoria");
+        Categoria otraCategoria = new Categoria(null, "Otra Categoria", "Otra img");
         repositorioCategoria.guardar(otraCategoria);
 
         crearYGuardarPlato("Pizza", 25000.0, "Pizza con mucho queso", this.restauranteInit, otraCategoria);
