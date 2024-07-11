@@ -19,7 +19,8 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
     private final ServicioGeocoding servicioGeocoding;
 
     @Autowired
-    public ServicioRestauranteImpl(RepositorioRestaurante repositorioRestaurante, ServicioReserva servicioReserva, ServicioGeocoding servicioGeocoding) {
+    public ServicioRestauranteImpl(RepositorioRestaurante repositorioRestaurante, ServicioReserva servicioReserva,
+            ServicioGeocoding servicioGeocoding) {
         this.repositorioRestaurante = repositorioRestaurante;
         this.servicioReserva = servicioReserva;
         this.servicioGeocoding = servicioGeocoding;
@@ -36,11 +37,11 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
 
     @Override
     public Restaurante consultar(Long id) throws RestauranteNoEncontrado {
-            Restaurante restaurante = repositorioRestaurante.buscar(id);
-            if (restaurante == null) {
-                throw new RestauranteNoEncontrado();
-            }
-            return restaurante;
+        Restaurante restaurante = repositorioRestaurante.buscar(id);
+        if (restaurante == null) {
+            throw new RestauranteNoEncontrado();
+        }
+        return restaurante;
     }
 
     @Override
@@ -53,7 +54,8 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
     }
 
     @Override
-    public List<Restaurante> consultarRestaurantePorFiltros(Double estrellas, String tipoDeOrden) throws RestauranteNoEncontrado {
+    public List<Restaurante> consultarRestaurantePorFiltros(Double estrellas, String tipoDeOrden)
+            throws RestauranteNoEncontrado {
         List<Restaurante> restaurantes;
         if (estrellas != null && tipoDeOrden != null) {
             restaurantes = repositorioRestaurante.buscarPorEstrellasYOrdenar(estrellas, tipoDeOrden);
@@ -132,7 +134,8 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
     }
 
     @Override
-    public List<Restaurante> filtrarPorDireccion(String direccion, double radio) throws NoHayRestaurantes, NoExisteDireccion {
+    public List<Restaurante> filtrarPorDireccion(String direccion, double radio)
+            throws NoHayRestaurantes, NoExisteDireccion {
         ServicioGeocoding.Coordenadas coordenadas = servicioGeocoding.obtenerCoordenadas(direccion);
         if (coordenadas == null) {
             throw new NoExisteDireccion();
@@ -186,4 +189,5 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
     public void eliminarRestaurantePorId(Long id) {
         repositorioRestaurante.eliminarRestaurantePorId(id);
     }
+
 }

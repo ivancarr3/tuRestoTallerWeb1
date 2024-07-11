@@ -1,65 +1,70 @@
-<!DOCTYPE HTML>
+﻿<!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
     <title>Taller Web I</title>
     <link rel="stylesheet" th:href="@{/css/header.css}" />
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link
+            rel="stylesheet"
+            th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"
+    />
     <style>
-        body {
-            background-image: url('img/kitchen-background.jpg'); 
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-        .login-container {
-            margin-top: 7em;
-        }
-        .login-box {
-            margin-top: 50px;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            padding: 2em;
-        }
-        .login-title {
-            font-size: 2em;
-            font-weight: bold;
-            margin-bottom: 1em;
-            text-align: center;
-        }
-        .login-button {
-            width: 100%;
-            padding: 0.75em;
-            font-size: 1.25em;
-            background-color: #00BFFF; /* Celeste */
-            border: none;
-            color: white;
-            border-radius: 5px;
-        }
-        .login-button:hover {
-            background-color: #00BFFF; /* Celeste */
-        }
-        .alert {
-            margin-top: 1em;
-        }
-        .register-link {
-            text-align: center;
-            margin-top: 1.5em;
-        }
-        header {
-            background-color: black;
-            padding: 1em;
-            text-align: center;
-        }
-        .header-titulo {
-            color: white;
-            font-size: 2em;
-            text-decoration: none;
-            margin: 0;
-        }
+      body {
+        background-image: url("img/kitchen-background.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      .login-container {
+        margin-top: 7em;
+      }
+      .login-box {
+        margin-top: 50px;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 2em;
+      }
+      .login-title {
+        font-size: 2em;
+        font-weight: bold;
+        margin-bottom: 1em;
+        text-align: center;
+      }
+      .login-button {
+        width: 100%;
+        padding: 0.75em;
+        font-size: 1.25em;
+        background-color: #00bfff; /* Celeste */
+        border: none;
+        color: white;
+        border-radius: 5px;
+      }
+      .login-button:hover {
+        background-color: #00bfff; /* Celeste */
+      }
+      .alert {
+        margin-top: 1em;
+      }
+      .register-link {
+        text-align: center;
+        margin-top: 1.5em;
+      }
+      header {
+        background-color: black;
+        padding: 1em;
+        text-align: center;
+      }
+      .header-titulo {
+        color: white;
+        font-size: 2em;
+        text-decoration: none;
+        margin: 0;
+      }
     </style>
 </head>
 <body>
@@ -69,30 +74,66 @@
 <main role="main" class="container login-container">
     <div class="container">
         <div id="loginbox" class="mainbox col-md-6 mx-auto login-box">
-            <form action="#" th:action="@{/validar-login}" method="POST" th:object="${datosLogin}">
+            <form
+                    action="#"
+                    th:action="@{/validar-login}"
+                    method="POST"
+                    th:object="${datosLogin}"
+            >
                 <h3 class="login-title">TuResto</h3>
-                <hr class="my-4">
+                <hr class="my-4" />
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input th:field="*{email}" id="email" type="email" class="form-control" required>
+                    <input
+                            th:field="*{email}"
+                            id="email"
+                            type="email"
+                            class="form-control"
+                            required
+                    />
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Contraseña</label>
-                    <input th:field="*{password}" type="password" id="password" class="form-control" required>
+                    <input
+                            th:field="*{password}"
+                            type="password"
+                            id="password"
+                            class="form-control"
+                            required
+                    />
                 </div>
-                <button id="btn-login" class="btn btn-lg login-button" type="submit">Login</button>
-                <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}"></p>
-                <p th:if="${mensaje != null}" class="alert alert-info" th:text="${mensaje}"></p>
+                <button
+                        id="btn-login"
+                        class="btn btn-lg login-button"
+                        type="submit"
+                >
+                    Login
+                </button>
+                <p
+                        th:if="${error != null}"
+                        class="alert alert-danger"
+                        th:text="'Error ' + ${error}"
+                ></p>
+                <p
+                        th:if="${mensaje != null}"
+                        class="alert alert-info"
+                        th:text="${mensaje}"
+                ></p>
             </form>
             <div class="register-link">
                 <p>¿No tienes una cuenta?</p>
                 <p class="mb-0">
-                    <a id="ir-a-registrarme" th:href="@{/nuevo-usuario}">Registrarme</a>
+                    <a id="ir-a-registrarme" th:href="@{/nuevo-usuario}"
+                    >Registrarme</a
+                    >
                 </p>
             </div>
         </div>
     </div>
 </main>
-<script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script
+        type="text/javascript"
+        th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"
+></script>
 </body>
 </html>

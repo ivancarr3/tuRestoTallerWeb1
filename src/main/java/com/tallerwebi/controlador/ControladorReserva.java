@@ -1,22 +1,31 @@
 package com.tallerwebi.controlador;
 
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.tallerwebi.dominio.Reserva;
 import com.tallerwebi.dominio.Restaurante;
 import com.tallerwebi.dominio.Usuario;
-import com.tallerwebi.dominio.excepcion.*;
+import com.tallerwebi.dominio.excepcion.DatosInvalidosReserva;
+import com.tallerwebi.dominio.excepcion.EmailInvalido;
+import com.tallerwebi.dominio.excepcion.EspacioNoDisponible;
+import com.tallerwebi.dominio.excepcion.FechaAnterior;
+import com.tallerwebi.dominio.excepcion.NoExisteUsuario;
+import com.tallerwebi.dominio.excepcion.RestauranteNoEncontrado;
 import com.tallerwebi.servicio.ServicioMercadoPago;
 import com.tallerwebi.servicio.ServicioReserva;
 import com.tallerwebi.servicio.ServicioRestaurante;
 import com.tallerwebi.servicio.ServicioUsuario;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.Date;
 
 @Controller
 public class ControladorReserva {
@@ -26,7 +35,6 @@ public class ControladorReserva {
 	private final ServicioUsuario servicioUsuario;
 	private final ServicioMercadoPago servicioMercadoPago;
 
-	private static final String VIEW_NAME = "errReserva";
 	private static final String ERROR_NAME = "errorForm";
 	private static final String RESERVA_EXITOSA_VIEW = "reserva_exitosa";
 	private static final String REDIRECT_HOME_VIEW = "redirect:/home";
@@ -49,7 +57,6 @@ public class ControladorReserva {
 			model.put("usuarioLogueado", false);
 			model.put("rolUsuario", null);
 		}
-
 	}
 
 	@PostMapping(path = "/reservar")
@@ -61,13 +68,18 @@ public class ControladorReserva {
 
 			Restaurante restauranteEncontrado = servicioRestaurante.consultar(datosReserva.getIdRestaurante());
 			Usuario usuario = obtenerIdUsuarioAutenticado(request);
+
 			Reserva reserva = servicioReserva.crearReserva(restauranteEncontrado, datosReserva.getNombreForm(),
 					datosReserva.getEmailForm(), datosReserva.getNumForm(), datosReserva.getDniForm(),
 					datosReserva.getCantPersonas(), datosReserva.getFechaForm(), usuario);
 
 			String idPago = servicioMercadoPago.armarPago(restauranteEncontrado, reserva, 5000);
+			String linkDePago = "https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=" + idPago;
 
-			model.put("urlpago", "https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=" + idPago);
+			reserva.setLink(linkDePago);
+			servicioReserva.actualizar(reserva);
+			model.put("urlpago", linkDePago);
+			
 			addUserInfoToModel(model, request);
 			return new ModelAndView(RESERVA_EXITOSA_VIEW, model);
 		} catch (RestauranteNoEncontrado | DatosInvalidosReserva | FechaAnterior | EmailInvalido | EspacioNoDisponible e) {

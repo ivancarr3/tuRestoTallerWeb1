@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <meta
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
@@ -27,21 +27,49 @@
 </head>
 <body>
 <header class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid d-flex align-items-center justify-content-between">
-        <a class="header-titulo mb-0" style="text-decoration: none; color: black;" th:href="@{/home}">TuResto</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarUserMenu"
-                aria-controls="navbarUserMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <div
+            class="container-fluid d-flex align-items-center justify-content-between"
+    >
+        <a
+                class="header-titulo mb-0"
+                style="text-decoration: none; color: black"
+                th:href="@{/home}"
+        >TuResto</a
+        >
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarUserMenu"
+                aria-controls="navbarUserMenu"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarUserMenu">
+        <div
+                class="collapse navbar-collapse justify-content-end"
+                id="navbarUserMenu"
+        >
             <ul class="navbar-nav ml-auto pr-3">
                 <li th:if="${usuarioLogueado}" class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
+                    <a
+                            class="nav-link dropdown-toggle"
+                            href="#"
+                            id="navbarDropdownMenuLink"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                    >
                         <i class="fas fa-user"></i>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" th:href="@{/usuarioPerfil}">Ver perfil</a>
+                    <div
+                            class="dropdown-menu dropdown-menu-end"
+                            aria-labelledby="navbarDropdownMenuLink"
+                    >
+                        <a class="dropdown-item" th:href="@{/usuarioPerfil}"
+                        >Ver perfil</a
+                        >
                         <a class="dropdown-item" th:href="@{/logout}">Cerrar sesión</a>
                     </div>
                 </li>
@@ -56,9 +84,20 @@
     <div class="container mt-5">
         <div class="mainbox col-md-12 mx-auto bg-white shadow rounded p-4">
             <h3>Tu reserva ha sido tomada pero está pendiente de pago</h3>
-            <p class="mb-3">Para realizar el pago, visita <a th:href="${urlpago}" target="_blank">este link</a>. La reserva será guardada por 30 minutos.</p>
-            <p class="mb-0">En caso de no efectuarlo, su reserva será dada de baja.</p>
-            <a href="/turesto/home" style="text-decoration: none;" class="btn btn-primary mt-3">Volver al menú <i class="fas fa-home"></i></a>
+            <p class="mb-3">
+                Para realizar el pago, visita
+                <a th:href="${urlpago}" target="_blank">este link</a>. La reserva
+                será guardada por 30 minutos.
+            </p>
+            <p class="mb-0">
+                En caso de no efectuarlo, su reserva será dada de baja.
+            </p>
+            <a
+                    href="/turesto/home"
+                    style="text-decoration: none"
+                    class="btn btn-primary mt-3"
+            >Volver al menú <i class="fas fa-home"></i
+            ></a>
         </div>
     </div>
 </main>

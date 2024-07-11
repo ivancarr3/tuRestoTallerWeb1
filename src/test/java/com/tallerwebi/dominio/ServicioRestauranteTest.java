@@ -411,7 +411,55 @@ public class ServicioRestauranteTest {
         } catch (Exception e) {
             fail();
         }
+    }
 
+    @Test
+    public void testObtenerRestaurantesDeshabilitados() {
+        List<Restaurante> restaurantesDeshabilitados = List.of(new Restaurante(), new Restaurante());
+        when(repositorioRestaurante.obtenerRestaurantesDeshabilitados()).thenReturn(restaurantesDeshabilitados);
+
+        List<Restaurante> resultado = servicioRestaurante.obtenerRestaurantesDeshabilitados();
+
+        assertThat(resultado, hasSize(2));
+        verify(repositorioRestaurante, times(1)).obtenerRestaurantesDeshabilitados();
+    }
+
+    @Test
+    public void testObtenerRestaurantesHabilitados() {
+        List<Restaurante> restaurantesHabilitados = List.of(new Restaurante(), new Restaurante());
+        when(repositorioRestaurante.obtenerRestaurantesHabilitados()).thenReturn(restaurantesHabilitados);
+
+        List<Restaurante> resultado = servicioRestaurante.obtenerRestaurantesHabilitados();
+
+        assertThat(resultado, hasSize(2));
+        verify(repositorioRestaurante, times(1)).obtenerRestaurantesHabilitados();
+    }
+
+    @Test
+    public void testHabilitarRestaurante() {
+        doNothing().when(repositorioRestaurante).habilitarRestaurante(EXISTING_ID);
+
+        servicioRestaurante.habilitarRestaurante(EXISTING_ID);
+
+        verify(repositorioRestaurante, times(1)).habilitarRestaurante(EXISTING_ID);
+    }
+
+    @Test
+    public void testDeshabilitarRestaurante() {
+        doNothing().when(repositorioRestaurante).deshabilitarRestaurante(EXISTING_ID);
+
+        servicioRestaurante.deshabilitarRestaurante(EXISTING_ID);
+
+        verify(repositorioRestaurante, times(1)).deshabilitarRestaurante(EXISTING_ID);
+    }
+
+    @Test
+    public void testEliminarRestaurantePorId() {
+        doNothing().when(repositorioRestaurante).eliminarRestaurantePorId(EXISTING_ID);
+
+        servicioRestaurante.eliminarRestaurantePorId(EXISTING_ID);
+
+        verify(repositorioRestaurante, times(1)).eliminarRestaurantePorId(EXISTING_ID);
     }
 }
 

@@ -12,6 +12,7 @@ import com.tallerwebi.dominio.Reserva;
 import com.tallerwebi.dominio.Usuario;
 import com.tallerwebi.dominio.excepcion.NoExisteUsuario;
 import com.tallerwebi.dominio.excepcion.NoHayReservas;
+import com.tallerwebi.dominio.excepcion.NoHayReservasPasadas;
 import com.tallerwebi.dominio.excepcion.ReservaNoEncontrada;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,7 +47,7 @@ public class ControladorUsuarioTest {
     }
 
     @Test
-    public void elUsuarioCargaSuPerfil() throws NoExisteUsuario, NoHayReservas {
+    public void elUsuarioCargaSuPerfil() throws NoExisteUsuario, NoHayReservas, NoHayReservasPasadas {
         Usuario usuarioMock = new Usuario();
         usuarioMock.setId(1L);
         when(servicioUsuarioMock.buscar("test@example.com")).thenReturn(usuarioMock);
@@ -66,18 +67,19 @@ public class ControladorUsuarioTest {
     }
 
     @Test
-    public void queLanceExcepcionAlCargarUsuarioPerfilSinReservas() throws NoHayReservas, NoExisteUsuario {
+    public void queLanceExcepcionAlCargarUsuarioPerfilSinReservas() throws NoHayReservas, NoExisteUsuario, NoHayReservasPasadas {
         Usuario usuarioMock = new Usuario();
         usuarioMock.setId(1L);
+        List<Reserva> reservas = new ArrayList<>();
         when(servicioUsuarioMock.buscar("test@example.com")).thenReturn(usuarioMock);
-        when(servicioReservaMock.buscarReservasDelUsuarioPasadas(usuarioMock.getId())).thenReturn(new ArrayList<>());
+        when(servicioReservaMock.buscarReservasDelUsuario(usuarioMock.getId())).thenReturn(reservas);
         ModelAndView modelAndView = controladorUsuario.cargarUsuarioPerfil(this.request);
 
-        assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("No tienes próximas reservas."));
+        assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("No hay próximas reservas."));
     }
 
     @Test
-    public void queLanceExcepcionAlCargarUsuarioSiNoEncuentraUsuario() throws NoHayReservas, NoExisteUsuario {
+    public void queLanceExcepcionAlCargarUsuarioSiNoEncuentraUsuario() throws NoHayReservas, NoExisteUsuario, NoHayReservasPasadas {
         Usuario usuarioMock = new Usuario();
         usuarioMock.setId(1L);
         when(servicioUsuarioMock.buscar("test@example.com")).thenReturn(null);
@@ -88,7 +90,7 @@ public class ControladorUsuarioTest {
     }
 
     @Test
-    public void queLanceExcepcionGeneralSiHayErrorDelServidorAlCargarUsuario() throws NoHayReservas, NoExisteUsuario {
+    public void queLanceExcepcionGeneralSiHayErrorDelServidorAlCargarUsuario() throws NoHayReservas, NoExisteUsuario, NoHayReservasPasadas {
         Usuario usuarioMock = new Usuario();
         usuarioMock.setId(1L);
         when(servicioUsuarioMock.buscar("test@example.com")).thenReturn(usuarioMock);
@@ -99,7 +101,7 @@ public class ControladorUsuarioTest {
     }
 
     @Test
-    public void historialReservas_conReservasPasadas_devuelveVistaConReservas() throws NoExisteUsuario, NoHayReservas {
+    public void historialReservas_conReservasPasadas_devuelveVistaConReservas() throws NoExisteUsuario, NoHayReservas, NoHayReservasPasadas {
         Usuario usuarioMock = new Usuario();
         usuarioMock.setId(1L);
         when(servicioUsuarioMock.buscar("test@example.com")).thenReturn(usuarioMock);
@@ -115,12 +117,12 @@ public class ControladorUsuarioTest {
     }
 
     @Test
-    public void historialReservas_sinReservasPasadas_lanzaExcepcion() throws NoExisteUsuario, NoHayReservas {
+    public void historialReservas_sinReservasPasadas_lanzaExcepcion() throws NoExisteUsuario, NoHayReservas, NoHayReservasPasadas {
         Usuario usuarioMock = new Usuario();
         usuarioMock.setId(1L);
         when(servicioUsuarioMock.buscar("test@example.com")).thenReturn(usuarioMock);
 
-        doThrow(new NoHayReservas()).when(servicioReservaMock).buscarReservasDelUsuarioPasadas(1L);
+        doThrow(new NoHayReservasPasadas()).when(servicioReservaMock).buscarReservasDelUsuarioPasadas(1L);
 
         ModelAndView modelAndView = controladorUsuario.historialReservas(request);
 

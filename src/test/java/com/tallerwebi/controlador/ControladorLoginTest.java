@@ -26,7 +26,6 @@ import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import com.tallerwebi.dominio.excepcion.UsuarioNoActivado;
 import com.tallerwebi.servicio.ServicioLogin;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

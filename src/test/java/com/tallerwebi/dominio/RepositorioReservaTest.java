@@ -59,7 +59,7 @@ public class RepositorioReservaTest {
 
 	private Reserva crearYGuardarReserva(String nombre, Integer cantidadPersonas) {
 		Reserva reserva = new Reserva(null, restauranteInit, nombre, "test@mail.com", 1234, 1234, cantidadPersonas,
-				this.fecha, this.usuarioInit);
+				this.fecha, this.usuarioInit, null);
 		repositorioReserva.guardar(reserva);
 		return reserva;
 	}

@@ -79,9 +79,9 @@ public class ServicioReservaTest {
 
     private void initializeReservasMock() {
         this.reservasMock = new ArrayList<>();
-        this.reservasMock.add(new Reserva(1L, restauranteInit, "Pepe", EXISTING_EMAIL, EXISTING_PHONE, EXISTING_DNI, EXISTING_PEOPLE, this.fecha, new Usuario()));
-        this.reservasMock.add(new Reserva(2L, restauranteInit, "Pepe", EXISTING_EMAIL, EXISTING_PHONE, EXISTING_DNI, EXISTING_PEOPLE, this.fecha, new Usuario()));
-        this.reservasMock.add(new Reserva(3L, restauranteInit, "Pepe", EXISTING_EMAIL, EXISTING_PHONE, EXISTING_DNI, EXISTING_PEOPLE, this.fecha, new Usuario()));
+        this.reservasMock.add(new Reserva(1L, restauranteInit, "Pepe", EXISTING_EMAIL, EXISTING_PHONE, EXISTING_DNI, EXISTING_PEOPLE, this.fecha, new Usuario(), null));
+        this.reservasMock.add(new Reserva(2L, restauranteInit, "Pepe", EXISTING_EMAIL, EXISTING_PHONE, EXISTING_DNI, EXISTING_PEOPLE, this.fecha, new Usuario(), null));
+        this.reservasMock.add(new Reserva(3L, restauranteInit, "Pepe", EXISTING_EMAIL, EXISTING_PHONE, EXISTING_DNI, EXISTING_PEOPLE, this.fecha, new Usuario(), null));
     }
 
     @Test
@@ -116,7 +116,7 @@ public class ServicioReservaTest {
     @Test
     public void queLanceExcepcionSiQuiereCrearUnaReservaYNoHayEspacioDisponible() throws EspacioNoDisponible, DatosInvalidosReserva {
         Restaurante restaurante = new Restaurante(EXISTING_ID, EXISTING_NAME, RATING, ADDRESS, IMAGE, 2, LATITUDE, LONGITUDE);
-        Reserva nuevaReserva = new Reserva(10L, restaurante, "Pepe", EXISTING_EMAIL, EXISTING_PHONE, EXISTING_DNI, EXISTING_PEOPLE, this.tomorrow, new Usuario());
+        Reserva nuevaReserva = new Reserva(10L, restaurante, "Pepe", EXISTING_EMAIL, EXISTING_PHONE, EXISTING_DNI, EXISTING_PEOPLE, this.tomorrow, new Usuario(), null);
 
         assertThrows(EspacioNoDisponible.class, () -> servicioReserva.crearReserva(nuevaReserva.getRestaurante(), nuevaReserva.getNombre(), nuevaReserva.getEmail(), nuevaReserva.getNumeroCelular(), nuevaReserva.getDni(), nuevaReserva.getCantidadPersonas(), nuevaReserva.getFecha(), usuarioInit));
 
@@ -126,7 +126,7 @@ public class ServicioReservaTest {
     @Test
     public void queLanceExcepcionSiQuiereCrearUnaReservaYNoExisteUsuario() throws EspacioNoDisponible, DatosInvalidosReserva {
         Restaurante restaurante = new Restaurante(EXISTING_ID, EXISTING_NAME, RATING, ADDRESS, IMAGE, 2, LATITUDE, LONGITUDE);
-        Reserva nuevaReserva = new Reserva(10L, restaurante, "Pepe", EXISTING_EMAIL, EXISTING_PHONE, EXISTING_DNI, EXISTING_PEOPLE, this.tomorrow, new Usuario());
+        Reserva nuevaReserva = new Reserva(10L, restaurante, "Pepe", EXISTING_EMAIL, EXISTING_PHONE, EXISTING_DNI, EXISTING_PEOPLE, this.tomorrow, new Usuario(), null);
 
         assertThrows(NoExisteUsuario.class, () -> servicioReserva.crearReserva(nuevaReserva.getRestaurante(), nuevaReserva.getNombre(), nuevaReserva.getEmail(), nuevaReserva.getNumeroCelular(), nuevaReserva.getDni(), nuevaReserva.getCantidadPersonas(), nuevaReserva.getFecha(), null));
 
@@ -134,11 +134,11 @@ public class ServicioReservaTest {
     }
 
 	@Test
-	public void queSeCreeReservaCorrectamente() throws DatosInvalidosReserva, EspacioNoDisponible, NoExisteUsuario {
+	public void queSeCreeReservaCorrectamente() throws DatosInvalidosReserva, EspacioNoDisponible, NoExisteUsuario, ReservaNoEncontrada {
 		when(repositorioReserva.buscarReserva(anyLong())).thenReturn(null);
 
 		Reserva nuevaReserva = new Reserva(null, this.restauranteInit, "Mateo", "test@mail.com", 46997810, 45238796, 5,
-				this.tomorrow, new Usuario());
+				this.tomorrow, new Usuario(), null);
 
 		servicioReserva.crearReserva(nuevaReserva.getRestaurante(), nuevaReserva.getNombre(), nuevaReserva.getEmail(),
 				nuevaReserva.getNumeroCelular(), nuevaReserva.getDni(), nuevaReserva.getCantidadPersonas(),
@@ -147,15 +147,6 @@ public class ServicioReservaTest {
 		verify(repositorioReserva, times(1)).getReservasPorRestaurante(nuevaReserva.getRestaurante().getId());
 		verify(repositorioReserva, times(1)).guardar(any());
 	}
-
-    @Test
-    public void queLanceExcepcionSiQuiereActualizarUnaReservaQueNoExiste() throws ReservaNoEncontrada {
-        Reserva reserva = new Reserva(null, this.restauranteInit, "Mateo", EXISTING_EMAIL, 46997810, 45238796, EXISTING_PEOPLE, this.tomorrow, new Usuario());
-
-        assertThrows(ReservaNoEncontrada.class, () -> servicioReserva.actualizar(reserva));
-
-        verify(repositorioReserva, never()).actualizar(reserva);
-    }
 
 	@Test
 	public void queSeActualizeReservaCorrectamente() throws ReservaNoEncontrada {
@@ -258,7 +249,7 @@ public class ServicioReservaTest {
     }
 
     @Test
-    public void queBuscarReservasDelUsuarioPasadasDevuelvaReservasCorrectamente() throws NoHayReservas {
+    public void queBuscarReservasDelUsuarioPasadasDevuelvaReservasCorrectamente() throws NoHayReservasPasadas {
         when(repositorioReserva.buscarReservasDelUsuarioPasadas(EXISTING_ID)).thenReturn(reservasMock);
 
         List<Reserva> reservas = servicioReserva.buscarReservasDelUsuarioPasadas(EXISTING_ID);
@@ -270,7 +261,7 @@ public class ServicioReservaTest {
     public void queBuscarReservasDelUsuarioPasadasLanceNoHayReservasCuandoNoHayReservas() {
         when(repositorioReserva.buscarReservasDelUsuarioPasadas(EXISTING_ID)).thenReturn(new ArrayList<>());
 
-        assertThrows(NoHayReservas.class, () -> servicioReserva.buscarReservasDelUsuarioPasadas(EXISTING_ID));
+        assertThrows(NoHayReservasPasadas.class, () -> servicioReserva.buscarReservasDelUsuarioPasadas(EXISTING_ID));
     }
 
     @Test

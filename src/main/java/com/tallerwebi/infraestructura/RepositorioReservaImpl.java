@@ -14,6 +14,8 @@ import javax.transaction.Transactional;
 @Repository("repositorioReserva")
 @Transactional
 public class RepositorioReservaImpl implements RepositorioReserva {
+
+    @Autowired
     private final SessionFactory sessionFactory;
 
     @Autowired
@@ -49,7 +51,7 @@ public class RepositorioReservaImpl implements RepositorioReserva {
         query.setParameter("id", idRestaurante);
         return (List<Reserva>) query.getResultList();
     }
-    
+
     @Override
     public List<Reserva> buscarTodasLasReservas() {
         String hql = "FROM Reserva";
