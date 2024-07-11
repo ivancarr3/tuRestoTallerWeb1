@@ -22,4 +22,9 @@ public interface ServicioRestaurante {
     void crearRestaurante(Restaurante restaurante) throws RestauranteExistente;
     void actualizarRestaurante(Restaurante restaurante) throws RestauranteNoEncontrado;
     void eliminarRestaurante(Restaurante restaurante) throws RestauranteNoEncontrado;
+    List<Restaurante> obtenerRestaurantesDeshabilitados();
+    List<Restaurante> obtenerRestaurantesHabilitados();
+    void habilitarRestaurante(Long id);
+    void deshabilitarRestaurante(Long id);
+    void eliminarRestaurantePorId(Long id);
 }

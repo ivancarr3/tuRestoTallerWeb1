@@ -34,15 +34,21 @@ public class Restaurante {
     @Column(nullable = false)
     private Double longitud;
 
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean habilitado = false;
+
     @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Reserva> reservas;
 
     @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Plato> platos;
 
+    private Double distancia;
+
     public Restaurante() {}
 
-    public Restaurante (Long id, String nombre, Double estrellas, String direccion, String imagen, Integer capacidadMaxima, Double latitud, Double longitud) {
+    public Restaurante(Long id, String nombre, Double estrellas, String direccion, String imagen,
+                       Integer capacidadMaxima, Double latitud, Double longitud) {
         this.id = id;
         this.nombre = nombre;
         this.estrellas = estrellas;
@@ -52,6 +58,8 @@ public class Restaurante {
         this.espacioDisponible = capacidadMaxima;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.distancia = 0.0;
+        this.habilitado = false;
     }
 
     public Long getId() {return id;}
@@ -92,4 +100,22 @@ public class Restaurante {
     public void setLatitud(Double latitud) {
         this.latitud = latitud;
     }
+
+    public Double getDistancia() {
+        return distancia;
+    }
+
+    public void setDistancia(Double distancia) {
+        this.distancia = distancia;
+    }
+
+    public boolean isHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
+    }
+
+
 }

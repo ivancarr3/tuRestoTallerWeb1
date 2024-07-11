@@ -161,4 +161,29 @@ public class ServicioRestauranteImpl implements ServicioRestaurante {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return RADIO_TIERRA * c;
     }
+
+    @Override
+    public List<Restaurante> obtenerRestaurantesDeshabilitados() {
+        return repositorioRestaurante.obtenerRestaurantesDeshabilitados();
+    }
+
+    @Override
+    public List<Restaurante> obtenerRestaurantesHabilitados() {
+        return repositorioRestaurante.obtenerRestaurantesHabilitados();
+    }
+
+    @Override
+    public void habilitarRestaurante(Long id) {
+        repositorioRestaurante.habilitarRestaurante(id);
+    }
+
+    @Override
+    public void deshabilitarRestaurante(Long id) {
+        repositorioRestaurante.deshabilitarRestaurante(id);
+    }
+
+    @Override
+    public void eliminarRestaurantePorId(Long id) {
+        repositorioRestaurante.eliminarRestaurantePorId(id);
+    }
 }
