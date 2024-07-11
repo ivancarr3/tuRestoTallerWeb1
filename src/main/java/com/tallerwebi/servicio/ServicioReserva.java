@@ -15,7 +15,7 @@ public interface ServicioReserva {
     void actualizar(Reserva reserva) throws ReservaNoEncontrada;
     void cancelarReserva(Reserva reserva) throws ReservaNoEncontrada;
     Reserva crearReserva(Restaurante restauranteEncontrado, String nombre_form, String email_form, Integer num_form,
-                      Integer dni_form, Integer cant_personas, Date fecha_form, Usuario usuario) throws EspacioNoDisponible, NoExisteUsuario;
+                      Integer dni_form, Integer cant_personas, Date fecha_form, Usuario usuario) throws EspacioNoDisponible, NoExisteUsuario, ReservaNoEncontrada;
 	List<Reserva> buscarTodasLasReservas() throws NoHayReservas;
 	List<Reserva> buscarReservasDelRestaurante(Long idRestaurante) throws NoHayReservas;
     List<String> obtenerEmailsUsuariosPorRestaurante(Long idRestaurante) throws NoHayReservas;

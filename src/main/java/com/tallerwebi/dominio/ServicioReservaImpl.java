@@ -17,151 +17,147 @@ import com.tallerwebi.servicio.ServicioReserva;
 @Transactional
 public class ServicioReservaImpl implements ServicioReserva {
 
-	private final RepositorioReserva repositorioReserva;
-	private final RepositorioRestaurante repositorioRestaurante;
-	private final RepositorioUsuario repositorioUsuario;
-	private final Email emailSender;
+    private final RepositorioReserva repositorioReserva;
+    private final RepositorioRestaurante repositorioRestaurante;
+    private final RepositorioUsuario repositorioUsuario;
+    private final Email emailSender;
 
-	@Autowired
-	public ServicioReservaImpl(RepositorioReserva repositorioReserva, RepositorioRestaurante repositorioRestaurante,
-			Email emailSender, RepositorioUsuario repositorioUsuario) {
-		this.repositorioReserva = repositorioReserva;
-		this.repositorioRestaurante = repositorioRestaurante;
-		this.emailSender = emailSender;
-		this.repositorioUsuario = repositorioUsuario;
-	}
+    @Autowired
+    public ServicioReservaImpl(RepositorioReserva repositorioReserva, RepositorioRestaurante repositorioRestaurante,
+                               Email emailSender, RepositorioUsuario repositorioUsuario) {
+        this.repositorioReserva = repositorioReserva;
+        this.repositorioRestaurante = repositorioRestaurante;
+        this.emailSender = emailSender;
+        this.repositorioUsuario = repositorioUsuario;
+    }
 
-	@Override
-	public List<Reserva> buscarReservasDelUsuario(Long idUsuario) throws NoHayReservas {
-		List<Reserva> reservas;
-		try {
-			reservas = repositorioReserva.buscarReservasDelUsuario(idUsuario);
-			if (reservas.isEmpty()) {
-				throw new NoHayReservas();
-			}
-		} catch (NoHayReservas e) {
-			throw e;
-		} catch (Exception e) {
-			throw new RuntimeException("Error al buscar reservas del usuario", e);
-		}
-		return reservas;
-	}
-	
-	@Override
-	public List<Reserva> buscarReservasDelRestaurante(Long idRestaurante) throws NoHayReservas {
-		List<Reserva> reservas;
-		try {
-			reservas = repositorioReserva.buscarReservasDelRestaurante(idRestaurante);
-			if (reservas.isEmpty()) {
-				throw new NoHayReservas();
-			}
-		} catch (NoHayReservas e) {
-			throw e;
-		} catch (Exception e) {
-			throw new RuntimeException("Error al buscar reservas del Restaurante", e);
-		}
-		return reservas;
-	}
+    @Override
+    public List<Reserva> buscarReservasDelUsuario(Long idUsuario) throws NoHayReservas {
+        List<Reserva> reservas;
+        try {
+            reservas = repositorioReserva.buscarReservasDelUsuario(idUsuario);
+            if (reservas.isEmpty()) {
+                throw new NoHayReservas();
+            }
+        } catch (NoHayReservas e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Error al buscar reservas del usuario", e);
+        }
+        return reservas;
+    }
 
-	@Override
-	public List<Reserva> buscarReservasDelUsuarioPasadas(Long idUsuario) throws NoHayReservasPasadas {
-		List<Reserva> reservas;
-		try {
-			reservas = repositorioReserva.buscarReservasDelUsuarioPasadas(idUsuario);
-			if (reservas.isEmpty()) {
-				throw new NoHayReservasPasadas();
-			}
-		} catch (NoHayReservasPasadas e) {
-			throw e;
-		} catch (Exception e) {
-			throw new RuntimeException("Error al buscar reservas del usuario", e);
-		}
-		return reservas;
-	}
+    @Override
+    public List<Reserva> buscarReservasDelRestaurante(Long idRestaurante) throws NoHayReservas {
+        List<Reserva> reservas;
+        try {
+            reservas = repositorioReserva.buscarReservasDelRestaurante(idRestaurante);
+            if (reservas.isEmpty()) {
+                throw new NoHayReservas();
+            }
+        } catch (NoHayReservas e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Error al buscar reservas del Restaurante", e);
+        }
+        return reservas;
+    }
 
-	@Override
-	public List<Reserva> buscarTodasLasReservas() throws NoHayReservas {
-		List<Reserva> reservas = repositorioReserva.buscarTodasLasReservas();
-		if (reservas == null) {
-			throw new NoHayReservas();
-		}
+    @Override
+    public List<Reserva> buscarReservasDelUsuarioPasadas(Long idUsuario) throws NoHayReservasPasadas {
+        List<Reserva> reservas;
+        try {
+            reservas = repositorioReserva.buscarReservasDelUsuarioPasadas(idUsuario);
+            if (reservas.isEmpty()) {
+                throw new NoHayReservasPasadas();
+            }
+        } catch (NoHayReservasPasadas e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Error al buscar reservas del usuario", e);
+        }
+        return reservas;
+    }
 
-		return reservas;
-	}
+    @Override
+    public List<Reserva> buscarTodasLasReservas() throws NoHayReservas {
+        List<Reserva> reservas = repositorioReserva.buscarTodasLasReservas();
+        if (reservas == null) {
+            throw new NoHayReservas();
+        }
 
-	@Override
-	public Reserva buscarReserva(Long id) throws ReservaNoEncontrada {
-		Reserva reserva = repositorioReserva.buscarReserva(id);
-		if (reserva == null) {
-			throw new ReservaNoEncontrada();
-		}
+        return reservas;
+    }
 
-		return reserva;
-	}
+    @Override
+    public Reserva buscarReserva(Long id) throws ReservaNoEncontrada {
+        Reserva reserva = repositorioReserva.buscarReserva(id);
+        if (reserva == null) {
+            throw new ReservaNoEncontrada();
+        }
 
-	@Override
-	public List<String> obtenerEmailsUsuariosPorRestaurante(Long idRestaurante) throws NoHayReservas {
-		List<String> emails = repositorioReserva.buscarEmailDeUsuariosPorRestaurante(idRestaurante);
-		if (emails.isEmpty()) {
-			throw new NoHayReservas();
-		}
-		return emails;
-	}
+        return reserva;
+    }
 
-	@Override
-	public void actualizar(Reserva reserva) throws ReservaNoEncontrada {
-		Reserva reservaNoEncontrada = repositorioReserva.buscarReserva(reserva.getId());
-		if (reservaNoEncontrada == null) {
-			throw new ReservaNoEncontrada();
-		}
-		repositorioReserva.actualizar(reserva);
-	}
+    @Override
+    public List<String> obtenerEmailsUsuariosPorRestaurante(Long idRestaurante) throws NoHayReservas {
+        List<String> emails = repositorioReserva.buscarEmailDeUsuariosPorRestaurante(idRestaurante);
+        if (emails.isEmpty()) {
+            throw new NoHayReservas();
+        }
+        return emails;
+    }
 
-	@Override
-	public void cancelarReserva(Reserva reserva) throws ReservaNoEncontrada {
-		repositorioReserva.eliminar(reserva);
-	}
+    @Override
+    public void actualizar(Reserva reserva) throws ReservaNoEncontrada {
+        repositorioReserva.actualizar(reserva);
+    }
 
-	@Override
-	public Reserva crearReserva(Restaurante restauranteEncontrado, String nombre_form, String email_form,
-								Integer num_form, Integer dni_form, Integer cant_personas, Date fecha_form, Usuario usuario) throws EspacioNoDisponible, NoExisteUsuario {
-		if (usuario == null) {
-			throw new NoExisteUsuario();
-		}
+    @Override
+    public void cancelarReserva(Reserva reserva) throws ReservaNoEncontrada {
+        repositorioReserva.eliminar(reserva);
+    }
 
-		Reserva reserva = new Reserva(null, restauranteEncontrado, nombre_form, email_form, num_form, dni_form,
-				cant_personas, fecha_form, usuario);
+    @Override
+    public Reserva crearReserva(Restaurante restauranteEncontrado, String nombre_form, String email_form,
+                                Integer num_form, Integer dni_form, Integer cant_personas, Date fecha_form, Usuario usuario) throws EspacioNoDisponible, NoExisteUsuario, ReservaNoEncontrada {
+        if (usuario == null) {
+            throw new NoExisteUsuario();
+        }
 
-		if (!verificarEspacioDisponible(reserva)) {
-			throw new EspacioNoDisponible();
-		}
+        Reserva reserva = new Reserva(null, restauranteEncontrado, nombre_form, email_form, num_form, dni_form,
+                cant_personas, fecha_form, usuario, null);
 
-		repositorioReserva.guardar(reserva);
-		restauranteEncontrado.setEspacioDisponible(restauranteEncontrado.getCapacidadMaxima() - reserva.getCantidadPersonas());
+        if (!verificarEspacioDisponible(reserva)) {
+            throw new EspacioNoDisponible();
+        }
 
-		repositorioRestaurante.actualizar(restauranteEncontrado);
-		this.sendMail(nombre_form, restauranteEncontrado.getNombre(), cant_personas, fecha_form, email_form);
-		return reserva;
-	}
+        repositorioReserva.guardar(reserva);
+        restauranteEncontrado.setEspacioDisponible(restauranteEncontrado.getCapacidadMaxima() - reserva.getCantidadPersonas());
 
-	private boolean verificarEspacioDisponible(Reserva reserva) {
-		Restaurante restaurante = reserva.getRestaurante();
-		List<Reserva> reservasExistentes = repositorioReserva.getReservasPorRestaurante(restaurante.getId());
+        repositorioRestaurante.actualizar(restauranteEncontrado);
+        this.sendMail(nombre_form, restauranteEncontrado.getNombre(), cant_personas, fecha_form, email_form);
+        return reserva;
+    }
 
-		Integer personasTotales = reservasExistentes.stream().mapToInt(Reserva::getCantidadPersonas).sum();
-		return personasTotales + reserva.getCantidadPersonas() <= restaurante.getCapacidadMaxima();
-	}
+    private boolean verificarEspacioDisponible(Reserva reserva) {
+        Restaurante restaurante = reserva.getRestaurante();
+        List<Reserva> reservasExistentes = repositorioReserva.getReservasPorRestaurante(restaurante.getId());
 
-	private void sendMail(String nombre_form, String nombreRestaurante, Integer cant_personas, Date fecha_form,
-			String email_form) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE dd 'de' MMMM 'de' yyyy 'a las' HH:mm",
-				new Locale("es", "ES"));
-		String fechaFormateada = dateFormat.format(fecha_form);
-		String subject = "Confirmación de Reserva";
-		String text = "Hola " + nombre_form + ",\n\n" + "Tu reserva ha sido confirmada en " + nombreRestaurante
-				+ " para " + cant_personas + " personas el " + fechaFormateada + ".\n\n" + "Gracias por tu reserva.\n"
-				+ "Saludos,\n" + nombreRestaurante;
+        Integer personasTotales = reservasExistentes.stream().mapToInt(Reserva::getCantidadPersonas).sum();
+        return personasTotales + reserva.getCantidadPersonas() <= restaurante.getCapacidadMaxima();
+    }
 
-		this.emailSender.sendSimpleMessage(email_form, subject, text);
-	}
+    private void sendMail(String nombre_form, String nombreRestaurante, Integer cant_personas, Date fecha_form,
+                          String email_form) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE dd 'de' MMMM 'de' yyyy 'a las' HH:mm",
+                new Locale("es", "ES"));
+        String fechaFormateada = dateFormat.format(fecha_form);
+        String subject = "Confirmación de Reserva";
+        String text = "Hola " + nombre_form + ",\n\n" + "Tu reserva ha sido confirmada en " + nombreRestaurante
+                + " para " + cant_personas + " personas el " + fechaFormateada + ".\n\n" + "Gracias por tu reserva.\n"
+                + "Saludos,\n" + nombreRestaurante;
+
+        this.emailSender.sendSimpleMessage(email_form, subject, text);
+    }
 }

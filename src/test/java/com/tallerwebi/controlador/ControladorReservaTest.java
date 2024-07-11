@@ -16,6 +16,9 @@ import javax.servlet.http.HttpSession;
 import com.tallerwebi.dominio.excepcion.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.MockitoAnnotations;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mercadopago.exceptions.MPApiException;
@@ -29,6 +32,7 @@ import com.tallerwebi.servicio.ServicioUsuario;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 public class ControladorReservaTest {
+
 	private ControladorReserva controladorReserva;
 	private ServicioReserva servicioReservaMock;
 	private ServicioMercadoPago servicioMercadoPago;
@@ -39,12 +43,19 @@ public class ControladorReservaTest {
 	private Usuario usuarioInit;
 	private RedirectAttributes redirectAttributes;
 
+	@Captor
+	private ArgumentCaptor<String> stringCaptor;
+
+	@Captor
+	private ArgumentCaptor<Object> objectCaptor;
+
 	@BeforeEach
 	public void init() {
 		servicioReservaMock = mock(ServicioReserva.class);
 		servicioRestauranteMock = mock(ServicioRestaurante.class);
 		servicioMercadoPago = mock(ServicioMercadoPago.class);
 		redirectAttributes = mock(RedirectAttributes.class);
+		MockitoAnnotations.openMocks(this);
 
 		//this.controladorReserva = new ControladorReserva(this.servicioRestauranteMock, this.servicioReservaMock,
 		servicioUsuario = mock(ServicioUsuario.class);
@@ -58,7 +69,7 @@ public class ControladorReservaTest {
 
 	@Test
 	public void laReservaSeRealizaExitosamente()
-			throws EspacioNoDisponible, DatosInvalidosReserva, RestauranteNoEncontrado, NoExisteUsuario {
+			throws EspacioNoDisponible, DatosInvalidosReserva, RestauranteNoEncontrado, NoExisteUsuario, ReservaNoEncontrada {
 		Restaurante restaurante = new Restaurante(1L, "restaurante", 2.2, "direccion", "imagen", 3, -34.610000, -58.400000);
 		DatosReserva datosReserva = new DatosReserva();
 		datosReserva.setIdRestaurante(1L);
@@ -71,15 +82,15 @@ public class ControladorReservaTest {
 
 		when(servicioRestauranteMock.consultar(1L)).thenReturn(restaurante);
 		when(request.getSession(false)).thenReturn(session);
+		when(session.getAttribute("email")).thenReturn("test@test.com");
+		when(servicioUsuario.buscar("test@test.com")).thenReturn(usuarioInit);
 
-
-		Reserva reserva = new Reserva(null, restaurante, "nombre", "test@test.com", 1, 1, 1, datosReserva.getFechaForm(), new Usuario());
+		Reserva reserva = new Reserva(null, restaurante, "nombre", "test@test.com", 1, 1, 1, datosReserva.getFechaForm(), new Usuario(), "");
 		when(servicioReservaMock.crearReserva(restaurante, datosReserva.getNombreForm(), datosReserva.getEmailForm(), datosReserva.getNumForm(), datosReserva.getDniForm(), datosReserva.getCantPersonas(), datosReserva.getFechaForm(), this.usuarioInit))
 				.thenReturn(reserva);
 
 		ModelAndView modelAndView = controladorReserva.reservar(datosReserva, this.request, this.redirectAttributes);
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("reserva_exitosa"));
-
 	}
 
 	@Test
@@ -131,7 +142,7 @@ public class ControladorReservaTest {
 	}
 
 	@Test
-	public void espacioNoDisponible() throws RestauranteNoEncontrado, EspacioNoDisponible, DatosInvalidosReserva, NoExisteUsuario {
+	public void espacioNoDisponible() throws RestauranteNoEncontrado, EspacioNoDisponible, DatosInvalidosReserva, NoExisteUsuario, ReservaNoEncontrada {
 		Restaurante restaurante = new Restaurante(1L, "nombre", 2.2, "direccion", "imagen", 3, -34.610000, -58.400000);
 
 		DatosReserva datosReserva = new DatosReserva();
