@@ -29,6 +29,8 @@ public class MercadoPagoWebhookController {
             Map<String, Object> data = (Map<String, Object>) payload.get("data");
             Long paymentId = Long.valueOf(data.get("id").toString());
             try {
+                System.out.println("TESTTT");
+                System.out.println(paymentId);
                 String estadoPago = obtenerEstadoPago(paymentId);
                 servicioReserva.actualizarEstadoPago(paymentId, estadoPago);
                 return ResponseEntity.ok("Webhook handled successfully");
