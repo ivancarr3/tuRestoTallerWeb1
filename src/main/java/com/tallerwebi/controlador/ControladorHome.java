@@ -224,7 +224,6 @@ public class ControladorHome {
 			model.put(ERROR_NAME, "No hay platos disponibles para esa categoría.");
 		}
 		addUserInfoToModel(model, request);
-		System.out.println(model);
 		return new ModelAndView(VIEW_NAME, model);
 	}
 }
