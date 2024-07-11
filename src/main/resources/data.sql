@@ -22,6 +22,9 @@ SET @idUsuario7 = LAST_INSERT_ID();
 INSERT INTO usuario (nombre, apellido, fecha_nac, email, password, rol, activo, confirmationToken) VALUES ('Mateo', 'Fortuna', '2003-11-21', 'resto6@resto.com', 'resto', 'RESTO', TRUE, '');
 SET @idUsuario8 = LAST_INSERT_ID();
 
+INSERT INTO usuario (nombre, apellido, fecha_nac, email, password, rol, activo, confirmationToken) VALUES ('User', 'User', '2000-11-17', 'user@user.com', '123', 'USER', TRUE, '');
+SET @idUsuario9 = LAST_INSERT_ID();
+
 INSERT INTO restaurante (nombre, estrellas, direccion, imagen, capacidadMaxima, espacioDisponible, latitud, longitud, habilitado, usuario_id) VALUES
     ('El club de la Milanesa', 5.0, 'Pres. Juan Domingo Perón 2700', 'restaurant.jpg', 100, 0, -34.671958, -58.562666, TRUE, @idUsuario2);
 SET @idResto1 = LAST_INSERT_ID();
