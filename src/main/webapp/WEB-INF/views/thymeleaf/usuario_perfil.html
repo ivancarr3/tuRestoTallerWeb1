@@ -99,8 +99,7 @@
                        th:text="'Fecha: ' + ${#dates.format(reservaDTO.reserva.fecha, 'dd/MM/yyyy HH:mm:ss')}"></p>
                     <p class="fw-light" th:text="'Para ' + ${reservaDTO.reserva.cantidadPersonas} + ' personas'"></p>
                     <div th:if="${!reservaDTO.pagada}" style="margin-bottom: 1em;">
-                        <a class="btn btn-success" target="_blank" referrerpolicy="no-referrer"
-                           th:href="${reservaDTO.reserva.link}">Pagada </i></a>
+                        <a class="btn btn-success" referrerpolicy="no-referrer">Pagada </i></a>
                     </div>
                     <div th:if="${reservaDTO.pagada}">
                         <p class="text-success">PAGADA</p>
